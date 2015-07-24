@@ -1,0 +1,21 @@
+#set( $size = $identifierTypes.size() )
+{ 
+#set( $size = $attributes.size() )
+"attributes": [
+	#foreach( $attribute in $attributes )
+	  {
+		"id":  ${attribute.id} ,
+		"name": "$!encoder.jsonEncode( ${attribute.displayName} )"
+	  }#if( $velocityCount < $size ),#end
+	#end],
+	
+#set( $size = $programStages.size() )
+"programStages": [
+	#foreach( $programStage in $programStages )
+	  {
+		"id":  ${programStage.id} ,
+		"name": "$!encoder.jsonEncode( ${programStage.displayName} )",
+		"irregular":${programStage.irregular}
+	  }#if( $velocityCount < $size ),#end
+	#end]
+}

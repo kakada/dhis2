@@ -1,0 +1,95 @@
+<div id="leftBar"> 
+
+    <d2-ou-search></d2-ou-search>
+    
+    <div id="orgUnitTree">
+        <ul>
+        </ul>
+    </div>
+    <img id="ouwt_loader" src="../images/ajax-loader-bar.gif"/>
+    <div class="small-horizonal-spacing" ng-if='!treeLoaded'>
+        {{'loading_tree'| translate}}
+    </div>
+</div>
+
+<div class="page" id="mainPage">
+    
+    <div ng-if="!selectedOrgUnit">
+        <img src="../images/ajax-loader-bar.gif" alt="{{'in_progress'| translate}}" ng-if="!selectedOrgUnit"/><br>
+        {{'loading_metadata'| translate}}
+    </div>
+    
+    <div ng-show="selectedOrgUnit && userAuthority.canAddOrUpdateEvent">
+        
+        <h3>
+            {{'event_capture'| translate}}
+        </h3>
+        
+        <!-- selection begins-->
+        <table>
+            <tr>
+                <td><label>{{'registering_unit'| translate}}</label></td>
+                <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name|| 'please_select'| translate}}" disabled="" style="height:14px"></td>                        	                            
+            </tr>
+            <tr>
+                <td><label>{{'program'| translate}}</label></td>
+                <td>
+                    <select id="programId" 
+                            class="fixed-width-select"
+                            name="programId" 
+                            ng-model="selectedProgram" 
+                            ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                            ng-change="getProgramDetails()"
+                            ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
+                        <option value="">{{'please_select'| translate}}</option>
+                    </select>      
+                </td>
+                <td style='padding-left: 10px;'>
+                    <button class="button button-std hideInPrint"
+                            ng-show="selectedProgramStage" 
+                            ng-click="showEventRegistration()" 
+                            ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
+                        {{'register_event'| translate}}
+                    </button>  
+                </td>
+                <td ng-if="dhis2Events.length > 0 || eventRegistration || editingEventInFull" style='padding-left: 10px;'>
+                    <button class="button button-std hideInPrint"
+                            onclick="javascript:window.print()">
+                        <span ng-if="!eventRegistration && !editingEventInFull">{{'print_list'| translate}}</span>
+                        <span ng-if="eventRegistration">{{'print_form'| translate}}</span>
+                        <span ng-if="editingEventInFull">{{'print_details'| translate}}</span>
+                    </button>  
+                </td> 
+            </tr>                       
+        </table>        
+        <!-- selection ends -->
+        
+        <div id="hideTypeAheadPopUp" ng-hide="true"></div>
+        <!-- event grid begins -->
+        <div ng-include="'views/eventList.html'"></div>
+        <!-- event grid ends -->
+
+        <!-- event update in full / registration begins-->            
+        <form name="outerForm" novalidate>
+            <div ng-if="editingEventInFull || eventRegistration">
+                <h3>
+                    <span ng-if="editingEventInFull">{{'event_details'| translate}}</span>                       
+                    <span ng-if="eventRegistration">{{'new_event'| translate}}</span>                            
+                </h3>
+                <div class="bordered-div" ng-if="displayCustomForm">
+                    <div ng-include="'views/ec-custom-form.html'"></div>  
+                </div>
+                <div class="bordered-div container-default-form" ng-if="!displayCustomForm">
+                    <div ng-include="'views/defaultForm.html'"></div>                
+                </div>
+            </div>
+        </form>
+        <!-- event update / registration ends -->
+        
+    </div>
+    
+    <div ng-if="selectedOrgUnit && !userAuthority.canAddOrUpdateEvent">
+        <h1>{{'lacking_required_authority_to_add_update_event' | translate}}</h1>
+    </div>
+    
+</div>

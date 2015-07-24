@@ -1,0 +1,5 @@
+
+<a href="index.action"><h2>$i18n.getString( "tracked_entity_instance_aggregation" )&nbsp;</h2></a>
+<ul>
+    <li><a href="caseAggregationForm.action">$i18n.getString( "manual_tracked_entity_instance_aggregation" )</a></li>     
+</ul>

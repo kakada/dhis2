@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityInstance>
+  <id>$entityInstance.id</id>  
+  <relationshipTypeId>$relationshipTypeId</relationshipTypeId>
+  #foreach( $attributeValue in $entityInstance.attributeValues )
+  	#if( $attributeValue.attribute )
+	     <identifier>    
+	     	<identifierTypeId>$attributeValue.attribute.id</identifierTypeId>    
+	        <identifierText>$encoder.xmlEncode( $attributeValue.value )</identifierText>
+	     </identifier>
+     #end
+  #end
+</entityInstance>

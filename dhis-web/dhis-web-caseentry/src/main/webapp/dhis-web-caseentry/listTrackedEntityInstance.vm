@@ -1,0 +1,148 @@
+<div id='listEntityInstanceDiv'>
+<table>
+	<tr>
+		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td id='searchInforTD'>
+			#if($!listAll)
+				$i18n.getString( "list_all_tracked_entity_instances" )
+			#else
+				$i18n.getString( "search_tracked_entity_instances" )
+			#end
+		</td>
+	</tr>	
+	
+	<tr>
+		<td class='text-column' >$i18n.getString( "total_result" ):</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>$!total</td>
+	</tr>
+</table>
+
+<br> 
+<table class="mainPageTable">
+<tr><td>
+	<table class="listTable" id="entityInstanceList" width='100%'>               
+          <col width="30"/>
+			#if($program)
+				#foreach( $programAttribute in $program.programAttributes )
+					#if($programAttribute.displayInList=='true')
+						<col/>
+					#end
+				#end
+			#else
+				#foreach( $attribute in $attributes)
+					<col/>
+				#end
+			#end
+
+		  #if($mapEntityInstanceOrgunit.size()!=0)
+		  <col/>
+		  #end
+		  <col width="200"/>    
+		  
+		  <thead>
+			<tr>
+				<th>#</th>
+				#if($program)
+					#foreach( $attribute in $program.programAttributes )
+						#if($attribute.displayInList=='true')
+							<th id="attributeName">$encoder.htmlEncode($attribute.attribute.displayName)</th>
+						#end
+					#end
+				#else
+					#foreach( $attribute in $attributes)
+						<th id="attributeName">$encoder.htmlEncode($attribute.displayName)</th>
+					#end
+				#end
+				
+				#if($mapEntityInstanceOrgunit.size()!=0)
+					<th>$i18n.getString( "hierachy_orgunit" )</th>
+				#end
+				
+				<th style="text-align:center">$i18n.getString( "operations" )</th>
+			  </tr>
+          </thead>
+		  
+          <tbody id="list">	
+          #foreach( $entityInstance in $entityInstances )
+          	<tr id="tr${entityInstance.id}">
+				
+				<td>
+					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+					$nr
+				</td>
+				#if($program)
+					#foreach( $programAttribute in $program.programAttributes )
+						#if($programAttribute.displayInList=='true')
+							#set($value='')
+							<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
+								#foreach( $attributeValue in $entityInstance.attributeValues)
+									#if($!attributeValue.attribute.id==$programAttribute.attribute.id)
+										#set($value=$attributeValue.value)
+										#if( $programAttribute.attribute.valueType == 'bool')
+											#set($value=$i18n.getString($attributeValue.value))
+										#end
+									#end
+								#end 
+								<a>$encoder.htmlEncode($value)</a>
+							</td>
+						#end
+					#end
+				#else
+					#foreach( $attribute in $attributes)
+						#set($value="")
+						<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
+							#foreach( $attributeValue in $entityInstance.attributeValues)
+								#if($!attributeValue.attribute.id==$attribute.id)
+									#set($value=$attributeValue.value)
+									#if( $attribute.valueType == 'bool')
+										#set($value=$i18n.getString($attributeValue.value))
+									#end
+								#end
+							#end 
+							<a>$encoder.htmlEncode($value)</a>
+						</td>
+					#end
+				#end
+				<td>
+				  <a href="javascript:isDashboard=true;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )" title='$i18n.getString( "dashboard" )'><img src="../images/enroll.png" alt='$i18n.getString( "dashboard" )'></a>
+				  <a href="javascript:isDashboard=false;showUpdateTrackedEntityInstanceForm( '$entityInstance.uid' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
+				  <a href="javascript:setFieldValue( 'isShowEntityInstanceList', 'false' ); showRelationshipList('$entityInstance.uid')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
+                  #if( $auth.hasAccess( "dhis-web-caseentry", "getTrackedEntityInstanceLocation" ) )
+				  <a href="javascript:isDashboard=false;getTrackedEntityInstanceLocation( '$entityInstance.uid' );" title='$i18n.getString( "change_location" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "change_tracked_entity_instance_location" )' style='width:25px; height:25px'></a>
+				  #end
+				  <a href="javascript:removeTrackedEntityInstance( '$entityInstance.uid', '', i18n_confirm_delete_tracked_entity_instance )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:showTrackedEntityInstanceHistory( '$entityInstance.uid' )" title='$i18n.getString( "tracked_entity_instance_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "tracked_entity_instance_details_and_history" )'></a>
+				</td>
+				
+			</tr>
+    	#end
+    	</tbody>
+    
+	 </table>
+</td></tr>
+<tr><td colspan="6">
+			<p></p>
+			<div class="paging-container">
+				#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
+		</td>
+		<td></td>
+	</tr>
+</table>
+
+	<div id="detailsInfo"></div>
+	<span id="message"></span>
+</div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		setTableStyles();	
+	});
+	var i18n_tracked_entity_instance_details_and_history = '$encoder.jsEscape( $i18n.getString( "tracked_entity_instance_details_and_history" ) , "'" )';
+	var i18n_list_all_tracked_entity_instances = '$encoder.jsEscape( $i18n.getString( "list_all_tracked_entity_instances" ) , "'" )';
+	var i18n_search_tracked_entity_instances = '$encoder.jsEscape( $i18n.getString( "search_tracked_entity_instances" ) , "'" )';
+</script>

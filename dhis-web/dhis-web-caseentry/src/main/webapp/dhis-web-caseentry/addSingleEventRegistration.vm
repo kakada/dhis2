@@ -1,0 +1,52 @@
+<script>
+	jQuery("#singleEventForm").ready(	function(){
+		currentDiv = 'entityInstanceForm';
+		
+		jQuery("#singleEventForm").validate({
+			 meta:"validate"
+			,errorElement:"span"
+			,submitHandler: function(form)
+				{
+					validateData();
+				}
+		});
+	});	
+	
+</script>
+
+<h3>
+	<a href="javascript:onClickBackBtn();" id='entityInstanceMamagementLink'>$i18n.getString( 'tracked_entity_instance_management' )</a>
+	#if($!relatedProgram)
+		&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$!entityInstanceUid');">$i18n.getString( 'dashboard' )</a>
+	#end
+	&#8226; $i18n.getString( "add_new_tracked_entity_instance" )
+</h3>
+
+<form id='singleEventForm'>
+	<input type="hidden" id="representativeId" name="representativeId"/> 
+	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+	<input type="hidden" id="programStageId" name="programStageId"/>
+	
+	<table>
+		<tbody id='entityInstanceForm'>
+			#parse( "/dhis-web-caseentry/trackedEntityInstanceForm.vm" )
+		</tbody>
+		<tbody>
+			#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
+		</tbody>
+		<tr>
+			<td colspan='2'>
+				<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick='_continue=false;' style="width:70px;"/>
+				<input type="submit" class="button" value="$i18n.getString( 'add_and_register_new' )" style="width:140px;" onclick="_continue=true;"/>
+				<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" style="width:70px;"/>
+			</td>
+		</tr>
+	</table>
+</form>
+
+<script>
+	var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
+	var i18n_add_tracked_entity_instance_successfully = '$encoder.jsEscape( $i18n.getString( "add_tracked_entity_instance_successfully" ) , "'" )';
+	setInnerHTML('entryName', jQuery('#program option:selected').text() );
+	setFieldValue("programStageId", getFieldValue("program"));
+</script>

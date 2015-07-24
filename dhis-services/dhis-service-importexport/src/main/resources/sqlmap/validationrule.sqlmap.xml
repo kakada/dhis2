@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="validationRule">
+	
+	<!-- TypeAlias -->
+	
+	<typeAlias alias="validationRule" type="org.hisp.dhis.validation.ValidationRule"/>
+	<typeAlias alias="validationRuleTypeTypeHandler" type="org.hisp.dhis.importexport.dhis14.file.typehandler.ValidationRuleTypeTypeHandler"/>
+	
+	<!-- ResultMap -->
+	
+	<resultMap class="validationRule" id="validationRuleResultMap">
+		<result property="id" column="RoutineDataValidationRuleID"/>
+		<result property="name" column="RoutineDataValidationRuleName"/>
+		<!-- <result property="operator" column="RoutineDataValidationRuleLogicalOperatorID"/>-->
+		<result property="leftSide" column="RoutineDataValidationRule"/>
+		<result property="rightSide" column="RoutineDataValidationRule"/>
+		<!-- <result property="type" column="ValidationTypeID" typeHandler="validationRuleTypeTypeHandler"/>-->
+		<result property="description" column="RoutineDataValidationRuleDescription"/>
+		<result property="lastUpdated" column="LastUpdated"/>
+		<result property="uid" column="UID"/>
+	</resultMap>
+	
+	<!-- Statement -->
+	
+	<select id="getValidationRule" resultMap="validationRuleResultMap">
+		SELECT * FROM RoutineDataValidationRule WHERE RoutineDataValidationRuleID = #value#
+	</select>
+	
+	<select id="getValidationRules" resultMap="validationRuleResultMap">
+		SELECT * FROM RoutineDataValidationRule
+	</select>
+	
+	<select id="getValidationRuleName" parameterClass="java.lang.Integer" resultClass="java.lang.String">
+		SELECT RoutineDataValidationRuleName FROM RoutineDataValidationRule WHERE RoutineDataValidationRuleID = #value#
+	</select>
+	
+</sqlMap>

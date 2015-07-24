@@ -1,0 +1,111 @@
+<script>
+	jQuery(document).ready(function() {
+		jQuery("input[type=button]").click(function() {
+			jQuery.postUTF8( 'setSystemAppearanceSettings.action', {
+                applicationTitle: getFieldValue( 'applicationTitle' ),
+                applicationIntro: getFieldValue( 'applicationIntro' ),
+                applicationNotification: getFieldValue( 'applicationNotification' ),
+                applicationFooter: getFieldValue( 'applicationFooter' ),
+                applicationRightFooter: getFieldValue( 'applicationRightFooter' ),
+                currentStyle: getFieldValue( 'currentStyle' ),
+				startModule: getFieldValue( 'startModule' ),
+				flag: getFieldValue( 'flag' ),
+				requireAddToView: jQuery('#requireAddToView').is(':checked'),
+				customLoginPageLogo: $( '#customLoginPageLogo' ).is( ':checked' ),
+				customTopMenuLogo: $( '#customTopMenuLogo' ).is( ':checked' ),
+				localeSelect: getFieldValue( 'localeSelect' )
+			}, function( json ) {
+				if ( json.response == "success" ) {
+					setHeaderDelayMessage( json.message );
+				}
+			});
+		});
+	});
+</script>
+
+<div style="width:370px;">
+	<div style="float:right;">
+		<select id="localeSelect" name="localeSelect" onchange="changeLocale()" style="width:auto !important;">
+	    <option value="">[ Select locale ]</option>
+		#foreach( $locale in $availableLocales )
+			<option value="$locale.toString()">$locale.getDisplayName()</option>
+		#end
+		</select>
+	</div>	
+</div>
+
+<h3>$i18n.getString( "appearance_settings" ) #openHelp( "systemAppearanceSettings" )</h3>
+
+<div class="settingLabel">$i18n.getString( "application_title" )</div>
+
+<div class="setting"><input type="text" id="applicationTitle" name="applicationTitle" maxlength="40" value="$!{applicationTitle}"/></div>
+
+<div class="settingLabel">$i18n.getString( "application_introduction" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+
+<div class="setting"><textarea id="applicationIntro" name="applicationIntro">$!{keyApplicationIntro}</textarea></div>
+
+<div class="settingLabel">$i18n.getString( "application_notification" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+
+<div class="setting"><textarea id="applicationNotification" name="applicationNotification">$!{keyApplicationNotification}</textarea></div>
+
+<div class="settingLabel">$i18n.getString( "application_left_footer" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+
+<div class="setting"><textarea id="applicationFooter" name="applicationFooter">$!{keyApplicationFooter}</textarea></div>
+
+<div class="settingLabel">$i18n.getString( "application_right_footer" ) <span class="tipText">($i18n.getString( "allows_html" ))</span></div>
+
+<div class="setting"><textarea id="applicationRightFooter" name="applicationRightFooter">$!{keyApplicationRightFooter}</textarea></div>
+
+<div class="settingLabel">$i18n.getString( "style" )</div>
+
+<div class="setting">
+<select id="currentStyle" name="currentStyle">
+	#foreach( $style in $styles.entrySet() )
+	<option value="$style.value" #if( $style.value == $currentStyle )selected="selected"#end>$i18n.getString( $style.key )</option>
+	#end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "start_page" )</div>
+
+<div class="setting">
+<select id="startModule" name="startModule">
+    <option value="">[ $i18n.getString( "default" ) ]</option>
+    #foreach ( $module in $modules )
+    <option value="$module.name" #if( $module.name == $startModule )selected="selected"#end>$i18n.getString( "$module.name" )</option>
+    #end
+    #foreach ( $app in $apps )
+    <option value="app:${app.name}" #if( "app:${app.name}" == $startModule )selected="selected"#end>$i18n.getString( "$app.name" )</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "flag" )</div>
+
+<div class="setting">
+<select id="flag" name="flag">
+	<option value="NO_FLAG">$i18n.getString( "no_flag" )</option>
+	#foreach ( $flag in $flags )
+	<option value="$flag" #if( $flag == $keyFlag )selected="selected"#end>$i18n.getString( $flag )</option>
+    #end
+</select>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="requireAddToView" name="requireAddToView" #if( $keyRequireAddToView )checked="checked"#end>
+    <label for="requireAddToView">$i18n.getString( "require_authority_to_add_to_view_object_lists" )</label>
+</div>
+
+<div class="setting">
+	<input type="checkbox" id="customLoginPageLogo" name="customLoginPageLogo" value="true"#if( $!keyCustomLoginPageLogo ) checked="checked"#end>
+	<label for="customLoginPageLogo">$i18n.getString( "custom_login_page_logo" )</label> <span class="tipText">(88x24) - $i18n.getString( "uses_image_from" ):</span><br>
+	<span class="tipText">&lt;base url&gt;/external-static/logo_front.png</span>
+</div>
+
+<div class="setting">
+	<input type="checkbox" id="customTopMenuLogo" name="customTopMenuLogo" value="true"#if( $!keyCustomTopMenuLogo ) checked="checked"#end>
+	<label for="customTopMenuLogo">$i18n.getString( "custom_top_menu_logo" )</label> <span class="tipText">(64x17) - $i18n.getString( "uses_image_from" ):</span><br>
+	<span class="tipText">&lt;base url&gt;/external-static/logo_banner.png</span>
+</div>
+
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>

@@ -1,0 +1,180 @@
+<input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
+<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.uid' >
+<input type="hidden" id='hideLink' name='hideLink' value='false'>
+<input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
+<select id='attributeIds' name='attributeIds' class='hidden'>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
+		#foreach( $attribute in $attributes )
+			<option value="$attribute.uid" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
+		#end
+	#end
+</select>
+
+<table style="margin-bottom:8px" id="commonSearchDiv" name="commonSearchDiv">    
+	<tr>
+		<td>
+			<label>$i18n.getString( "registering_unit" )</label>
+		</td>
+		<td>
+			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
+		</td>
+		<td valign='bottom' id='criteriaBtnTD'>
+			<input type="button" id='addEntityInstanceBtn' name='addEntityInstanceBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddTrackedEntityInstanceForm('', getFieldValue('program'),'', false );" >
+		</td>
+	</tr>
+	<tr id='programAddEntityInstanceTR'>
+		<td>$i18n.getString('program')</td>
+		<td>
+			<select id='program' name='program' onchange='enableBtn();'>
+				<option value="" type=''>[$i18n.getString( "view_all" )]</option>
+				#foreach($program in $programs)
+					<option value="$program.uid" type='$program.type'>$program.displayName</option>
+				#end
+			</select>
+			<span id="programLoader" style="display:none;" ><img src="../images/ajax-loader-bar.gif" /></span>
+		</td>
+		<td id='listEntityInstanceBtnTD'>
+			<input type="button" id='listEntityInstanceBtn' value="$i18n.getString( 'list_all_tracked_entity_instances' )" onclick="isAdvancedSearch=false;listAllTrackedEntityInstance(1);">
+		</td>
+	</tr>
+	
+	<tr id='scheduleVisitTR' class='hidden'>
+		<td>$i18n.getString('scheduled_visits')</td>
+		<td>
+			<select id='scheduledVisitDays' name='scheduledVisitDays' >
+				<option value=''>[$i18n.getString("please_select")]</option>
+				<option value='0'>$i18n.getString("today")</option>
+				<option value='7'>$i18n.getString("last_7_days")</option>
+				<option value='30'>$i18n.getString("last_30_days")</option>
+			</select>
+		</td>
+	</tr>
+	<tr id='programStageAddEntityInstanceTR' class='hidden'>
+		<td>$i18n.getString('status')</td>
+		<td>
+			<select id="status" name="status">
+				<option value='ACTIVE'>$i18n.getString("all")</option>
+				<option value='OVERDUE'>$i18n.getString("overdue")</option>
+				<option value='VISITED'>$i18n.getString("incomplete")</option>
+				<option value='COMPLETED'>$i18n.getString("completed")</option>
+				<option value='SCHEDULE'>$i18n.getString("scheduled_in_future")</option> 
+				<option value='SKIPPED'>$i18n.getString("skipped")</option> 
+			</select>
+		</td>
+	</tr>
+	<tr id='followupTR' class='hidden'>
+		<td>$i18n.getString('show_only_risk_cases')</td>
+		<td>
+			<input type='checkbox' id='followup' name='followup' />
+		</td>
+	</tr>
+	<tr id='searchByIdTR' class='hidden'>
+		<td colspan='2'>
+			<input type='text' id='searchTeiByAttributes' name='searchTeiByAttributes' onchange='searchByIdsOnclick();' style='width:350px;' placeholder='$i18n.getString("search_by_attribute_value")' />
+		</td>
+		<td>
+			<input type='button' value='$i18n.getString("search")' onclick='searchByIdsOnclick();'>
+			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="advancedSearchOnclick();">
+		</td>
+	</tr>
+</table>
+
+<div id='showSearchCriteriaDiv' class='hidden green-background'><img src='../images/move_bottom.png' onclick='showSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("there_are_active_search_filter_click_on_arrow_to_show_them")</div>
+<div id='advanced-search' name='advanced-search' class='hidden advanced-search'>
+	<div style="float: right"><a id="clearAndCloseSearchBtn" href="javascript:clearAndCloseSearch()"><img src="../images/hide.png" title="$i18n.getString( 'clear_and_close' )"></a></div>
+	<div id='hideSearchCriteriaDiv' class='hidden'><img src='../images/move_top.png' onclick='hideSearchCriteria();' >&nbsp;&nbsp; $i18n.getString("hide_search_criteria")</div>
+	<table>	
+		<tr>
+			<td>$i18n.getString('select_orgunit_for_search')</td>
+			<td><span id='orgunitForSearch'>$!organisationUnit.name</span></td>
+		</tr>
+		
+		<tr>
+			<td>$i18n.getString('orgunit_search_type')</td>
+			<td>
+				<select id='ouMode' name='ouMode'>
+					#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+					<option value='ALL' />$i18n.getString('all')</option>
+					#end
+					<option value='SELECTED' selected />$i18n.getString('selected')</option>
+					<option value='CHILDREN' />$i18n.getString('children')</option>
+					<option value='DESCENDANTS' />$i18n.getString('selected_and_all_below')</option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr id="enrollmentSelectTR" class='hidden' >
+			<td>$i18n.getString('show')</td>
+			<td>
+				<select id='programStatus' name='programStatus'>
+					<option value=''>$i18n.getString('all_statuses')</option>
+					<option value='ACTIVE'>$i18n.getString('active_enrollments_only')</option>
+					<option value='COMPLETED'>$i18n.getString('completed_enrollments_only')</option>
+					<option value='CANCELLED'>$i18n.getString('cancelled_enrollments_only')</option>
+				</select>
+			</td>
+		</tr>
+		<tr id='dueDateTR' class='hidden'>
+			<td>$i18n.getString('due_date_from_to')</td>
+			<td>
+				<input type='text' id='startDate' name='startDate' style='width:127px;'>
+				<input type='text' id='endDate' name='endDate' style='width:127px;'>
+				<script>
+					datePickerInRange( 'startDate', 'endDate', true, true );
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<td id='searchingAttributeIdTD' class="hidden">
+			  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $attributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">
+				#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
+					#foreach( $attribute in $attributes )
+						<option value="$attribute.uid">$encoder.htmlEncode( $attribute.displayName )</option>
+					#end
+				#end
+			  </select>
+			  <em title="$i18n.getString( 'required' )" class="required">*</em></label>
+			</td>
+		</tr>
+		<tbody id='advancedSearchTB'>
+			<tr id='advSearchBox0'>	       
+				<td>
+				  <select class='search-field' id="searchObjectId" name="searchObjectId" #if( $attributes.size() == 0 ) disabled="disabled" #end onchange="searchObjectOnChange(this)">
+					#if( $auth.hasAccess( "dhis-web-caseentry", "accessAttributes" ) )
+						#foreach( $attribute in $attributes )
+							<option value="$attribute.uid" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.displayName )</option>
+						#end
+					  </select>
+					#end
+				  <em title="$i18n.getString( 'required' )" class="required">*</em></label>
+				</td>		
+				<td>
+					<input type="text" id="searchText" name="searchText" class="searchInput" value="$!searchText" onkeyup='searchTrackedEntityInstancesOnKeyUp( event );'>
+					<input type="button" class='normal-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' disabled onclick="removeAttributeOption('advSearchBox0');">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div style="padding: 10px 0 15px 3px">
+		<input type="button" id='addAdvancedSearchBtn' class='large-button' value='$i18n.getString( "add_filter" )' onclick='addAttributeOption();'>
+        <input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='isAdvancedSearch=true;validateAdvancedSearch(1);' id='searchEntityInstanceBtn'>
+    </div>
+</div>
+
+<script>
+	var i18n_yes = '$encoder.jsEscape( $i18n.getString( "yes" ) , "'")';
+	var i18n_no = '$encoder.jsEscape( $i18n.getString( "no" ) , "'")';
+	var i18n_specify_search_criteria = '$encoder.jsEscape( $i18n.getString( "specify_search_criteria" ) , "'")';
+	var i18n_clear = '$encoder.jsEscape( $i18n.getString( "clear" ) , "'")';
+	var i18n_view_all = '[' + '$encoder.jsEscape( $i18n.getString( "view_all" ) , "'")' + ']';
+	var i18n_none_program = '[' + '$encoder.jsEscape( $i18n.getString( "none_program" ) , "'")' + ']';
+	var i18n_please_select = '[' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'")' + ']';
+	var i18n_search_by_identifier = '$encoder.jsEscape( $i18n.getString( "search_by_identifier" ) , "'")';
+	var i18n_enrollment_date = '$encoder.jsEscape( $i18n.getString( "enrollment_date" ) , "'")';
+	
+	datePicker( 'startDueDate', true );
+	datePicker( 'endDueDate', true );
+	
+	var isAdvancedSearch = false;
+	var searchTextBox = '<input type="text" id="searchText" name="searchText" class="searchInput" onkeyup="searchTrackedEntityInstancesOnKeyUp( event );">';
+</script>

@@ -1,0 +1,129 @@
+<script src="javascript/tooltip.js" type="text/javascript"></script>
+<table>
+	<tr>
+		<td>$i18n.getString('total_result'): </td>
+		<td id='totalTd'></td>
+		#if($programStageInstances.size() > 0 )
+		<td>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:exportXlsFile();' title='$i18n.getString( "export_xls" )' ><img src='../images/excel.png' id='generateXSLBtn' ></a>
+		</td>
+		#end
+	</tr>
+</table>
+
+#set($noEntityInstance=0)
+#if( $programStageInstances && $programStageInstances.size()>0 )
+
+<table class='listTable gridTable'>
+	<col/>
+	<col/>
+	<col/>
+	<col width='20%'/>
+	<thead>
+		<tr>
+			<th>$i18n.getString('risk')</th>
+			
+			#foreach( $programAttribute in $program.programAttributes )
+				#if($programAttribute.displayInList=='true')
+					<th id="attributeName">$encoder.htmlEncode($programAttribute.attribute.displayName)</th>
+				#end
+			#end
+			<th>$i18n.getString( "events" )</th>
+			<th>$i18n.getString( "operations" )</th>
+		</tr>
+	</thead>
+	<tbody id="list">
+	#set($entityInstanceId='')
+	#set($count=1)
+	#set($class='listRow')
+	#set($alterclass='listAlternateRow')
+	#foreach( $programStageInstance in $programStageInstances )
+		#set($entityInstance = $programStageInstance.programInstance.entityInstance)
+		<tr>
+			#if( $entityInstanceId != $entityInstance.id )
+				#set($noEntityInstance=$noEntityInstance + 1)
+			<td name="infor_$entityInstance.id" class='$class'>
+				#set( $comment = $!programStageInstance.programInstance.comment.commentText )
+				#if( $$!programStageInstance.programInstance.followup == 'true') 
+				<img src='images/risk_large.png' title='$!comment'>
+				#else
+				<img src='images/unrisk_large.png'>			
+				#end
+			</td>
+			
+			#foreach( $programAttribute in $program.programAttributes )
+				#if($programAttribute.displayInList=='true')
+					#set($value='')
+					<td name='infor_$entityInstance.id' class='$class'><a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.uid' )">
+						#foreach( $attributeValue in $entityInstance.attributeValues)
+							#if($!attributeValue.attribute.id==$programAttribute.attribute.id)
+								#set($value=$attributeValue.value)
+								#if( $programAttribute.attribute.valueType == 'bool')
+									#set($value=$i18n.getString($attributeValue.value))
+								#end
+							#end
+						#end 
+						$encoder.htmlEncode($value)
+						</a>
+					</td>
+				#end
+			#end
+			
+				#set($rowspan=1)
+				#if($class=='listRow')
+					#set($class='listAlternateRow')
+					#set($alterclass='listRow')
+				#else
+					#set($class='listRow')
+					#set($alterclass='listAlternateRow')
+				#end
+			#else
+				#set($rowspan=$rowspan+1)
+				<script>
+					jQuery("[name=infor_" + "$entityInstance.id]").attr('rowspan',$rowspan)
+				</script>
+			#end
+			
+			<td class='$alterclass'>
+				<a href="javascript:programTrackingList( $programStageInstance.id, false );">
+					$programStageInstance.programStage.displayName
+					(#if($!programStageInstance.executionDate)
+						$format.formatDate($!programStageInstance.executionDate)
+					#else
+						$format.formatDate($!programStageInstance.dueDate)
+					#end)
+				</a>
+			</td>
+			
+			#if( $entityInstanceId != $entityInstance.id ) 
+			<td class='$alterclass' name='opt_$entityInstance.id'>
+				<a href="javascript:isDashboard=false;showTrackedEntityInstanceDashboardForm( '$entityInstance.id' )" title="$i18n.getString( 'dashboard' )"><img src="../images/enroll.png" alt='$i18n.getString( "dashboard" )'></a>
+				<a href="javascript:programTrackingReport( $programStageInstance.programInstance.uid )" title='$i18n.getString( "program_report" )'><img src="../images/information.png" alt='$i18n.getString( "program_report" )'></a>
+			</td>
+			#else
+				<script>
+					jQuery("[name=opt_" + "$entityInstance.id]").attr('rowspan',$rowspan)
+				</script>
+			#end
+			
+			#set( $entityInstanceId = $entityInstance.id )
+		</tr>
+	#end
+	</tbody>
+</table>
+
+<div class="paging-container">
+	#parse( "/dhis-web-commons/paging/paging.vm" )
+</div>
+
+<div id="detailsInfo"></div>
+
+#end
+
+<script>
+	var i18n_tracked_entity_instance = '$encoder.jsEscape( $i18n.getString( "tracked_entity_instance" ) , "'")';
+	var i18n_with = '$encoder.jsEscape( $i18n.getString( "with" ) , "'")';
+	var i18n_events = '$encoder.jsEscape( $i18n.getString( "status_events" ) , "'")';
+	var totalHeader = '$!noEntityInstance' + " " + i18n_tracked_entity_instance + " " + i18n_with + " " + jQuery('#statusEvent option:selected').text() + " " + i18n_events
+	setInnerHTML('totalTd', totalHeader);
+</script>

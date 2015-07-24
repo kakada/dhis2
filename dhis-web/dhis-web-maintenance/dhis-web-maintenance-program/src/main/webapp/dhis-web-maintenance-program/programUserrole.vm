@@ -1,0 +1,29 @@
+<script>
+  $(document).ready(function() {
+    $('#urAvailable').selected({
+      url: '../api/userRoles.json?canIssue=true',
+      target: $('#urSelected'),
+      search: $('#urAvailableSearch'),
+      iterator: 'userRoles'
+    });
+  });
+</script>
+
+<h3>$i18n.getString( "assign_program_to_userroles" )</h3>
+
+<h4>$encoder.htmlEncode($program.displayName)</h4>
+
+<form name="userRole" action="defineProgramUserrole.action" method="POST" onsubmit="$('#urSelected').find('option').attr('selected', 'selected')">
+  <input type="hidden" name="id" value="$program.id"/>
+
+  #jqSelected({
+    "prefix": "ur",
+    "i18n_available": "available",
+    "i18n_selected": "selected",
+    "objects": $!program.userRoles
+  })
+
+  <br>
+  <input type="submit" value="$i18n.getString( 'ok' )" style="width:100px"/>
+  <input type="button" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location = 'program.action'"/>
+</form>

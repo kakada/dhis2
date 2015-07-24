@@ -1,0 +1,40 @@
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
+		validation2( 'updateOptionSetForm', function( form ){ form.submit() }, {
+			'beforeValidateHandler': function() { listValidator( 'memberValidator', 'options' ); }		});
+
+		checkValueIsExist( "name", "validateOptionSet.action",{id:getFieldValue('id')});	
+	});
+
+</script>
+
+<h3>$i18n.getString( "edit_option_set" )</h3>
+
+<form id="updateOptionSetForm" name="updateOptionSetForm" action="updateOptionSet.action" method="post" class="inputForm">
+  <input id='id' name='id' value='$optionSet.id' type='hidden'>
+  <table>
+    <colgroup>
+        <col width="50px" />
+        <col width="150px"/>
+        <col width="50px"/>
+    </colgroup>
+    <tr>
+      <th colspan='3'>$i18n.getString( "details" )</th>      
+    </tr>
+    <tr>
+      <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td ><input type="text" id="name" name="name" value='$optionSet.name' class="{validate:{required:true,minlength:2}}" /></td>
+    </tr>
+    <tr>
+      <td><label>$i18n.getString( "code" )</label></td>
+      <td ><input type="text" id="code" name="code" value='$!optionSet.code' class="{validate:{minlength:2}}" /></td>
+    </tr>
+	<tr>
+	  <td></td>
+	  <td colspan="2">
+		<input type="submit"  value="$i18n.getString( 'update' )" style="width:10em">
+		<input type="button" onclick="window.location.href='optionSet.action'" value="$i18n.getString( 'cancel' )" style="width:10em"/></p>
+      </td>
+	</tr>
+  </table>
+</form>

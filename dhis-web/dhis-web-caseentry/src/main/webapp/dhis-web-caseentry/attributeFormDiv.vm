@@ -1,0 +1,70 @@
+#if($program) 
+	#set($attributes = $program.programAttributes)
+#end
+
+<table width="100%">
+#foreach($programAttribute in $attributes )
+	#if($program) 
+		#set($attribute = $programAttribute.attribute)
+	#end
+	#set($mandatory=$!programAttribute.mandatory)
+	<tr name='attributesFields'>
+		<td class='text-column'><label>$attribute.displayName #if($mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+		<td class="input-column" align='right'>
+			#set( $value='' )
+			#set( $value=$!attributeValueMaps.get($attribute.id) )
+			#if( $attribute.valueType == "bool" )
+				<select id="attr$attribute.id" name="attr$attribute.id">              
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					<option value="true" #if($value=='true') selected #end >$i18n.getString( "yes" )</option>
+					<option value="false" #if($value=='false') selected #end >$i18n.getString( "no" )</option>
+				</select>                
+			#elseif( $attribute.valueType == "trueOnly" )
+				<input type='checkbox' value="true" id="attr$attribute.id" name="attr$attribute.id" #if($value=='true') checked #end> 
+			#elseif( $attribute.valueType == "date" )
+				<input type="text" id="attr$attribute.id" style='width:240px;' name="attr$attribute.id" value='$value' objectId='$attribute.id' objectType='attr' class=' #validate( "default"  $mandatory )' >
+				<script type="text/javascript">
+					var attrId = 'attr' + '$attribute.id';
+					datePickerValid( 'identifierAndAttributeDiv [id=' + attrId + ']', false, false );
+				</script>                 
+			#elseif( $attribute.valueType == "optionSet" )
+				<select  id="attr$attribute.id" name="attr$attribute.id" class=' #validate( "default"  $mandatory )' >
+					 <option value="">[$i18n.getString( "please_select" )]</option>
+				#foreach ($option in $attribute.optionSet.options )
+					<option value="$option.code" #if($value=="$option.code") selected #end >$encoder.htmlEncode($option.name)</option>
+				#end
+				</select>
+			#elseif( $attribute.valueType == "users" )
+				<select inherit="$!attribute.inherit" class=' #validate( "default"  $mandatory  )' >
+					<option value="">[$i18n.getString("please_select")]</option>
+					#foreach( $user in $healthWorkers)
+						<option value="$user.id" #if($value == $user.id) selected="selected" #end >$user.name</option>
+					#end
+				</select>
+			#elseif( $attribute.valueType == "phoneNumber" ) 
+				#if($value=='')
+					#set($value=$!phoneNumberAreaCode)
+				#end
+				<input type='text' value='$value' id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{phone:true}}"/>
+			#elseif( $attribute.valueType == "trackerAssociate" ) 
+				<input type="checkbox" value='true' id="attr$attribute.id" name="attr$attribute.id" 
+					inherit="$!attribute.inherit" #if($value=='true') checked #end
+					onclick="toggleUnderAge(this);" class='underAge' />
+			#elseif( $attribute.valueType == "age" || $attribute.valueType == "number" ) 
+				<input type='text' id="attr$attribute.id" value="$!value" name="attr$attribute.id" inherit="$!attribute.inherit" class="{validate:{required:$mandatory ,number:true}}"/>
+			#else
+				<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value='$value' class="{validate:{required:$mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}"  > 
+			#end
+		</td>		
+	</tr>
+#end
+</table>
+
+<script>
+	#if( $auth.hasAccess( "dhis-web-caseentry", "allowEditAttributes" ) )
+		disableButtons = false;
+	#else
+		jQuery('#identifierAndAttributeDiv [name=attributesFields] input').attr('disabled',true);
+		jQuery('#identifierAndAttributeDiv [name=attributesFields] select').attr('disabled',true);
+	#end
+</script>

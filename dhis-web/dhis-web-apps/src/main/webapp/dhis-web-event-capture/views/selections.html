@@ -1,0 +1,34 @@
+<table>
+    <tr>
+        <td><label>{{'registering_unit'| translate}}</label></td>
+        <td><input type="text" class="fixed-width-text" selected-org-unit ng-model="selectedOrgUnit.name" value="{{selectedOrgUnit.name|| 'please_select'| translate}}" disabled="" style="height:14px"></td>                        	                            
+    </tr>
+    <tr>
+        <td><label>{{'program'| translate}}</label></td>
+        <td>
+            <select id="programId" 
+                    class="fixed-width-select"
+                    name="programId" 
+                    ng-model="selectedProgram" 
+                    ng-options="program as program.name for program in programs | orderBy: 'name'" 
+                    ng-change="loadEvents()"
+                    ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
+                <option value="">{{'please_select'| translate}}</option>
+            </select>      
+        </td>
+        <td style='padding-left: 10px;'>
+            <button class="button button-std"
+                    ng-show="selectedProgramStage" 
+                    ng-click="showEventRegistration()" 
+                    ng-disabled="eventRegistration || editingEventInFull || editingEventInGrid">
+                {{'register_event'| translate}}
+            </button>  
+        </td>
+        <td ng-if="(editingEventInFull || eventRegistration) && customForm" style='padding-left: 10px;'>
+            <button class="button button-std"
+                    ng-click="switchDataEntryForm()">
+                {{displayCustomForm ? 'use_default_form' : 'use_custom_form'| translate}}
+            </button>  
+        </td>                            
+    </tr>                       
+</table>

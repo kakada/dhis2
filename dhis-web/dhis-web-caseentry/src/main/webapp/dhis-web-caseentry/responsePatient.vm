@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityInstance>
+  <id>$entityInstance.id</id>  
+  #foreach( $attribute in $!entityInstance.attributes )
+    #set( $attributeValue = false )
+    #set( $attributeValue = $attributeValueMap.get( $attribute.id ) )             
+    <attribute>
+        <name>$!encoder.xmlEncode( $attribute.displayName )</name>
+        <value>$!encoder.xmlEncode( $attributeValue )</value>
+    </attribute> 
+  #end  
+  #foreach( $program in $!entityInstance.programs )
+    <program>
+        <name>$!encoder.xmlEncode( $program.displayName )</name>
+    </program> 
+  #end         
+</entityInstance>

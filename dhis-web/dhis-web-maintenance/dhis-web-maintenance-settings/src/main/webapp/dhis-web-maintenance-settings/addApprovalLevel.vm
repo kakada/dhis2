@@ -1,0 +1,38 @@
+<h3>$i18n.getString( "create_new_approval_level" ) #openHelp( "systemApprovalSettings" )</h3>
+
+<form id="addApprovalLevelForm" action="addApprovalLevel.action" method="post" class="inputForm">
+    <table>
+        <tr>
+            <th colspan="2">$i18n.getString( "details" )</th>
+        </tr>
+        <tr>
+            <td><label for="organisationUnitLevel">$i18n.getString( "organisation_unit_level" ) <em title="$i18n.getString( "required" )" class="required">*</em></label> &nbsp; </td>
+            <td>
+                <select type="text" id="organisationUnitLevel" name="organisationUnitLevel">
+                    <option value="">[ $encoder.htmlEncode( $i18n.getString( "select_level" ) ) ]</option>
+                    #foreach( $level in $organisationUnitLevels )
+                        <option value="${level.level}">${level.level} $encoder.htmlEncode( $!level.name )</option>
+                    #end
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="categoryOptionGroupSet">$i18n.getString( "category_option_group_set" ) <span class="tipText">($i18n.getString( "optional" ))</label> &nbsp; </td>
+            <td>
+                <select type="text" id="categoryOptionGroupSet" name="categoryOptionGroupSet">
+                    <option value="0">[ $encoder.htmlEncode( $i18n.getString( "select_set" ) ) ]</option>
+                    #foreach ( $categoryOptionGroupSet in $categoryOptionGroupSets )
+                        <option value="$categoryOptionGroupSet.id"> $encoder.htmlEncode( $categoryOptionGroupSet.name )</option>
+                    #end
+                </select>
+            </td>
+        </tr>
+        <tr>
+        	<td></td>
+        	<td>
+        		<input type="button" value="$i18n.getString( "add" )" onclick="javascript:validateApprovalLevel()" style="width:10em" />
+                <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='systemApprovalSettings.action'" style="width:10em" />
+            </td>
+        </tr>
+    </table>
+</form>

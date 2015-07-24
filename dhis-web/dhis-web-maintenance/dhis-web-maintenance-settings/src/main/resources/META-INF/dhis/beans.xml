@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+  <!-- System settings -->
+
+  <bean id="org.hisp.dhis.settings.action.system.GetCalendarSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetCalendarSettingsAction" scope="prototype" />
+
+  <bean id="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction"
+    scope="prototype">
+    <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetGeneralSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetGeneralSettingsAction"
+    scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+    <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetCalendarSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetCalendarSettingsAction"
+    scope="prototype">
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction"
+    scope="prototype">
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction"
+    scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+    <property name="styleManager" ref="org.hisp.dhis.setting.StyleManager" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetAppearanceSettingsStringAction"
+    class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsStringAction"
+    scope="prototype">
+    <property name="translateSystemSettingManager" ref="org.hisp.dhis.setting.TranslateSystemSettingManager" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction"
+    scope="prototype"/>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetSMTPSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetSMTPSettingsAction"
+    scope="prototype"/>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
+    scope="prototype" />
+
+  <bean id="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
+    scope="prototype" />
+
+  <bean id="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetApprovalSettingsAction"
+    scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetApprovalSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetApprovalSettingsAction"
+    scope="prototype" />
+
+  <bean id="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
+    class="org.hisp.dhis.settings.action.system.AddApprovalLevelAction"
+    scope="prototype">
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters"
+    class="org.hisp.dhis.settings.action.system.GetAddApprovalLevelFormParameters"
+    scope="prototype">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.ValidateApprovalLevelAction"
+    class="org.hisp.dhis.settings.action.system.ValidateApprovalLevelAction"
+    scope="prototype" />
+
+  <bean id="org.hisp.dhis.settings.action.system.MoveApprovalLevelDownAction"
+    class="org.hisp.dhis.settings.action.system.MoveApprovalLevelDownAction"
+    scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.MoveApprovalLevelUpAction"
+    class="org.hisp.dhis.settings.action.system.MoveApprovalLevelUpAction"
+    scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.action.system.RemoveApprovalLevelAction"
+    class="org.hisp.dhis.settings.action.system.RemoveApprovalLevelAction"
+    scope="prototype">
+    <property name="dataApprovalLevelService" ref="org.hisp.dhis.dataapproval.DataApprovalLevelService" />
+  </bean>
+  
+  <!-- Configuration -->
+  
+  <bean id="org.hisp.dhis.settings.action.system.GetSynchronizationSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetSynchronizationSettingsAction"
+    scope="prototype">
+  </bean>
+  
+ <bean id="org.hisp.dhis.settings.action.system.SetSynchronizationSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetSynchronizationSettingsAction"
+    scope="prototype">
+  </bean>
+  
+</beans>

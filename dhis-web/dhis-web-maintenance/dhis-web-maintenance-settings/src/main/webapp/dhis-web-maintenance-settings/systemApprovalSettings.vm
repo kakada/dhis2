@@ -1,0 +1,96 @@
+<script type="text/javascript">
+    jQuery( document ).ready( function() {
+        jQuery( "input[type=button]" ).click( function() {
+            jQuery.postUTF8( "setSystemApprovalSettings.action", {
+                hideUnapprovedDataInAnalytics: jQuery( "#hideUnapprovedDataInAnalytics" ).is( ":checked" ),
+                acceptanceRequiredForApproval: jQuery( "#acceptanceRequiredForApproval" ).is( ":checked" )
+            }, function( json ) {
+                if ( json.response == "success" ) {
+                    setHeaderDelayMessage( json.message );
+                }
+            } );
+        } );
+    } );
+</script>
+
+#sharingDialog()
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        dhis2.contextmenu.makeContextMenu({
+            menuId: 'contextMenu',
+            menuItemActiveClass: 'contextMenuItemActive'
+        });
+    });
+
+    var i18n_confirm_delete_data_approval_level = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_approval_level" ) , "'" )';
+</script>
+
+<h3>$i18n.getString( "approval_settings" ) #openHelp( "systemApprovalSettings" )</h3>
+
+<div class="setting">
+    <input type="checkbox" id="hideUnapprovedDataInAnalytics" name="hideUnapprovedDataInAnalytics"#if( $keyHideUnapprovedDataInAnalytics ) checked="checked"#end>
+    <label for="hideUnapprovedDataInAnalytics">$i18n.getString( "hide_unapproved_data_in_analytics" )</label>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="acceptanceRequiredForApproval" name="acceptanceRequiredForApproval"#if( $keyAcceptanceRequiredForApproval ) checked="checked"#end>
+    <label for="acceptanceRequiredForApproval">$i18n.getString( "acceptance_required_before_approval" )</label>
+</div>
+
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
+
+<div id="contextMenu" class="contextMenu">
+    <ul id="contextMenuItems" class="contextMenuItems">
+    	<li data-enabled="canManage"><a data-target-fn="showSharingDialogWithContext"><i class="fa fa-share"></i>&nbsp;&nbsp;$i18n.getString( "sharing_settings" )</a></li>
+        <li data-enabled="canMoveUp"><a data-target-fn="moveApprovalLevelUp"><i class="fa fa-arrow-up"></i>&nbsp;&nbsp;$i18n.getString( "move_up" )</a></li>
+        <li data-enabled="canMoveDown"><a data-target-fn="moveApprovalLevelDown"><i class="fa fa-arrow-down"></i>&nbsp;&nbsp;$i18n.getString( "move_down" )</a></li>
+        <li><a data-target-fn="removeApprovalLevel"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+    </ul>
+</div>
+
+<table class="mainPageTable" style="width:75%">
+    <tr>
+        <td style="vertical-align:top">
+            <table width="100%">
+                <tr>
+                    <td><div class="settingLabel">$i18n.getString( "data_approval_levels" )</div></td>
+                    <td style="text-align:right">
+                        <input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddApprovalLevelForm.action'">
+                    </td>
+                </tr>
+            </table>
+            <table class="listTable" id="listTable">
+                <col/>
+                <col/>
+                <col/>
+                <col width="120px">
+                <thead>
+                <tr>
+                    <th class="{sorter: false}">$i18n.getString( "approval_level" )</th>
+                    <th class="{sorter: false}">$i18n.getString( "organisation_unit_level" )</th>
+                    #if( $categoryOptionGroupSetsPresent )
+                        <th class="{sorter: false}">$i18n.getString( "category_option_group_set" )</th>
+                    #end
+                </tr>
+                </thead>
+                <tbody id="list">
+                    #foreach( $level in $dataApprovalLevels )
+                    <tr id="tr${level.id}" data-id="$!level.id" data-uid="$!level.uid" data-level="$level.level" data-type="DataApprovalLevel" data-name="$encoder.htmlEncode( $!level.displayName )"
+                            data-can-move-up="$approvalLevelService.canDataApprovalLevelMoveUp( $level.level )"
+                            data-can-move-down="$approvalLevelService.canDataApprovalLevelMoveDown( $level.level )"
+                            data-can-manage="$security.canManage( $level )">
+                        <td class="levelNumber">$encoder.htmlEncode( $!level.level )</td>
+                        <td>$encoder.htmlEncode( $!level.orgUnitLevelName )</td>
+                        #if( $categoryOptionGroupSetsPresent )
+                            <td>$encoder.htmlEncode( $!level.getCategoryOptionGroupSetName() )</td>
+                        #end
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            <p></p>
+            #parse( "/dhis-web-commons/paging/paging.vm" )
+        </td>
+    </tr>
+</table>

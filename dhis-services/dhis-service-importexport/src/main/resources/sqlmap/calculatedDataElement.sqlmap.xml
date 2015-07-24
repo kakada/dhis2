@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="calculatedDataElement">
+	
+	<!-- TypeAlias -->
+	
+	<typeAlias alias="calculatedDataElement" type="org.hisp.dhis.importexport.dhis14.object.Dhis14CalculatedDataElement"/>	
+	<typeAlias alias="aggregationOperatorTypeHandler" type="org.hisp.dhis.importexport.dhis14.file.typehandler.AggregationOperatorTypeHandler"/>	
+	<typeAlias alias="dataElementTypeTypeHandler" type="org.hisp.dhis.importexport.dhis14.file.typehandler.DataElementTypeTypeHandler"/>
+	
+	<!-- ResultMap -->
+	
+	<resultMap class="calculatedDataElement" id="calculatedDataElementResultMap">
+		<result property="dataElementId" column="DataElementID"/>
+		<result property="dataElementName" column="DataElementName"/>
+		<result property="dataElementShort" column="DataElementShort"/>
+		<result property="dataElementDescription" column="DataElementDescription"/>
+		<result property="type" column="DataTypeID" typeHandler="dataElementTypeTypeHandler"/>
+		<result property="aggregationOperator" column="AggregateOperator" typeHandler="aggregationOperatorTypeHandler"/>
+		<result property="sortOrder" column="SortOrder"/>
+		<result property="lastUpdated" column="LastUpdated"/>
+		<result property="calculated" column="Calculated"/>
+		<result property="uid" column="UID"/>
+	</resultMap>
+	
+	<!-- Statement -->
+	
+	<select id="getCalculatedDataElement" resultMap="calculatedDataElementResultMap">
+		SELECT * FROM DataElement WHERE DataElementID = #value# AND Calculated = 1
+	</select>
+	
+	<select id="getCalculatedDataElements" resultMap="calculatedDataElementResultMap">
+		SELECT * FROM DataElement, DataElementCalculated  WHERE Calculated = 1
+	</select>
+	
+	<!-- <select id="getCalculatedDataElements" resultMap="dataElementResultMap">
+		SELECT * FROM DataElement  WHERE Calculated = 1
+	</select> -->
+	
+	<select id="getCalculatedDataElementName" parameterClass="java.lang.Integer" resultClass="java.lang.String">
+		SELECT DataElementName FROM DataElement WHERE DataElementID = #value#
+	</select>
+	
+</sqlMap>

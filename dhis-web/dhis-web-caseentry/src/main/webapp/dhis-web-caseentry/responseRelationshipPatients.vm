@@ -1,0 +1,9 @@
+#set( $size = $entityInstances.size() )
+{ "entityInstances": [
+#foreach( $entityInstance in $entityInstances )
+  {
+    "id": $!{entityInstance.id},
+    "uid": "$!encoder.jsonEncode( ${entityInstance.uid} )"    
+  }#if( $velocityCount < $size ),#end
+#end
+] }

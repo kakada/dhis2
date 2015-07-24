@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+
+	<!-- Store definitions -->
+
+	<bean id="org.hisp.dhis.sms.command.hibernate.SMSCommandStore"
+		class="org.hisp.dhis.sms.command.hibernate.HibernateSMSCommandStore">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Service definitions -->
+
+	<bean id="org.hisp.dhis.sms.command.SMSCommandService" class="org.hisp.dhis.sms.command.DefaultSMSCommandService">
+		<property name="smsCommandStore"
+			ref="org.hisp.dhis.sms.command.hibernate.SMSCommandStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.sms.listener.DataValueSMSListener" class="org.hisp.dhis.sms.listener.DataValueSMSListener">
+		<property name="registrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+		<property name="dataElementCategoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="incomingSmsService"
+			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.sms.listener.J2MEDataValueSMSListener"
+		class="org.hisp.dhis.sms.listener.J2MEDataValueSMSListener">
+		<property name="registrationService"
+			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+		<property name="dataElementCategoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.sms.listener.UnregisteredSMSListener"
+		class="org.hisp.dhis.sms.listener.UnregisteredSMSListener">
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+		<property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="incomingSmsService"
+			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.sms.listener.DHISMessageAlertListener"
+		class="org.hisp.dhis.sms.listener.DHISMessageAlertListener">
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+		<property name="smsMessageSender" ref="org.hisp.dhis.sms.SmsMessageSender" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="incomingSmsService"
+			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.sms.listener.TrackedEntityRegistrationSMSListener" class="org.hisp.dhis.sms.listener.TrackedEntityRegistrationSMSListener">
+		<property name="smsCommandService" ref="org.hisp.dhis.sms.command.SMSCommandService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="trackedEntityService" ref="org.hisp.dhis.trackedentity.TrackedEntityService" />
+		<property name="trackedEntityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+	</bean>
+
+	<!-- Handler definitions -->
+
+	<bean id="org.hisp.dhis.sms.command.SMSCommandDeletionHandler"
+		class="org.hisp.dhis.sms.command.SMSCommandDeletionHandler" />
+	<bean id="org.hisp.dhis.sms.command.code.SMSCodesDeletionHandler"
+		class="org.hisp.dhis.sms.command.code.SMSCodesDeletionHandler" />
+
+	<!-- DeletionManager -->
+
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="deletionManager" />
+		<property name="targetMethod" value="addDeletionHandlers" />
+		<property name="arguments">
+			<list>
+				<list>
+					<ref bean="org.hisp.dhis.sms.command.SMSCommandDeletionHandler" />
+					<ref bean="org.hisp.dhis.sms.command.code.SMSCodesDeletionHandler" />
+				</list>
+			</list>
+		</property>
+	</bean>
+
+
+</beans>

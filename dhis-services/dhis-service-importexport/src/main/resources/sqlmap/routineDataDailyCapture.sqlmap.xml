@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="routineDataDailyCapture">
+	
+    <!-- TypeAlias -->
+
+    <typeAlias alias="routineDataDailyCapture" type="org.hisp.dhis.importexport.dhis14.object.Dhis14RoutineDataDailyCapture"/>
+    <typeAlias alias="dateTypeHandler" type="org.hisp.dhis.importexport.dhis14.file.typehandler.DateTypeHandler"/>
+	
+    <!-- ResultMap -->
+	
+    <resultMap class="routineDataDailyCapture" id="routineDataDailyCaptureResultMap">
+        <result property="dataElementId" column="DataElementID"/>
+        <result property="periodId" column="DataPeriodID"/>
+        <result property="organisationUnitId" column="OrgUnitID"/>
+		<result property="startDate" column="ValidFrom" typeHandler="dateTypeHandler"/>
+		<result property="day01" column="Day01"/>
+		<result property="day02" column="Day02"/>
+		<result property="day03" column="Day03"/>
+		<result property="day04" column="Day04"/>
+		<result property="day05" column="Day05"/>
+		<result property="day06" column="Day06"/>
+		<result property="day07" column="Day07"/>
+		<result property="day08" column="Day08"/>
+		<result property="day09" column="Day09"/>
+		<result property="day10" column="Day10"/>
+		<result property="day11" column="Day11"/>
+		<result property="day12" column="Day12"/>
+		<result property="day13" column="Day13"/>
+		<result property="day14" column="Day14"/>
+		<result property="day15" column="Day15"/>
+		<result property="day16" column="Day16"/>
+		<result property="day17" column="Day17"/>
+		<result property="day18" column="Day18"/>
+		<result property="day19" column="Day19"/>
+		<result property="day20" column="Day20"/>
+		<result property="day21" column="Day21"/>
+		<result property="day22" column="Day22"/>
+		<result property="day23" column="Day23"/>
+		<result property="day24" column="Day24"/>
+		<result property="day25" column="Day25"/>
+		<result property="day26" column="Day26"/>
+		<result property="day27" column="Day27"/>
+		<result property="day28" column="Day28"/>
+		<result property="day29" column="Day29"/>
+		<result property="day30" column="Day30"/>
+		<result property="day31" column="Day31"/>
+    </resultMap>
+	
+    <!-- Statement -->
+	
+    <select id="getRoutineDataDailyCapture" resultMap="routineDataDailyCaptureResultMap">
+        SELECT RDDC.DataElementID, RDDC.DataPeriodID, RDDC.OrgUnitID, DataPeriod.ValidFrom,
+        RDDC.Day01, RDDC.Day02, RDDC.Day03, RDDC.Day04, RDDC.Day05, RDDC.Day06, RDDC.Day07, RDDC.Day08, RDDC.Day09, 
+		RDDC.Day10, RDDC.Day11, RDDC.Day12, RDDC.Day13, RDDC.Day14, RDDC.Day15, RDDC.Day16, RDDC.Day17, RDDC.Day18, 
+		RDDC.Day19, RDDC.Day20, RDDC.Day21, RDDC.Day22, RDDC.Day23, RDDC.Day24, RDDC.Day25, RDDC.Day26, RDDC.Day27, 
+		RDDC.Day28, RDDC.Day29, RDDC.Day30, RDDC.Day31 
+        FROM 
+        RoutineDataDailyCapture AS RDDC, DataPeriod 
+        WHERE RDDC.DataPeriodID = DataPeriod.DataPeriodID
+    </select>
+
+</sqlMap>

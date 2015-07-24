@@ -1,0 +1,157 @@
+/*----------------------------------------------------------------------------*/
+/* Table
+/*----------------------------------------------------------------------------*/
+
+table 
+{
+    font-size: 13px;
+    line-height: 24px;
+    table-layout: fixed;
+    margin-bottom: 10px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* App specific
+/*----------------------------------------------------------------------------*/
+
+.container-heading {
+    color: white;
+}
+
+.container-default-form {
+    width: 50%;
+}
+
+.container-1-1 {
+    width: 100%;
+    float: left;
+    margin-top: 150px;
+    margin-left: 150px;
+    height: 100%; 
+    min-height: 100%; 
+}
+
+.right {
+    float: right !important;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.black {
+    color: black;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.white {
+    color: white;
+}
+
+.nav, .pagination, .carousel, .panel-title a { 
+    cursor: pointer; 
+}
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.max-column-width {
+    max-width:200px !important; 
+    word-wrap:break-word; 
+}
+
+.table-borderless>thead>tr>th, 
+.table-borderless>tbody>tr>th, 
+.table-borderless>tfoot>tr>th, 
+.table-borderless>thead>tr>td, 
+.table-borderless>tbody>tr>td, 
+.table-borderless>tfoot>tr>td {
+    border-top: none;     
+    white-space:nowrap;
+}
+
+.dhis2-table>thead>tr>th, 
+.dhis2-table>tbody>tr>th, 
+.dhis2-table>tfoot>tr>th, 
+.dhis2-table>thead>tr>td, 
+.dhis2-table>tbody>tr>td, 
+.dhis2-table>tfoot>tr>td {
+    border-top: none;
+    background-color: #ebf0f6;
+}
+
+.dhis2-table-striped-border tr th {
+    border: 1px solid #cad5e5;
+}
+
+.dhis2-table-striped-border tr td {
+    border: 1px solid #cad5e5;
+}
+
+.dhis2-table-striped-border > tbody > tr:nth-child(odd)> td, .dhis2-table-striped > tbody > tr:nth-child(odd)> th {
+    background-color: #ebf0f6
+}
+
+.listTable th {
+    height: 30px;
+}
+
+.dhis2-table-striped>thead>tr, 
+.dhis2-table-striped>tbody>tr, 
+.dhis2-table-striped>tfoot>tr, 
+.dhis2-table-striped>thead>tr, 
+.dhis2-table-striped>tbody>tr, 
+.dhis2-table-striped>tfoot>tr {
+    border-bottom: 1px solid #cad5e5;  
+    white-space:nowrap;
+}
+
+.dhis2-table-striped > tbody > tr:nth-child(odd)> td, .dhis2-table-striped > tbody > tr:nth-child(odd)> th {
+    background-color: #ebf0f6
+}
+
+.dhis2-list-table-striped {
+    width: 100%;
+    padding-bottom: 6px;
+}
+
+.dhis2-list-table-striped>thead>tr, 
+.dhis2-list-table-striped>tbody>tr, 
+.dhis2-list-table-striped>tfoot>tr, 
+.dhis2-list-table-striped>thead>tr, 
+.dhis2-list-table-striped>tbody>tr, 
+.dhis2-list-table-striped>tfoot>tr {
+    border: none;
+}
+
+.dhis2-list-table-striped > tbody > tr:nth-child(odd)> td, .dhis2-table-striped > tbody > tr:nth-child(odd)> th {
+    background-color: #ebf0f6
+}
+
+.dhis2-table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
+    background-color: #dfe9f4;
+}
+
+.top-bar {
+    font-size: 16pt;
+    font-weight: normal;
+    color: #585D61;
+}
+
+.horizontal-spacing{
+    margin-left: 10px;    
+    margin-right: 10px;    
+}
+
+.trim {
+    margin-bottom: 5px; 
+    margin-top: 5px;
+}

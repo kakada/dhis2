@@ -1,0 +1,42 @@
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
+		validation( 'addOptionForm', function(form){
+			form.submit();
+		});
+
+		checkValueIsExist( "name", "validateOption.action",{optionSetId:getFieldValue('optionSetId')});	
+		checkValueIsExist( "code", "validateOption.action",{optionSetId:getFieldValue('optionSetId')});	
+	});
+
+</script>
+
+<h3>$i18n.getString( "add_option" )</h3>
+
+<form id="addOptionForm" name="addOptionForm" action="addOption.action" method="post" class="inputForm">
+  <input id='optionSetId' name='optionSetId' value='$optionSet.id' type='hidden'>
+  <table>
+    <colgroup>
+        <col width="50px" />
+        <col width="150px"/>
+        <col width="50px"/>
+    </colgroup>
+    <tr>
+      <th colspan='3'>$i18n.getString( "details" )</th>      
+    </tr>
+    <tr>
+      <td><label for='name'>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td ><input type="text" id="name" name="name" class="{validate:{required:true,minlength:2}}" /></td>
+    </tr>      
+	<tr>
+      <td><label for='code'>$i18n.getString( "code" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td ><input type="text" id="code" name="code" class="{validate:{required:true}}" /></td>
+    </tr>
+	<tr>
+	  <td></td>
+	  <td colspan="2">
+		<input type="submit"  value="$i18n.getString( 'add' )" style="width:10em">
+		<input type="button" onclick="window.location.href='option.action?optionSetId=$optionSet.id'" value="$i18n.getString( 'cancel' )" style="width:10em"/></p>
+      </td>
+	</tr>
+  </table>
+</form>

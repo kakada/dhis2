@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+
+	<!-- Store definitions -->
+
+	<bean id="org.hisp.dhis.program.ProgramIndicatorStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramIndicatorStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramIndicator" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.relationship.RelationshipStore"
+		class="org.hisp.dhis.relationship.hibernate.HibernateRelationshipStore">
+		<property name="clazz" value="org.hisp.dhis.relationship.Relationship" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.relationship.RelationshipTypeStore"
+		class="org.hisp.dhis.relationship.hibernate.HibernateRelationshipTypeStore">
+		<property name="clazz" value="org.hisp.dhis.relationship.RelationshipType" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageInstanceStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramStageInstanceStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramStageInstance" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramInstanceStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramInstanceStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramInstance" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramStageStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageSectionStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramStageSectionStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramStageSection" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStore" class="org.hisp.dhis.program.hibernate.HibernateProgramStore">
+		<property name="clazz" value="org.hisp.dhis.program.Program" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramValidationStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramValidationStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramValidation" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramExpressionStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramExpression" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityInstanceStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityInstance" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="statementBuilder" ref="statementBuilder" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityAttributeStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityAttribute" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueStore"
+		class="org.hisp.dhis.trackedentityattributevalue.hibernate.HibernateTrackedEntityAttributeValueStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueStore"
+		class="org.hisp.dhis.trackedentitydatavalue.hibernate.HibernateTrackedEntityDataValueStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupStore"
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroup" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageDataElementStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramStageDataElementStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramStageDataElement" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.programrule.ProgramRuleVariableStore"
+		class="org.hisp.dhis.programrule.hibernate.HibernateProgramRuleVariableStore">
+		<property name="clazz" value="org.hisp.dhis.programrule.ProgramRuleVariable" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleStore"
+		class="org.hisp.dhis.programrule.hibernate.HibernateProgramRuleStore">
+		<property name="clazz" value="org.hisp.dhis.programrule.ProgramRule" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleActionStore"
+		class="org.hisp.dhis.programrule.hibernate.HibernateProgramRuleActionStore">
+		<property name="clazz" value="org.hisp.dhis.programrule.ProgramRuleAction" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAuditStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityAuditStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityAudit" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityStore">
+		<property name="clazz" value="org.hisp.dhis.trackedentity.TrackedEntity" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.eventreport.EventReportStore"
+	    class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+	    <property name="clazz" value="org.hisp.dhis.eventreport.EventReport" />
+        <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.eventchart.EventChartStore"
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+	    <property name="clazz" value="org.hisp.dhis.eventchart.EventChart" />
+        <property name="sessionFactory" ref="sessionFactory" />			
+	</bean>
+        
+	<!-- Service definitions -->
+
+	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramExpressionService" class="org.hisp.dhis.program.DefaultProgramExpressionService">
+		<property name="programExpressionStore" ref="org.hisp.dhis.program.ProgramExpressionStore" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramIndicatorService" class="org.hisp.dhis.program.DefaultProgramIndicatorService">
+		<property name="programIndicatorStore" ref="org.hisp.dhis.program.ProgramIndicatorStore" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+		<property name="attributeService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
+		<property name="attributeValueService" ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.relationship.RelationshipService" class="org.hisp.dhis.relationship.DefaultRelationshipService">
+		<property name="relationshipStore" ref="org.hisp.dhis.relationship.RelationshipStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.relationship.RelationshipTypeService"
+		class="org.hisp.dhis.relationship.DefaultRelationshipTypeService">
+		<property name="relationshipTypeStore"
+			ref="org.hisp.dhis.relationship.RelationshipTypeStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageInstanceService"
+		class="org.hisp.dhis.program.DefaultProgramStageInstanceService">
+		<property name="programStageInstanceStore"
+			ref="org.hisp.dhis.program.ProgramStageInstanceStore" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramInstanceService" class="org.hisp.dhis.program.DefaultProgramInstanceService">
+		<property name="programInstanceStore" ref="org.hisp.dhis.program.ProgramInstanceStore" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="reminderService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
+		<property name="trackedEntityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageService" class="org.hisp.dhis.program.DefaultProgramStageService">
+		<property name="programStageStore" ref="org.hisp.dhis.program.ProgramStageStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+        
+	<bean id="org.hisp.dhis.programrule.ProgramRuleVariableService" class="org.hisp.dhis.programrule.DefaultProgramRuleVariableService">
+		<property name="programRuleVariableStore" ref="org.hisp.dhis.programrule.ProgramRuleVariableStore" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleService" class="org.hisp.dhis.programrule.DefaultProgramRuleService">
+		<property name="programRuleStore" ref="org.hisp.dhis.programrule.ProgramRuleStore" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleActionService" class="org.hisp.dhis.programrule.DefaultProgramRuleActionService">
+		<property name="programRuleActionStore" ref="org.hisp.dhis.programrule.ProgramRuleActionStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageSectionService" class="org.hisp.dhis.program.DefaultProgramStageSectionService">
+		<property name="programStageSectionStore"
+			ref="org.hisp.dhis.program.ProgramStageSectionStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramService" class="org.hisp.dhis.program.DefaultProgramService">
+		<property name="programStore" ref="org.hisp.dhis.program.ProgramStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramValidationService" class="org.hisp.dhis.program.DefaultProgramValidationService">
+		<property name="validationStore" ref="org.hisp.dhis.program.ProgramValidationStore" />
+		<property name="expressionService"
+			ref="org.hisp.dhis.program.ProgramExpressionService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityInstanceService">
+		<property name="trackedEntityInstanceStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceStore" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="trackedEntityService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityService" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAttributeService">
+		<property name="attributeStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeStore" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService"
+		class="org.hisp.dhis.trackedentityattributevalue.DefaultTrackedEntityAttributeValueService">
+		<property name="attributeValueStore"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueStore" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService"
+		class="org.hisp.dhis.trackedentitydatavalue.DefaultTrackedEntityDataValueService">
+		<property name="dataValueStore"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAttributeGroupService">
+		<property name="attributeGroupStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageDataElementService"
+		class="org.hisp.dhis.program.DefaultProgramStageDataElementService">
+		<property name="programStageDataElementStore"
+			ref="org.hisp.dhis.program.ProgramStageDataElementStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAuditService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityAuditService">
+		<property name="auditStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityService" class="org.hisp.dhis.trackedentity.DefaultTrackedEntityService">
+		<property name="trackedEntityStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityStore" />
+	</bean>
+	
+	<!-- TrackedEntityComment -->
+
+	<bean id="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService"
+		class="org.hisp.dhis.trackedentitycomment.DefaultTrackedEntityCommentService">
+		<property name="commentStore"
+			ref="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentStore"
+		class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentitycomment.TrackedEntityComment" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- TrackedEntityForm -->
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityFormService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityFormService">
+		<property name="formStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityFormStore" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityFormStore"
+		class="org.hisp.dhis.trackedentity.hibernate.HibernateTrackedEntityFormStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityForm" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- TrackedEntityInstanceReminder -->
+
+	<bean
+		id="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService"
+		class="org.hisp.dhis.trackedentity.DefaultTrackedEntityInstanceReminderService">
+		<property name="reminderStore"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderStore"
+		class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+		<property name="clazz"
+			value="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminder" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="transientIdentifiableProperties" value="true" />
+	</bean>
+		
+	<bean id="org.hisp.dhis.eventreport.EventReportService"
+	    class="org.hisp.dhis.eventreport.DefaultEventReportService">
+	    <property name="eventReportStore" ref="org.hisp.dhis.eventreport.EventReportStore" />    
+	</bean>
+	
+	<bean id="org.hisp.dhis.eventchart.EventChartService"
+		class="org.hisp.dhis.eventchart.DefaultEventChartService">
+		<property name="eventChartStore" ref="org.hisp.dhis.eventchart.EventChartStore" />
+	</bean>
+
+	<!-- Startup -->
+
+	<bean id="org.hisp.dhis.trackedentity.startup.TableAlteror" class="org.hisp.dhis.trackedentity.startup.TableAlteror">
+		<property name="statementManager" ref="statementManager" />
+		<property name="name" value="TrackedEntityTableAlteror" />
+		<property name="runlevel" value="4" />
+		<property name="skipInTests" value="true" />
+	</bean>
+
+	<bean id="org.hisp.dhis.common.TrackerIdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
+		<property name="name" value="TrackerIdentityPopulator" />
+		<property name="runlevel" value="3" />
+		<property name="skipInTests" value="true" />
+		<property name="tables">
+			<list>
+				<value>trackedentity</value>
+				<value>trackedentityinstance</value>
+				<value>trackedentityattribute</value>
+				<value>trackedentityattributegroup</value>
+				<value>trackedentityinstancereminder</value>
+				<value>trackedentityform</value>
+				<value>program</value>
+				<value>programindicator</value>
+				<value>programstage</value>
+				<value>programstagesection</value>
+				<value>programstagedataelement</value>
+				<value>programinstance</value>
+				<value>programstageinstance</value>
+				<value>programstagesection</value>
+				<value>programvalidation</value>
+				<value>programrule</value>
+				<value>programruleaction</value>
+				<value>programrulevariable</value>
+				<value>relationshiptype</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject"
+			ref="org.hisp.dhis.system.startup.StartupRoutineExecutor" />
+		<property name="targetMethod" value="addStartupRoutines" />
+		<property name="arguments">
+			<list>
+				<list>
+					<ref bean="org.hisp.dhis.trackedentity.startup.TableAlteror" />
+					<ref bean="org.hisp.dhis.common.TrackerIdentityPopulator" />
+				</list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- DeletionHandlers -->
+
+	<bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler"
+		class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="commentService"
+			ref="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler"
+		class="org.hisp.dhis.relationship.RelationshipDeletionHandler">
+		<property name="relationshipSevice"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler"
+		class="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler">
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" class="org.hisp.dhis.program.ProgramDeletionHandler" />
+
+	<bean
+		id="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler"
+		class="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler">
+		<property name="instanceService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
+		<property name="programStageDEService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageDeletionHandler">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleDeletionHandler"
+		class="org.hisp.dhis.programrule.ProgramRuleDeletionHandler">
+		<property name="programRuleService" ref="org.hisp.dhis.programrule.ProgramRuleService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleVariableDeletionHandler"
+		class="org.hisp.dhis.programrule.ProgramRuleVariableDeletionHandler">
+		<property name="programRuleVariableService" ref="org.hisp.dhis.programrule.ProgramRuleVariableService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.programrule.ProgramRuleActionDeletionHandler"
+		class="org.hisp.dhis.programrule.ProgramRuleActionDeletionHandler">
+		<property name="programRuleActionService" ref="org.hisp.dhis.programrule.ProgramRuleActionService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler"
+		class="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramValidationDeletionHandler"
+		class="org.hisp.dhis.program.ProgramValidationDeletionHandler">
+		<property name="programValidationService"
+			ref="org.hisp.dhis.program.ProgramValidationService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"
+		class="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler">
+		<property name="dataEntryFormService"
+			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
+	</bean>
+
+	<bean id="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler"
+		class="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler">
+		<property name="auditService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAuditService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.program.ProgramIndicatorDeletionHandler"
+		class="org.hisp.dhis.program.ProgramIndicatorDeletionHandler">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler"
+		class="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler">
+		<property name="formService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityFormService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.eventchart.EventChartDeletionHandler"
+		class="org.hisp.dhis.eventchart.EventChartDeletionHandler">
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.eventreport.EventReportDeletionHandler"
+		class="org.hisp.dhis.eventreport.EventReportDeletionHandler">
+	</bean>
+	
+	<!-- DeletionManager -->
+
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="deletionManager" />
+		<property name="targetMethod" value="addDeletionHandlers" />
+		<property name="arguments">
+			<list>
+				<list>
+					<ref bean="org.hisp.dhis.trackedentity.TrackedEntityInstanceDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueDeletionHandler" />
+					<ref bean="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAuditDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
+					<ref bean="org.hisp.dhis.program.ProgramIndicatorDeletionHandler" />
+					<ref bean="org.hisp.dhis.programrule.ProgramRuleDeletionHandler" />
+					<ref bean="org.hisp.dhis.programrule.ProgramRuleVariableDeletionHandler" />
+					<ref bean="org.hisp.dhis.programrule.ProgramRuleActionDeletionHandler" />
+					<ref bean="org.hisp.dhis.trackedentity.TrackedEntityFormDeletionHandler" />
+					<ref bean="org.hisp.dhis.eventchart.EventChartDeletionHandler" />
+					<ref bean="org.hisp.dhis.eventreport.EventReportDeletionHandler" />
+				</list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- AOP definitions -->
+
+	<aop:config>
+
+		<aop:aspect ref="deletionInterceptor">
+
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityInstanceService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityAttributeService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.relationship.RelationshipService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.relationship.RelationshipTypeService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityAuditService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramStageSectionService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramInstanceService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramStageService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramStageInstanceService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramStageDataElementService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramValidationService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramIndicatorService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.validation.ValidationCriteriaService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.caseaggregation.CaseAggregationConditionService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.trackedentity.TrackedEntityFormService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.eventchart.EventChartService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.eventreport.EventReportService.delete*(..) )"
+				method="intercept" />
+				
+		</aop:aspect>
+
+	</aop:config>
+
+</beans>

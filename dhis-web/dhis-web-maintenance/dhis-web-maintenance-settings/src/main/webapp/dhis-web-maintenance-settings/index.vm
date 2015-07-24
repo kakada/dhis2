@@ -1,0 +1,11 @@
+<h3>$i18n.getString( "dhis-web-maintenance-settings" )</h3>
+
+<ul class="introList">
+    #introListImgItem( "systemGeneralSettings.action" "general_settings" "systemsettings" )
+    #introListImgItem( "systemAppearanceSettings.action" "appearance_settings" "systemsettings" )
+    #introListImgItem( "systemEmailSettings.action" "email_settings" "systemsettings" )
+    #introListImgItem( "systemAccessSettings.action" "access_settings" "systemsettings" )
+    #introListImgItem( "systemApprovalSettings.action" "approval_settings" "systemsettings" )
+    #introListImgItem( "systemCalendarSettings.action" "calendar_settings" "systemsettings" )
+    #introListImgItem( "systemSynchronizationSettings.action" "data_synchronization" "systemsettings" )
+</ul>

@@ -1,0 +1,66 @@
+<script>
+    jQuery(document).ready(function() {
+        jQuery('#appSettingsForm').ajaxForm({
+            dataType:  'json',
+            success: function(data){
+                setHeaderDelayMessage(data.message);
+            }
+        });
+
+      dhis2.contextmenu.makeContextMenu({
+        menuId: 'contextMenu',
+        menuItemActiveClass: 'contextMenuItemActive'
+      });
+    });
+
+    function removeApp( args ) {
+      deleteApp( args.id, args.name );
+    }
+
+    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "appmanager_confirm_delete" ) , "'")';
+</script>
+
+<h3>$i18n.getString( "appmanager_settings" )</h3>
+
+<div id="contextMenu" class="contextMenu">
+  <ul id="contextMenuItems" class="contextMenuItems">
+    <li><a data-target-fn="removeApp"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;$i18n.getString( "remove" )</a></li>
+  </ul>
+</div>
+
+<div class="settingLabel">$i18n.getString( "appmanager_installation_folder" ) <span class="tipText">($i18n.getString( "appmanager_absolute_server_path" ))</span></div>
+<div class="setting"><input type="text" id="appFolderPath" name="appFolderPath" style="width:40em" value="$!appFolderPath"/></div>
+<div class="settingLabel">$i18n.getString( "appmanager_baseurl" ) <span class="tipText">($i18n.getString( "appmanager_where_apps_can_be_found" ))</span></div>
+<div class="setting"><input type="text" id="appBaseUrl" name="appBaseUrl" style="width:40em" value="$!appBaseUrl"/></div>
+<div>
+	<input type="button" value="Save" style="width:120px" onclick="setAppConfig()" /> &nbsp;
+	<a href="javascript:resetAppConfig()">$i18n.getString( "appmanager_set_to_default" )</a>
+</div>
+
+<h3>$i18n.getString( "appmanager_management" )</h3>
+
+<table style="width:80%">
+  <tr>
+    <td style="vertical-align:top">
+      <table class="listTable" id="appList" width='100%'>
+        <col/>
+        <col/>				
+        <thead>				
+          <tr>
+            <th>$i18n.getString( "appmanager_appname" )</th>
+            <th>$i18n.getString( "version" )</th>
+          </tr>
+        </thead>
+        <tbody id="list">
+            #foreach( $app in $appList )
+            <tr id="tr${app.key}" data-id="${app.key}" data-name="$encoder.jsEncode( $app.name )">
+                <td>$encoder.jsEncode( $app.name )</td>
+                <td>$app.version</td>
+            </tr>
+            #end
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>
+

@@ -1,0 +1,185 @@
+<script>
+  jQuery(document).ready(function() {
+    jQuery("input[type=button]").click(function() {
+      jQuery.postUTF8('setSystemGeneralSettings.action', {
+        cacheStrategy: getFieldValue('cacheStrategy'),
+        analyticsMaxLimit: getFieldValue('analyticsMaxLimit'),
+        databaseServerCpus: getFieldValue('databaseServerCpus'),
+        infrastructuralIndicators: getFieldValue('infrastructuralIndicators'),
+        infrastructuralDataElements: getFieldValue('infrastructuralDataElements'),
+        infrastructuralPeriodType: getFieldValue('infrastructuralPeriodType'),
+        analysisRelativePeriod: getFieldValue('analysisRelativePeriod'),
+        feedbackRecipients: getFieldValue('feedbackRecipients'),
+        offlineOrganisationUnitLevel: getFieldValue('offlineOrganisationUnitLevel'),
+        systemNotificationsEmail: getFieldValue('systemNotificationsEmail'),
+        omitIndicatorsZeroNumeratorDataMart: jQuery('#omitIndicatorsZeroNumeratorDataMart').is(':checked'),
+        factorDeviation: getFieldValue('factorDeviation'),
+        phoneNumberAreaCode: getFieldValue('phoneNumberAreaCode'),
+        googleAnalyticsUA: getFieldValue('googleAnalyticsUA'),
+        multiOrganisationUnitForms: jQuery('#multiOrganisationUnitForms').is(':checked'),
+        analyticsMaintenanceMode: jQuery('#analyticsMaintenanceMode').is(':checked'),
+        helpPageLink: getFieldValue('helpPageLink' ),
+        instanceBaseUrl: getFieldValue('instanceBaseUrl')
+      }, function( json ) {
+        if( json.response == "success" ) {
+          setHeaderDelayMessage(json.message);
+        }
+      });
+    });
+  });
+</script>
+
+<h3>$i18n.getString( "general_settings" ) #openHelp( "systemGeneralSettings" )</h3>
+
+<div class="settingLabel">$i18n.getString( "cache_strategy" )</div>
+
+<div class="setting">
+<select id="cacheStrategy" name="cacheStrategy">
+    <option value="NO_CACHE" #if( $keyCacheStrategy == "NO_CACHE" )selected="selected"#end>$i18n.getString( "no_cache" )</option>
+    <option value="CACHE_6AM_TOMORROW" #if( $keyCacheStrategy == "CACHE_6AM_TOMORROW" )selected="selected"#end>$i18n.getString( "cache_until_6am_tomorrow" )</option>
+    <option value="CACHE_TWO_WEEKS" #if( $keyCacheStrategy == "CACHE_TWO_WEEKS" )selected="selected"#end>$i18n.getString( "cache_for_two_weeks" )</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "analytics_max_limit" )</div>
+
+<div class="setting">
+<select id="analyticsMaxLimit" name="analyticsMaxLimit">
+    <option value="50000" #if( $keyAnalyticsMaxLimit == "50000" )selected="selected"#end>50 000</option>
+    <option value="100000" #if( $keyAnalyticsMaxLimit == "100000" )selected="selected"#end>100 000</option>
+    <option value="200000" #if( $keyAnalyticsMaxLimit == "200000" )selected="selected"#end>200 000</option>
+    <option value="0" #if( $keyAnalyticsMaxLimit == "0" )selected="selected"#end>$i18n.getString( "unlimited" )</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "no_of_database_server_cpus" )</div>
+
+<div class="setting">
+<select id="databaseServerCpus" name="databaseServerCpus">
+    <option value="0">$i18n.getString( "automatic" ) ($i18n.getString( "detect_based_on_web_server" ))</option>
+    <option value="1" #if( $keyDatabaseServerCpus == "1" )selected="selected"#end>1</option>
+    <option value="2" #if( $keyDatabaseServerCpus == "2" )selected="selected"#end>2</option>
+    <option value="3" #if( $keyDatabaseServerCpus == "3" )selected="selected"#end>3</option>
+    <option value="4" #if( $keyDatabaseServerCpus == "4" )selected="selected"#end>4</option>
+    <option value="5" #if( $keyDatabaseServerCpus == "5" )selected="selected"#end>5</option>
+    <option value="6" #if( $keyDatabaseServerCpus == "6" )selected="selected"#end>6</option>
+    <option value="7" #if( $keyDatabaseServerCpus == "7" )selected="selected"#end>7</option>
+    <option value="8" #if( $keyDatabaseServerCpus == "8" )selected="selected"#end>8</option>
+    <option value="16" #if( $keyDatabaseServerCpus == "16" )selected="selected"#end>16</option>
+    <option value="32" #if( $keyDatabaseServerCpus == "32" )selected="selected"#end>32</option>
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "infrastructural_indicators" )</div>
+
+<div class="setting">
+<select id="infrastructuralIndicators" name="infrastructuralIndicators">
+    #foreach ( $group in $indicatorGroups )
+    <option value="$group.id" #if( $group.id == $configuration.infrastructuralIndicators.id )selected="selected"#end>$group.name</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "infrastructural_data_elements" )</div>
+
+<div class="setting">
+<select id="infrastructuralDataElements" name="infrastructuralDataElements">
+    #foreach ( $group in $dataElementGroups )
+    <option value="$group.id" #if( $group.id == $configuration.infrastructuralDataElements.id )selected="selected"#end>$group.name</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "infrastructural_period_type" )</div>
+
+<div class="setting">
+<select id="infrastructuralPeriodType" name="infrastructuralPeriodType">
+    #foreach ( $type in $periodTypes )
+    <option value="$type.name" #if( $type.name == $configuration.infrastructuralPeriodTypeDefaultIfNull.name )selected="selected"#end>$type.name</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "default_analysis_relative_period" )</div>
+
+<div class="setting">
+<select id="analysisRelativePeriod" name="analysisRelativePeriod">
+    #foreach ( $period in $relativePeriods )
+    <option value="$period" #if( $period == $keyAnalysisRelativePeriod )selected="selected"#end>$i18n.getString( $period )</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "feedback_recipients" )</div>
+
+<div class="setting">
+<select id="feedbackRecipients" name="feedbackRecipients">
+    <option value="-1">$i18n.getString( "no_feedback_recipients" )</option>
+    #foreach ( $group in $userGroups )
+    <option value="$group.id" #if( $group.id == $!feedbackRecipients.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "max_levels_to_offline" ) <span class="tipText">($i18n.getString( "relative_to_current_user" ))</div>
+
+<div class="setting">
+<select id="offlineOrganisationUnitLevel" name="offlineOrganisationUnitLevel">
+    #set( $level = 1)
+    #foreach ( $organisationUnitLevel in $organisationUnitLevels )
+    <option value="$organisationUnitLevel.id" #if( $organisationUnitLevel.id == $!offlineOrganisationUnitLevel.id)selected="selected"#end>${level}</option>
+    #set( $level = $level + 1)
+    #end
+</select>
+</div>
+
+<div class="settingLabel">$i18n.getString( "system_notifications_email_address" )</div>
+<div class="setting">
+    <input type="text" id="systemNotificationsEmail" name="systemNotificationsEmail" value="$!keySystemNotificationsEmail"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "data_analysis_factor" )</div>
+<div class="setting">
+    <input type="text" id="factorDeviation" name="factorDeviation" value="$!factorDeviation"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "phone_number_area_code" )</div>
+
+<div class="setting">
+    <input type="text" id="phoneNumberAreaCode" name="phoneNumberAreaCode" value="$!phoneNumberAreaCode"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "help_page_link" )</div>
+
+<div class="setting">
+    <input type="text" id="helpPageLink" name="helpPageLink" value="$!helpPageLink"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "server_base_url" )</div>
+
+<div class="setting">
+    <input type="text" id="instanceBaseUrl" name="instanceBaseUrl" placeholder="$i18n.getString( 'for_example' ) https://apps.dhis2.org/demo" value="$!keyInstanceBaseUrl"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "google_analytics_ua_key" )</div>
+
+<div class="setting">
+    <input type="text" id="googleAnalyticsUA" name="googleAnalyticsUA" value="$!googleAnalyticsUA"/>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="multiOrganisationUnitForms" name="multiOrganisationUnitForms" #if( $multiOrganisationUnitForms )checked="checked"#end>
+    <label for="multiOrganisationUnitForms">$i18n.getString( "multi_organisation_unit_forms" )</label>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="omitIndicatorsZeroNumeratorDataMart" name="omitIndicatorsZeroNumeratorDataMart" #if( $omitIndicatorsZeroNumeratorDataMart )checked="checked"#end>
+    <label for="omitIndicatorsZeroNumeratorDataMart">$i18n.getString( "omit_indicators_zero_numerator_data_mart" )</label>
+</div>
+
+<div class="setting">
+    <input type="checkbox" id="analyticsMaintenanceMode" name="analyticsMaintenanceMode" #if( $keyAnalyticsMaintenanceMode )checked="checked"#end>
+    <label for="analyticsMaintenanceMode">$i18n.getString( "put_analytics_in_maintenance_mode" ) <span class="tipText">($i18n.getString( "returns" ) 503)</span></label>
+</div>
+
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>

@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+	<!-- Data Entry -->
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction"
+		scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.SaveProvidingFacilityAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveProvidingFacilityAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstanceAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstanceAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
+		scope="prototype">
+		<property name="programDataEntryService"
+			ref="org.hisp.dhis.program.ProgramDataEntryService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programIndicatorService"
+			ref="org.hisp.dhis.program.ProgramIndicatorService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.UncompleteDataEntryAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.UncompleteDataEntryAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.RegisterIrregularEncounterAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RegisterIrregularEncounterAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction"
+		scope="prototype">
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetUsernameListAction"
+		scope="prototype">
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.SaveCoordinatesEventAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveCoordinatesEventAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.MarkForFollowupAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.MarkForFollowupAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.SaveProgramInstanceCommentAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveProgramInstanceCommentAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<!-- Multi DataEntry -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetAllProgramsAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetAllProgramsAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<!-- Single-event DataEntry -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProgramListAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProgramListAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.ShowEventWithRegistrationFormAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.ShowEventWithRegistrationFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+			<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="trackedEntityFormService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityFormService" />
+		<property name="programDataEntryService"
+			ref="org.hisp.dhis.program.ProgramDataEntryService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="attributeGroupService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<!-- Report -->
+
+	<bean id="org.hisp.dhis.caseentry.action.report.ReportSelectAction"
+		class="org.hisp.dhis.caseentry.action.report.ReportSelectAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.report.GenerateReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GenerateReportAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.report.ViewRecordsAction"
+		class="org.hisp.dhis.caseentry.action.report.ViewRecordsAction" scope="prototype">
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.GenerateStatisticalProgramReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GenerateStatisticalProgramReportAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<!-- Case Aggregation -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
+		scope="prototype">
+		<property name="aggregationConditionService"
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="aggregationConditionService"
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.SaveAggregateDataValueAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.SaveAggregateDataValueAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultDetailsAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultDetailsAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="aggregationConditionService"
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programValidationService"
+			ref="org.hisp.dhis.program.ProgramValidationService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.GetProgramMetaDataAction"
+		class="org.hisp.dhis.caseentry.action.GetProgramMetaDataAction" scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageDataElementsAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageDataElementsAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<!-- Tracked Entity Instance -->
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SelectAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SelectAction" scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceAction" scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="attributeService">
+			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		</property>
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="trackedEntityFormService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityFormService" />
+		<property name="attributeGroupService">
+			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.AddTrackedEntityInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.AddTrackedEntityInstanceAction" scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.RemoveTrackedEntityInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.RemoveTrackedEntityInstanceAction"
+		scope="prototype">		
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.UpdateTrackedEntityInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.UpdateTrackedEntityInstanceAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+		<property name="attributeService">
+			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.ShowAddTrackedEntityInstanceFormAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddTrackedEntityInstanceFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="attributeService">
+			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="trackedEntityFormService">
+			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityFormService" />
+		</property>
+		<property name="attributeGroupService">
+			<ref bean="org.hisp.dhis.trackedentity.TrackedEntityAttributeGroupService" />
+		</property>
+		<property name="relationshipTypeService">
+			<ref bean="org.hisp.dhis.relationship.RelationshipTypeService" />
+		</property>
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.ValidateTrackedEntityInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ValidateTrackedEntityInstanceAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="selectionManager">
+			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		</property>
+		<property name="attributeService" ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRepresentativeAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRepresentativeAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.AddRepresentativeAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.AddRepresentativeAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceHistoryAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceHistoryAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.GetProgramInstanceHistoryAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetProgramInstanceHistoryAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceLocationAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetTrackedEntityInstanceLocationAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.RegisterTrackedEntityInstanceLocationAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.RegisterTrackedEntityInstanceLocationAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+	
+	<!-- Program Enrollment -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.ProgramEnrollmentSelectAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ProgramEnrollmentSelectAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.ProgramEnrollmentAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ProgramEnrollmentAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.SaveProgramEnrollmentAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SaveProgramEnrollmentAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" /> 
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SaveDueDateAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SaveDueDateAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetProgramInstanceAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetProgramInstanceAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.ValidateProgramEnrollmentAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ValidateProgramEnrollmentAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.SaveAttributeAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SaveAttributeAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.SetProgramInstanceStatusAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SetProgramInstanceStatusAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetProgramAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetProgramAction" scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetVisitScheduleAttributesAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetVisitScheduleAttributesAction" scope="prototype">
+	</bean>
+
+	<!-- Relationship -->
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.GetPartnerAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.GetPartnerAction" scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.RemoveRelationshipAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.RemoveRelationshipAction"
+		scope="prototype">
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.RemoveRepresentativeAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.RemoveRepresentativeAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SaveRelationshipAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SaveRelationshipAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.SaveRepresentativeAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.SaveRepresentativeAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRelationshipFormAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ShowAddRelationshipFormAction"
+		scope="prototype">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.trackedentity.TrackedEntityAttributeService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.ShowRelationshipListAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ShowRelationshipListAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
+
+	<!-- Reminder -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.GetProgramTrackingListAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetProgramTrackingListAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="attributeValueService"
+			ref="org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
+		class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction" scope="prototype">
+		<property name="smsSender" ref="org.hisp.dhis.sms.SmsSender" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="reminderService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceReminderService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.reminder.SetEventStatusAction"
+		class="org.hisp.dhis.caseentry.action.reminder.SetEventStatusAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+
+	<!-- Dashboard -->
+
+	<bean id="org.hisp.dhis.caseentry.action.trackedentity.TrackedEntityInstanceDashboardAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.TrackedEntityInstanceDashboardAction"
+		scope="prototype">
+		<property name="entityInstanceService" ref="org.hisp.dhis.trackedentity.TrackedEntityInstanceService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="auditService" ref="org.hisp.dhis.trackedentity.TrackedEntityAuditService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programIndicatorService"
+			ref="org.hisp.dhis.program.ProgramIndicatorService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.RemoveProgramInstanceAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RemoveProgramInstanceAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.RemoveSingleEventAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RemoveSingleEventAction"
+		scope="prototype">
+	</bean>
+
+	<!-- Comment && Message -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.SaveTrackedEntityCommentAction"
+		class="org.hisp.dhis.caseentry.action.reminder.SaveTrackedEntityCommentAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.RemoveTrackedEntityCommentAction"
+		class="org.hisp.dhis.caseentry.action.reminder.RemoveTrackedEntityCommentAction"
+		scope="prototype">
+		<property name="commentService"
+			ref="org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageInstanceAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageInstanceAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="dataValueService"
+			ref="org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction"
+		class="org.hisp.dhis.caseentry.action.reminder.RemoveSmsAction" scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetProgramStageInstanceByIdAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<!-- Program-stage-completeness -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageInstanceCompletenessAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.UploadAnonymousEventAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.UploadAnonymousEventAction"
+		scope="prototype">
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.GetOptionSetAction"
+		class="org.hisp.dhis.caseentry.action.GetOptionSetAction" scope="prototype">
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.GetUsernamesAction"
+		class="org.hisp.dhis.caseentry.action.GetUsernamesAction" scope="prototype">
+	</bean>
+
+	<!-- Activity Plans -->
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.trackedentity.ShowActivityPlanFormAction"
+		class="org.hisp.dhis.caseentry.action.trackedentity.ShowActivityPlanFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+</beans>

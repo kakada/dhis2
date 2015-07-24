@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.hisp.dhis.importexport.ImportDataDailyPeriod" table="period">
+    <!-- <composite-id>
+      <key-property column="periodid" name="periodId"/>
+      <key-property column="periodtypeid" name="periodTypeId"/>
+      <key-property column="startdate" name="startDate" type="date"/>
+      <key-property column="enddate" name="endDate" type="date"/>
+    </composite-id> -->
+    
+    <id column="periodid" name="periodId">
+      <generator class="native"/>
+    </id>
+    
+    <property column="periodtypeid" name="periodTypeId"/>
+    <property column="startdate" name="startDate" type="date"/>
+    <property column="enddate" name="endDate" type="date"/>
+  </class>
+</hibernate-mapping>

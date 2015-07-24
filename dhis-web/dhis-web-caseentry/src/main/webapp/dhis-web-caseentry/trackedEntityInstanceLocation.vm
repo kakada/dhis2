@@ -1,0 +1,31 @@
+<script>
+	hideById('mainLinkLbl');
+	jQuery('[name=mainPagelink]').html(i18n_main_form_link);
+	var i18n_please_select_an_orgunit = '$encoder.jsEscape( $i18n.getString( "please_select_an_orgunit" ) , "'" )';
+</script>
+
+<h3>
+	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'tracked_entity_instance_management' )</a>
+	&#8226; <a href="javascript:showTrackedEntityInstanceDashboardForm('$entityInstance.uid');">$i18n.getString( 'dashboard' )</a>
+	&#8226; $i18n.getString( "change_location" )
+</h3>
+	
+</table>
+
+<form method='post'>
+	<table>
+		<tr>
+			<td>
+				#organisationUnitSelectionTree( false, false, true )
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" class='button' value="$i18n.getString('save')" onclick='registerTrackedEntityInstanceLocation( "$entityInstance.uid" )'>
+				<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="backPreviousPage( $entityInstanceId )" />
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+</form>

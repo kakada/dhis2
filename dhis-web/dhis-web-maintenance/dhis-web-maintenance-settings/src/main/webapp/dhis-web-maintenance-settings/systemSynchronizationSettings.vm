@@ -1,0 +1,37 @@
+<script type="text/javascript">
+jQuery( document ).ready( function() {
+    jQuery( "input[type=button]" ).click( function() {
+        jQuery.postUTF8( "setConfiguration.action", {
+            remoteServerUrl: jQuery( "#remoteServerUrl" ).val(),
+            remoteServerUsername: jQuery( "#remoteServerUsername" ).val(),
+            remoteServerPassword: jQuery( '#remoteServerPassword' ).val()
+        }, function( json ) {
+            if ( json.response == "success" ) {
+                setHeaderDelayMessage( json.message );
+            }
+        } );
+    } );
+} );    
+</script>
+
+<h3>$i18n.getString( "data_synchronization" )</h3>
+
+<div class="settingLabel">$i18n.getString( "remote_server_url" ) <span class="tipText">(https:// $i18n.getString( "recommended" ))</span></div>
+<div class="setting">
+	<input type="text" id="remoteServerUrl" name="remoteServerUrl" value='$!remoteServerUrl'>
+</div>
+
+<div class="settingLabel">$i18n.getString( "remote_server_username" )</div>
+<div class="setting">
+	<input type="text" id="remoteServerUsername" name="remoteServerUsername" value='$!remoteServerUsername'>
+</div>
+
+<div class="settingLabel">$i18n.getString( "remote_server_password" )</div>
+<div class="setting">
+	<input type="password" id="remoteServerPassword" name="remoteServerPassword" placeholder="$i18n.getString( 'hidden' )">
+</div>
+
+<div class="setting">
+	<input type="button" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<span style="margin-left: 1em;"><a href="javascript:checkRemoteServerAvailability()">$i18n.getString( "test_settings" )</a></span>
+</div>
