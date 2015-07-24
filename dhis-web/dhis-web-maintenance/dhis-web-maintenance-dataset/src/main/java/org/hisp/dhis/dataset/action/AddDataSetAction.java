@@ -197,11 +197,11 @@ public class AddDataSetAction
         this.frequencySelect = frequencySelect;
     }
 
-    private int openFuturePeriods;
+    private boolean allowFuturePeriods;
 
-    public void setOpenFuturePeriods( int openFuturePeriods )
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
     {
-        this.openFuturePeriods = openFuturePeriods;
+        this.allowFuturePeriods = allowFuturePeriods;
     }
 
     private boolean fieldCombinationRequired;
@@ -340,7 +340,7 @@ public class AddDataSetAction
         dataSet.setMobile( false );
         dataSet.setIndicators( indicators );
         dataSet.setNotificationRecipients( userGroupService.getUserGroup( notificationRecipients ) );
-        dataSet.setOpenFuturePeriods( openFuturePeriods );
+        dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
         dataSet.setNoValueRequiresComment( noValueRequiresComment );

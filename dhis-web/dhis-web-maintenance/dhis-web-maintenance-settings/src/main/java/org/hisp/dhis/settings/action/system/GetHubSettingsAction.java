@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.settings.action.system;
 
 /*
  * Copyright (c) 2004-2015, University of Oslo
@@ -28,89 +28,79 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.security.spring.AbstractSpringSecurityCurrentUserService;
-import org.springframework.transaction.annotation.Transactional;
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Torgeir Lorange Ostby
- * @version $Id: DefaultCurrentUserService.java 5708 2008-09-16 14:28:32Z larshelg $
+ * @author Kakada Chheang
+ * 
+ * @version $ GetHubSettingsAction.java Jul 7, 2014 10:04:29 PM $
  */
-@Transactional
-public class DefaultCurrentUserService
-    extends AbstractSpringSecurityCurrentUserService
+public class GetHubSettingsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
+    @Autowired
+    private ConfigurationService configurationService;
 
     // -------------------------------------------------------------------------
-    // CurrentUserService implementation
+    // Input
     // -------------------------------------------------------------------------
 
-    @Override
-    public User getCurrentUser()
+    private String hubServerUrl;
+
+    public String getHubServerUrl()
     {
-        String username = getCurrentUsername();
-
-        if ( username == null )
-        {
-            return null;
-        }
-
-        UserCredentials userCredentials = userService.getUserCredentialsByUsername( username );
-
-        if ( userCredentials == null )
-        {
-            return null;
-        }
-
-        return userCredentials.getUser();
+        return hubServerUrl;
     }
 
-    @Override
-    public boolean currentUserIsSuper()
+    private String hubServerUsername;
+
+    public String getHubServerUsername()
     {
-        String username = getCurrentUsername();
-
-        if ( username == null )
-        {
-            return false;
-        }
-
-        UserCredentials userCredentials = userService.getUserCredentialsByUsername( username );
-
-        if ( userCredentials == null )
-        {
-            return false;
-        }
-
-        return userCredentials.isSuper();
-    }
-
-    @Override
-    public Set<OrganisationUnit> getCurrentUserOrganisationUnits()
-    {
-        User user = getCurrentUser();
-        
-        return user != null ? new HashSet<OrganisationUnit>( user.getOrganisationUnits() ) : new HashSet<OrganisationUnit>();
+        return hubServerUsername;
     }
     
+    private String hubInsertTaskUrl;
+    
+    public String getHubInsertTaskUrl() {
+    	return hubInsertTaskUrl;
+    }
+    
+    private String hubUpdateTaskUrl;
+    
+    public String getHubUpdateTaskUrl() {
+    	return hubUpdateTaskUrl;
+    }
+    
+    private boolean hubEnableMode;
+    
+    public boolean isHubEnableMode() {
+    	return hubEnableMode;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
-    public boolean currenUserIsAuthorized( String auth )
+    public String execute()
     {
-        User user = getCurrentUser();
-        
-        return user != null && user.getUserCredentials().isAuthorized( auth );
+        Configuration config = configurationService.getConfiguration();
+        hubServerUrl = config.getHubServerUrl();
+        hubServerUsername = config.getHubServerUsername();
+        hubInsertTaskUrl = config.getHubInsertTaskUrl();
+        hubUpdateTaskUrl = config.getHubUpdateTaskUrl();
+        if(config.isHubEnableMode() != null) {
+        	hubEnableMode = config.isHubEnableMode().booleanValue();
+        }
+
+        return SUCCESS;
     }
 }

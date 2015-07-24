@@ -83,6 +83,22 @@ public class Configuration
     private String remoteServerUsername;
     
     private String remoteServerPassword;
+    
+    // -------------------------------------------------------------------------
+    // Remote Hub synch
+    // -------------------------------------------------------------------------
+    
+    private String hubServerUrl;
+    
+    private String hubServerUsername;
+    
+    private String hubServerPassword;
+    
+    private String hubInsertTaskUrl;
+    
+    private String hubUpdateTaskUrl;
+    
+    private Boolean hubEnableMode;
 
     // -------------------------------------------------------------------------
     // SMTP
@@ -238,8 +254,80 @@ public class Configuration
     {
         this.remoteServerPassword = remoteServerPassword;
     }
+    
+	/**
+	 * @return the hubEnableMode
+	 */
+	public Boolean isHubEnableMode() {
+		return hubEnableMode;
+	}
 
+	/**
+	 * @param hubEnableMode the hubEnableMode to set
+	 */
+	public void setHubEnableMode(Boolean hubEnableMode) {
+		this.hubEnableMode = hubEnableMode;
+	}
+	
     /**
+	 * @return the hubServerUrl
+	 */
+	public String getHubServerUrl() {
+		return hubServerUrl;
+	}
+
+	/**
+	 * @param hubServerUrl the hubServerUrl to set
+	 */
+	public void setHubServerUrl(String hubServerUrl) {
+		this.hubServerUrl = hubServerUrl;
+	}
+
+	/**
+	 * @return the hubServerUsername
+	 */
+	public String getHubServerUsername() {
+		return hubServerUsername;
+	}
+
+	/**
+	 * @param hubServerUsername the hubServerUsername to set
+	 */
+	public void setHubServerUsername(String hubServerUsername) {
+		this.hubServerUsername = hubServerUsername;
+	}
+
+	/**
+	 * @return the hubServerPassword
+	 */
+	public String getHubServerPassword() {
+		return hubServerPassword;
+	}
+
+	/**
+	 * @param hubServerPassword the hubServerPassword to set
+	 */
+	public void setHubServerPassword(String hubServerPassword) {
+		this.hubServerPassword = hubServerPassword;
+	}
+	
+	public String getHubInsertTaskUrl() {
+		return hubInsertTaskUrl;
+	}
+
+	public void setHubInsertTaskUrl(String hubInsertTaskUrl) {
+		this.hubInsertTaskUrl = hubInsertTaskUrl;
+	}
+
+	public String getHubUpdateTaskUrl() {
+		return hubUpdateTaskUrl;
+	}
+
+	public void setHubUpdateTaskUrl(String hubUpdateTaskUrl) {
+		this.hubUpdateTaskUrl = hubUpdateTaskUrl;
+	}
+
+	/**
      * Do not serialize.
      */
     public String getSmtpPassword()

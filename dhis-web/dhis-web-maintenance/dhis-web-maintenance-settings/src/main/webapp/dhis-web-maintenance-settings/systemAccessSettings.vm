@@ -11,7 +11,7 @@ jQuery( document ).ready( function() {
             return options;
         };
 
-        jQuery.ajax( {
+        $.ajax( {
             url: 'setSystemAccessSettings.action',
             type:'post',
             contentType:'application/x-www-form-urlencoded;charset=utf-8',
@@ -23,7 +23,6 @@ jQuery( document ).ready( function() {
                 accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' ),
                 accountInvite: jQuery( '#accountInvite' ).is( ':checked' ),
                 canGrantOwnUserAuthorityGroups: jQuery( '#canGrantOwnUserAuthorityGroups' ).is( ':checked' ),
-                allowObjectAssignment: jQuery( '#allowObjectAssignment' ).is( ':checked' ),
                 credentialsExpires: jQuery( '#credentialsExpires' ).val(),
                 openIdProvider: jQuery( '#openIdProvider' ).val(),
                 openIdProviderLabel: jQuery( '#openIdProviderLabel' ).val(),
@@ -96,11 +95,6 @@ jQuery( document ).ready( function() {
 <div class="setting">
     <input type="checkbox" id="canGrantOwnUserAuthorityGroups" name="canGrantOwnUserAuthorityGroups"#if( $keyCanGrantOwnUserAuthorityGroups ) checked="checked"#end>
     <label for="canGrantOwnUserAuthorityGroups">$i18n.getString( "allow_users_to_grant_own_user_roles" )</label>
-</div>
-
-<div class="setting">
-    <input type="checkbox" id="allowObjectAssignment" name="allowObjectAssignment"#if( $keyAllowObjectAssignment ) checked="checked"#end>
-    <label for="allowObjectAssignment">$i18n.getString( "allow_assigning_object_to_related_objects_during_add_or_update" )</label>
 </div>
 
 <div class="settingLabel">$i18n.getString( "user_credentials_expires" )</div>

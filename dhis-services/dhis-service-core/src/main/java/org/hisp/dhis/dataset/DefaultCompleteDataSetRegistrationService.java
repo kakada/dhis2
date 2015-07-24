@@ -28,13 +28,24 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.hub.HubClientService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.instedd.hub.client.form.FormData;
+import org.instedd.hub.client.http.AbstractHttpRequest;
+import org.instedd.hub.client.http.HttpPostRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 
@@ -49,7 +60,7 @@ public class DefaultCompleteDataSetRegistrationService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+	
     private CompleteDataSetRegistrationStore completeDataSetRegistrationStore;
 
     public void setCompleteDataSetRegistrationStore( CompleteDataSetRegistrationStore completeDataSetRegistrationStore )
@@ -70,6 +81,24 @@ public class DefaultCompleteDataSetRegistrationService
     {
         this.categoryService = categoryService;
     }
+    
+    private HubClientService hubClientService;
+    
+    public void setHubClientService( HubClientService hubClientService ) {
+    	this.hubClientService = hubClientService;
+    }
+    
+//    private ConfigurationService configurationService;
+//	
+//	public void setConfigurationService( ConfigurationService configurationService ) {
+//		this.configurationService = configurationService;
+//	}
+//	
+//	private DataValueService dataValueService;
+//	
+//	public void setDataValueService( DataValueService dataValueService ) {
+//		this.dataValueService = dataValueService;
+//	}
 
     // -------------------------------------------------------------------------
     // CompleteDataSetRegistrationService
@@ -82,6 +111,15 @@ public class DefaultCompleteDataSetRegistrationService
         {
             registration.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
         }
+        
+        // Hub client
+        try {
+			hubClientService.send(registration);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
         completeDataSetRegistrationStore.saveCompleteDataSetRegistration( registration );
     }

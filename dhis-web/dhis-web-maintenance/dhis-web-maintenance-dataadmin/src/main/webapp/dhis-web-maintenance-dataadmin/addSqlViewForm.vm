@@ -29,7 +29,7 @@
 		</tr>
 		<tr>
 			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em">select </textarea></td>
+			<td><textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em">SELECT </textarea></td>
 		</tr>
 		<tr>
 			<td></td>

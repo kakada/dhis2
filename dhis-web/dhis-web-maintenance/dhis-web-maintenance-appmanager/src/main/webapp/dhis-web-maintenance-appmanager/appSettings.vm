@@ -34,7 +34,7 @@
 <div class="setting"><input type="text" id="appBaseUrl" name="appBaseUrl" style="width:40em" value="$!appBaseUrl"/></div>
 <div>
 	<input type="button" value="Save" style="width:120px" onclick="setAppConfig()" /> &nbsp;
-	<a href="javascript:resetAppConfig()">$i18n.getString( "appmanager_set_to_default" )</a>
+	<a href="javascript:resetAppConfig()">$i18n.getString( "appmanager_restore_to_default" )</a>
 </div>
 
 <h3>$i18n.getString( "appmanager_management" )</h3>

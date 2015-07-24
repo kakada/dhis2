@@ -24,7 +24,7 @@
   <bean id="org.hisp.dhis.acl.AclService" class="org.hisp.dhis.acl.DefaultAclService" />
 
   <bean id="org.hisp.dhis.node.NodeService" class="org.hisp.dhis.node.DefaultNodeService" />
-
+  
   <!-- Store definitions -->
 
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormStore" class="org.hisp.dhis.dataentryform.hibernate.HibernateDataEntryFormStore">
@@ -483,6 +483,9 @@
     <property name="completeDataSetRegistrationStore" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="hubClientService" ref="org.hisp.dhis.hub.HubClientService" />
+    <!-- <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" /> -->
   </bean>
 
   <bean id="org.hisp.dhis.dataset.SectionService" class="org.hisp.dhis.dataset.DefaultSectionService">
@@ -585,8 +588,6 @@
 
   <bean id="org.hisp.dhis.user.CurrentUserService" class="org.hisp.dhis.user.DefaultCurrentUserService">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserSettingService" class="org.hisp.dhis.user.DefaultUserSettingService">
@@ -725,7 +726,6 @@
         <value>ecowas</value>
         <value>ecuador</value>
         <value>east_africa_community</value>
-        <value>engender_health</value>
         <value>ethiopia</value>
         <value>fhi360</value>
         <value>forut</value>
@@ -736,7 +736,6 @@
         <value>guinea_bissau</value>
         <value>haiti</value>
         <value>icap</value>
-        <value>ippf</value>
         <value>india</value>
         <value>indonesia</value>
         <value>irc</value>
@@ -1223,6 +1222,12 @@
         </list>
       </list>
     </property>
+  </bean>
+  
+  <!-- Hub -->
+  <bean id="org.hisp.dhis.hub.HubClientService" class="org.hisp.dhis.hub.DefaultHubClientService">
+  	<property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
   </bean>
 
   <!-- AOP definitions -->

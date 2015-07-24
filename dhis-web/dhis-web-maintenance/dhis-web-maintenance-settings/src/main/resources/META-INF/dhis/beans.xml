@@ -120,8 +120,20 @@
     scope="prototype">
   </bean>
   
- <bean id="org.hisp.dhis.settings.action.system.SetSynchronizationSettingsAction"
+  <bean id="org.hisp.dhis.settings.action.system.SetSynchronizationSettingsAction"
     class="org.hisp.dhis.settings.action.system.SetSynchronizationSettingsAction"
+    scope="prototype">
+  </bean>
+  
+  <!-- Hub Configuration -->
+  
+  <bean id="org.hisp.dhis.settings.action.system.GetHubSettingsAction"
+    class="org.hisp.dhis.settings.action.system.GetHubSettingsAction"
+    scope="prototype">
+  </bean>
+  
+  <bean id="org.hisp.dhis.settings.action.system.SetHubSettingsAction"
+    class="org.hisp.dhis.settings.action.system.SetHubSettingsAction"
     scope="prototype">
   </bean>
   

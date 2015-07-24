@@ -96,6 +96,13 @@
       <groupId>com.googlecode.jsmpp</groupId>
       <artifactId>jsmpp</artifactId>
     </dependency>
+    
+    <!-- Hub client -->
+    <dependency>
+    	<groupId>org.instedd.hub.client</groupId>
+    	<artifactId>hub-client</artifactId>
+    	<version>0.0.1</version>
+    </dependency>
       
   </dependencies>
   <properties>

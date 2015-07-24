@@ -36,6 +36,7 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.configuration.hub.HubConfiguration;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -68,6 +69,13 @@ public class GetGeneralSettingsAction
     {
         this.configurationService = configurationService;
     }
+    
+//    private HubConfigurationService hubConfigurationService;
+//    
+//    public void setHubConfigurationService( HubConfigurationService hubConfigurationService )
+//    {
+//        this.hubConfigurationService = hubConfigurationService;
+//    }
 
     private IndicatorService indicatorService;
 
@@ -176,6 +184,12 @@ public class GetGeneralSettingsAction
         return configuration;
     }
     
+    private HubConfiguration hubConfiguration;
+    
+    public HubConfiguration getHubConfiguration() {
+    	return hubConfiguration;
+    }
+    
     private List<String> relativePeriods;
     
     public List<String> getRelativePeriods()
@@ -191,6 +205,8 @@ public class GetGeneralSettingsAction
     public String execute()
     {
         configuration = configurationService.getConfiguration();
+        
+//        hubConfiguration = hubConfigurationService.getConfiguration();
 
         feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
 

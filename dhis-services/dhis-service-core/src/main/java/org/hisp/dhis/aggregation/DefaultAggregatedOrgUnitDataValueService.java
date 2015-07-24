@@ -37,9 +37,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 
-/**
- * @author Lars Helge Overland
- */
 public class DefaultAggregatedOrgUnitDataValueService
     implements AggregatedOrgUnitDataValueService
 {

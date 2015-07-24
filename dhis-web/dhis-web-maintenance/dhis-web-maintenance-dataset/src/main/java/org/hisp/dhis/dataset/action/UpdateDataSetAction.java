@@ -216,11 +216,11 @@ public class UpdateDataSetAction
         this.dataSetId = dataSetId;
     }
 
-    private int openFuturePeriods;
+    private boolean allowFuturePeriods;
 
-    public void setOpenFuturePeriods( int openFuturePeriods )
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
     {
-        this.openFuturePeriods = openFuturePeriods;
+        this.allowFuturePeriods = allowFuturePeriods;
     }
 
     private boolean fieldCombinationRequired;
@@ -348,8 +348,6 @@ public class UpdateDataSetAction
 
         if ( !( equalsNullSafe( name, dataSet.getName() ) &&
             periodType.equals( dataSet.getPeriodType() ) &&
-            expiryDays == dataSet.getExpiryDays() &&
-            openFuturePeriods == dataSet.getOpenFuturePeriods() &&
             dataElements.equals( dataSet.getDataElements() ) &&
             indicators.equals( dataSet.getIndicators() ) &&
             renderAsTabs == dataSet.isRenderAsTabs() ) )
@@ -364,7 +362,7 @@ public class UpdateDataSetAction
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.updateDataElements( dataElements );
         dataSet.setIndicators( indicators );
-        dataSet.setOpenFuturePeriods( openFuturePeriods );
+        dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
         dataSet.setNoValueRequiresComment( noValueRequiresComment );

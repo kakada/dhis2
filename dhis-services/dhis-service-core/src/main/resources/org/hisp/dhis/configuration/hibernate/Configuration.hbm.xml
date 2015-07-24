@@ -43,5 +43,17 @@
 	
 	<property name="smtpPassword" column="smptpassword" type="encryptedString" />
 	
+	<property name="hubServerUrl" column="hubserverurl" />
+	
+	<property name="hubServerUsername" column="hubserverusername" />
+	
+	<property name="hubServerPassword" column="hubserverpassword" type="encryptedString" />
+	
+	<property name="hubInsertTaskUrl" column="hubinserttaskurl" />
+	
+	<property name="hubUpdateTaskUrl" column="hubupdatetaskurl" />
+	
+	<property name="hubEnableMode" column="hubenablemode" type="boolean" />
+	
   </class>
 </hibernate-mapping>

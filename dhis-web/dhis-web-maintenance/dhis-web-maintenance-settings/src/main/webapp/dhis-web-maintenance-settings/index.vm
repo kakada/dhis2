@@ -8,4 +8,5 @@
     #introListImgItem( "systemApprovalSettings.action" "approval_settings" "systemsettings" )
     #introListImgItem( "systemCalendarSettings.action" "calendar_settings" "systemsettings" )
     #introListImgItem( "systemSynchronizationSettings.action" "data_synchronization" "systemsettings" )
+    #introListImgItem( "systemHubSettings.action" "hub_synchronization" "systemsettings" )
 </ul>

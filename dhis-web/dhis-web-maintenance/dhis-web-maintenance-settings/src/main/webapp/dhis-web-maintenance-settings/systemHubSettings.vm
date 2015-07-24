@@ -1,0 +1,55 @@
+<script type="text/javascript">
+	jQuery( document ).ready( function() {
+	    jQuery( "input[type=button]" ).click( function() {
+	        jQuery.postUTF8( "setHubSettings.action", {
+	            hubServerUrl: jQuery( "#hubServerUrl" ).val(),
+	            hubServerUsername: jQuery( "#hubServerUsername" ).val(),
+	            hubServerPassword: jQuery( '#hubServerPassword' ).val(),
+	            hubInsertTaskUrl: jQuery( '#hubInsertTaskUrl' ).val(),
+	            hubUpdateTaskUrl: jQuery( '#hubUpdateTaskUrl' ).val(),
+	            hubEnableMode: jQuery( '#hubEnableMode' ).is(':checked')
+	        }, function( json ) {
+	            if ( json.response == "success" ) {
+	                setHeaderDelayMessage( json.message );
+	            }
+	        } );
+	    } );
+	} );    
+</script>
+
+<h3>$i18n.getString( "hub_synchronization" )</h3>
+
+<div class="setting">
+    <input type="checkbox" id="hubEnableMode" name="hubEnableMode" #if( $hubEnableMode )checked="checked"#end>
+    <label for="hubEnableMode">$i18n.getString( "hub_enable_mode" )</label>
+</div>
+
+<div class="settingLabel">$i18n.getString( "hub_server_url" ) <span class="tipText">(https:// $i18n.getString( "recommended" ))</span></div>
+<div class="setting">
+	<input type="text" id="hubServerUrl" name="hubServerUrl" value='$!hubServerUrl'>
+</div>
+
+<div class="settingLabel">$i18n.getString( "hub_server_username" )</div>
+<div class="setting">
+	<input type="text" id="hubServerUsername" name="hubServerUsername" value='$!hubServerUsername'>
+</div>
+
+<div class="settingLabel">$i18n.getString( "hub_server_password" )</div>
+<div class="setting">
+	<input type="password" id="hubServerPassword" name="hubServerPassword" placeholder="$i18n.getString( 'hidden' )">
+</div>
+
+<div class="settingLabel">$i18n.getString( "hub_insert_task_url" )</div>
+<div class="setting">
+	<input type="text" id="hubInsertTaskUrl" name="hubInsertTaskUrl" value='$!hubInsertTaskUrl' placeholder="$i18n.getString( 'hub_insert_task_url' )">
+</div>
+
+<div class="settingLabel">$i18n.getString( "hub_update_task_url" )</div>
+<div class="setting">
+	<input type="text" id="hubUpdateTaskUrl" name="hubUpdateTaskUrl" value='$!hubUpdateTaskUrl' placeholder="$i18n.getString( 'hub_update_task_url' )">
+</div>
+
+<div class="setting">
+	<input type="button" value="$i18n.getString( 'save' )" style="width:10em"/>
+	<span style="margin-left: 1em;"><a href="javascript:checkHubServerAvailability()">$i18n.getString( "test_settings" )</a></span>
+</div>

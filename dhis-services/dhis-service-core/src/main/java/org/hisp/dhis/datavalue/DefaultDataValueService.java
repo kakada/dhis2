@@ -248,7 +248,7 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValues( source, period, dataElements );
     }
-
+    
     @Override
     public Collection<DataValue> getDataValues( OrganisationUnit source, Period period,
         Collection<DataElement> dataElements, DataElementCategoryOptionCombo attributeOptionCombo )

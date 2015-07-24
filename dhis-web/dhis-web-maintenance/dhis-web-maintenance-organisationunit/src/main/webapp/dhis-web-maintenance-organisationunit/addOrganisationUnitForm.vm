@@ -71,11 +71,11 @@
 		<td><textarea id="comment" name="comment"></textarea></td>
 	</tr>
 	<tr>
-		<td><label for="longitude">$i18n.getString( "longitude" )</label></td>
+		<td><label for="longitude">$i18n.getString( "longitude_optional" )</label></td>
 		<td><input type="text" id="longitude" name="longitude"></td>
 	</tr>
 	<tr>
-		<td><label for="latitude">$i18n.getString( "latitude" )</label></td>
+		<td><label for="latitude">$i18n.getString( "latitude_optional" )</label></td>
 		<td><input type="text" id="latitude" name="latitude"></td>
 	</tr>
     <tr>
@@ -116,7 +116,6 @@
 	</tr>
 </table>
 
-#if( $keyAllowObjectAssignment )
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "data_sets" )</th>
@@ -163,7 +162,6 @@
     </tr>
 	#end
 </table>
-#end
 
 <p>
 	<input type="submit" name="save" value="$i18n.getString( 'add' )" style="width: 10em;" />

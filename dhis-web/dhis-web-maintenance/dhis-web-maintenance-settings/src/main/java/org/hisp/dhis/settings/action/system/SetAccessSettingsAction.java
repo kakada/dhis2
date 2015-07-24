@@ -35,7 +35,6 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_CREDENTIALS_EXPIRES
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_OPENID_PROVIDER;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_OPENID_PROVIDER_LABEL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SELF_REGISTRATION_NO_RECAPTCHA;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ALLOW_OBJECT_ASSIGNMENT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -118,13 +117,6 @@ public class SetAccessSettingsAction
         this.canGrantOwnUserAuthorityGroups = canGrantOwnUserAuthorityGroups;
     }
 
-    private Boolean allowObjectAssignment;
-
-    public void setAllowObjectAssignment( Boolean allowObjectAssignment )
-    {
-        this.allowObjectAssignment = allowObjectAssignment;
-    }
-
     private Integer credentialsExpires;
 
     public void setCredentialsExpires( Integer credentialsExpires )
@@ -199,8 +191,8 @@ public class SetAccessSettingsAction
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
         systemSettingManager.saveSystemSetting( KEY_ACCOUNT_INVITE, accountInvite );
         systemSettingManager.saveSystemSetting( KEY_CAN_GRANT_OWN_USER_AUTHORITY_GROUPS, canGrantOwnUserAuthorityGroups );
-        systemSettingManager.saveSystemSetting( KEY_ALLOW_OBJECT_ASSIGNMENT, allowObjectAssignment );
         systemSettingManager.saveSystemSetting( KEY_SELF_REGISTRATION_NO_RECAPTCHA, selfRegistrationNoRecaptcha );
+
         systemSettingManager.saveSystemSetting( KEY_OPENID_PROVIDER, StringUtils.isEmpty( openIdProvider ) ? null : openIdProvider );
 
         if ( !StringUtils.isEmpty( openIdProviderLabel ) )

@@ -285,7 +285,7 @@ public class HibernateDataValueStore
 
         return criteria.list();
     }
-
+    
     @Override
     @SuppressWarnings( "unchecked" )
     public Collection<DataValue> getDataValues( OrganisationUnit source, Period period, 

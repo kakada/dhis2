@@ -178,5 +178,20 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
+    <!-- Hub integration -->
+    
+    <action name="systemHubSettings" class="org.hisp.dhis.settings.action.system.GetHubSettingsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/systemHubSettings.vm</param>
+      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="javascripts">javascripts/systemHubSettings.js</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action> 
+    
+    <action name="setHubSettings" class="org.hisp.dhis.settings.action.system.SetHubSettingsAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
   </package>
 </struts>
