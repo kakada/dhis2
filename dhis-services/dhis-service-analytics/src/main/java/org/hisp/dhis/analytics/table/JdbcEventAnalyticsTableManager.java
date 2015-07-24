@@ -47,10 +47,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +62,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class JdbcEventAnalyticsTableManager
     extends AbstractJdbcTableManager
 {
+    @Autowired
+    private ProgramService programService;
+
     // -------------------------------------------------------------------------
     // Implementation
     // -------------------------------------------------------------------------
@@ -96,7 +101,7 @@ public class JdbcEventAnalyticsTableManager
             
             for ( Integer id : programs )
             {
-                Program program = idObjectManager.getNoAcl( Program.class, id );
+                Program program = programService.getProgram( id );
                 
                 AnalyticsTable table = new AnalyticsTable( baseName, null, period, program );
                 List<String[]> dimensionColumns = getDimensionColumns( table );

@@ -70,8 +70,8 @@ public class DataQueryGroups
      * in sequence due to the typical indicator query, where few data elements
      * have the average aggregation operator and many have the sum. Performance
      * will increase if optimal number of queries can be run in parallel for the
-     * queries which take most time, which in this case are the ones with sum 
-     * aggregation type.
+     * queries which take most time, which is in this case are the ones with
+     * sum aggregation type.
      */
     public List<List<DataQueryParams>> getSequentialQueries()
     {

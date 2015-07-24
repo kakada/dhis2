@@ -48,18 +48,19 @@ import java.util.Set;
  */
 public interface DataValueSetService
 {
-    DataExportParams getFromUrl( Set<String> dataSets, Set<String> periods, Date startDate, Date endDate, 
-        Set<String> organisationUnits, boolean includeChildren, Date lastUpdated, Integer limit, IdSchemes idSchemes );
-    
-    void validate( DataExportParams params );
-    
-    void writeDataValueSetXml( DataExportParams params, OutputStream out );
+    void writeDataValueSetXml( String dataSet, String period, String orgUnit, OutputStream out, IdSchemes idSchemes );
 
-    void writeDataValueSetJson( DataExportParams params, OutputStream out );
+    void writeDataValueSetXml( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, OutputStream out, IdSchemes idSchemes );
+
+    void writeDataValueSetJson( String ds, String period, String ou, OutputStream outputStream, IdSchemes idSchemes );
+
+    void writeDataValueSetJson( Set<String> dataSet, Date startDate, Date endDate, Set<String> ous, boolean includeChildren, OutputStream outputStream, IdSchemes idSchemes );
 
     void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream, IdSchemes idSchemes );
 
-    void writeDataValueSetCsv( DataExportParams params, Writer writer );
+    void writeDataValueSetCsv( String dataSet, String period, String orgUnit, Writer writer, IdSchemes idSchemes );
+
+    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, boolean includeChildren, Writer writer, IdSchemes idSchemes );
 
     RootNode getDataValueSetTemplate( DataSet dataSet, Period period, List<String> orgUnits, boolean writeComments, String ouScheme, String deScheme );
 
@@ -80,4 +81,8 @@ public interface DataValueSetService
     ImportSummary saveDataValueSetCsv( InputStream in, ImportOptions importOptions, TaskId id );
 
     ImportSummary saveDataValueSetPdf( InputStream in, ImportOptions importOptions, TaskId id );
+    
+
+    void writeDataValueSetJson( Set<String> dataSets, String period, OutputStream outputStream, IdSchemes idSchemes );
+	
 }

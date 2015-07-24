@@ -37,17 +37,6 @@ import java.util.Collection;
 public class UniqueArrayList<E>
     extends ArrayList<E>
 {    
-    public UniqueArrayList()
-    {
-        super();
-    }
-    
-    public UniqueArrayList( Collection<? extends E> c )
-    {
-        super();
-        addAll( c );
-    }
-    
     @Override
     public boolean add( E e )
     {

@@ -84,7 +84,6 @@ public class OrganisationUnitController
     protected List<OrganisationUnit> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters, List<Order> orders )
     {
         List<OrganisationUnit> entityList;
-        boolean haveFilters = !filters.isEmpty();
         Query query = queryService.getQueryFromUrl( getEntityClass(), filters, orders );
         query.setDefaultOrder();
 
@@ -158,9 +157,9 @@ public class OrganisationUnitController
             entityList = new ArrayList<>( manager.getAll( getEntityClass() ) );
             Collections.sort( entityList, OrganisationUnitByLevelComparator.INSTANCE );
         }
-        else if ( options.hasPaging() && !haveFilters )
+        else if ( options.hasPaging() && filters.isEmpty() )
         {
-            int count = queryService.count( query );
+            int count = manager.getCount( getEntityClass() );
 
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );

@@ -100,7 +100,7 @@ public class PdfDataEntryFormUtil
 
     private static final String DATAVALUE_IMPORT_TIMESTAMP_DATEFORMAT = "yyyy-MM-dd";
 
-    private static final String FOOTERTEXT_DEFAULT = "PDF Template [v 1.00] generated from DHIS %s on %s";
+    private static final String FOOTERTEXT_DEFAULT = "PDF Template generated from DHIS %s on %s";
 
     private static final String DATEFORMAT_FOOTER_DEFAULT = "MMMM dd, yyyy";
 

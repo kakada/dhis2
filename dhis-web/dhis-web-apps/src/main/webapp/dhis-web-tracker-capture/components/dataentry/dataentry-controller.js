@@ -260,7 +260,7 @@ trackerCapture.controller('DataEntryController',
     
     var processEvent = function(event, stage){
         
-        event.providedElsewhere = {};
+        event.providedElsewhere = [];
         
         angular.forEach(event.dataValues, function(dataValue){
             

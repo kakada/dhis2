@@ -24,7 +24,7 @@ input.option
 }
 
 .fixed-width-select{
-    width: 262px;
+    width: 264px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -867,14 +867,13 @@ input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-outer-spi
 .dropdown-menu li:hover {
     cursor: pointer;
 }
-input[type=number], input[type=text], input[type=password], input[type=email], textarea
-{
-  border: 1px solid #aaa;
-  padding: 5px 0 !important;
-}
 
+input[type=number] {
+    border: 1px solid #aaa;
+    padding: 4px 1px;
+}
 select {
-    padding: 3px 0 !important;
+    padding: 3px;
 }
 
 .clear {
@@ -937,8 +936,4 @@ input.typeahead::-ms-input-placeholder {
 
 .small-horizonal-spacing{
     margin-left: 5px;    
-}
-
-.form-control {
-    width: 100%;
 }

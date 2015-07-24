@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.common.JacksonUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
 import org.hisp.dhis.dxf2.datavalue.StreamingJsonDataValue;
 
 /**
@@ -58,7 +59,20 @@ public class StreamingJsonDataValueSet extends DataValueSet
             ignored.printStackTrace();
         }
     }
-
+    
+    public StreamingJsonDataValueSet( JsonGenerator generator ) {
+    	this.generator = generator;
+    	
+    	try
+        {
+            this.generator.writeStartObject();
+        }
+        catch ( IOException ignored )
+        {
+            ignored.printStackTrace();
+        }
+    }
+    
     @Override
     public void setDataElementIdScheme( String dataElementIdScheme )
     {
@@ -94,7 +108,7 @@ public class StreamingJsonDataValueSet extends DataValueSet
     {
         writeObjectField( FIELD_ORGUNIT, orgUnit );
     }
-
+    
     @Override
     public void setAttributeOptionCombo( String attributeOptionCombo )
     {
@@ -135,7 +149,7 @@ public class StreamingJsonDataValueSet extends DataValueSet
             }
 
             generator.writeEndObject();
-            generator.close();
+//            generator.close();
         }
         catch ( IOException ignored )
         {

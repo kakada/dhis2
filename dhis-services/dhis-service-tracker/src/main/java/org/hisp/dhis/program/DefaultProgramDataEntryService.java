@@ -258,8 +258,7 @@ public class DefaultProgramDataEntryService
                 {
                     inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML, dataElementValue );
                 }
-                else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() )
-                    || DataElement.VALUE_TYPE_DATETIME.equals( dataElement.getType() ) )
+                else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
                 {
                     inputHTML = populateCustomDataEntryForDate( inputHTML, dataElementValue );
                 }
@@ -285,8 +284,7 @@ public class DefaultProgramDataEntryService
                 }
                 else
                 {
-                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() )
-                        || DataElement.VALUE_TYPE_DATETIME.equals( dataElement.getType() ) )
+                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
                     {
                         inputHTML += jQueryCalendar;
                     }
@@ -447,8 +445,7 @@ public class DefaultProgramDataEntryService
                 {
                     inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML, dataElementValue );
                 }
-                else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() )
-                    || DataElement.VALUE_TYPE_DATETIME.equals( dataElement.getType() ) )
+                else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
                 {
                     inputHTML = populateCustomDataEntryForDate( inputHTML, dataElementValue );
                 }
@@ -474,8 +471,7 @@ public class DefaultProgramDataEntryService
                 }
                 else
                 {
-                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() )
-                        || DataElement.VALUE_TYPE_DATETIME.equals( dataElement.getType() ) )
+                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
                     {
                         inputHTML += jQueryCalendar;
                     }

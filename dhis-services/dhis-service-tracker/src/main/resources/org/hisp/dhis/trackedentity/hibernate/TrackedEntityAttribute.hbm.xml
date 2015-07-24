@@ -31,7 +31,7 @@
       column="trackedentityid" foreign-key="fk_trackedentityattribute_trackedentityid" />
 
     <many-to-one name="legendSet" class="org.hisp.dhis.legend.LegendSet" column="legendsetid"
-      foreign-key="fk_trackedentityattribute_legendset" />
+      foreign-key="fk_dataelement_legendset" />
 
     <property name="inherit" column="inherit" />
 

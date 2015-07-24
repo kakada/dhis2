@@ -283,9 +283,7 @@ public class FormUtilsImpl
             periodType = (CalendarPeriodType) dataSet.getPeriodType();
         }
 
-        //TODO implement properly
-        
-        if ( dataSet.getOpenFuturePeriods() > 0 )
+        if ( dataSet.isAllowFuturePeriods() )
         {
             List<Period> periods = periodType.generatePeriods( new Date() );
             Collections.reverse( periods );

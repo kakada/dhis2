@@ -61,7 +61,7 @@ import org.springframework.util.StringUtils;
 public class FormUtils
 {
     private static final String KEY_PERIOD_TYPE = "periodType";
-    private static final String KEY_OPEN_FUTURE_PERIODS = "openFuturePeriods";
+    private static final String KEY_ALLOW_FUTURE_PERIODS = "allowFuturePeriods";
     private static final String KEY_DATA_ELEMENTS = "dataElements";
     private static final String KEY_INDICATORS = "indicators";
     private static final String KEY_EXPIRY_DAYS = "expiryDays";
@@ -74,7 +74,7 @@ public class FormUtils
         form.setSubtitle( dataSet.getDisplayShortName() );
 
         form.getOptions().put( KEY_PERIOD_TYPE, dataSet.getPeriodType().getName() );
-        form.getOptions().put( KEY_OPEN_FUTURE_PERIODS, dataSet.getOpenFuturePeriods() );
+        form.getOptions().put( KEY_ALLOW_FUTURE_PERIODS, dataSet.isAllowFuturePeriods() );
         form.getOptions().put( KEY_EXPIRY_DAYS, dataSet.getExpiryDays() );
 
         if ( dataSet.hasSections() )

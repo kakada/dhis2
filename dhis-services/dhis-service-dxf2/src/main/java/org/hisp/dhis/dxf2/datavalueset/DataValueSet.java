@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import org.hisp.dhis.common.DxfNamespaces;
 import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.view.DetailedView;
@@ -54,6 +55,7 @@ public class DataValueSet
     protected static final String FIELD_IDSCHEME = "idScheme";
     protected static final String FIELD_DATAELEMENTIDSCHEME = "dataElementIdScheme";
     protected static final String FIELD_ORGUNITIDSCHEME = "orgUnitIdScheme";
+    
     protected static final String FIELD_DRYRUN = "dryRun";
     protected static final String FIELD_IMPORTSTRATEGY = "importStrategy";
 
@@ -64,7 +66,7 @@ public class DataValueSet
     protected static final String FIELD_PERIOD = "period";
     protected static final String FIELD_ORGUNIT = "orgUnit";
     protected static final String FIELD_ATTRIBUTE_OPTION_COMBO = "attributeOptionCombo";
-
+    
     //--------------------------------------------------------------------------
     // Options
     //--------------------------------------------------------------------------
@@ -74,7 +76,9 @@ public class DataValueSet
     protected String dataElementIdScheme;
 
     protected String orgUnitIdScheme;
-
+    protected String orgUnitNameScheme;
+    protected String orgUnitCoordinatesScheme;
+    
     protected Boolean dryRun;
 
     protected String strategy;
@@ -90,11 +94,13 @@ public class DataValueSet
     protected String period;
 
     protected String orgUnit;
-
+    protected String orgUnitName;
+    protected String orgUnitCoordinates;
+    
     protected String attributeOptionCombo;
 
     protected List<DataValue> dataValues = new ArrayList<>();
-
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -145,7 +151,33 @@ public class DataValueSet
     {
         this.orgUnitIdScheme = orgUnitIdScheme;
     }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOrgUnitNameScheme()
+    {
+        return orgUnitNameScheme;
+    }
 
+    public void setOrgUnitNameScheme( String orgUnitNameScheme )
+    {
+        this.orgUnitNameScheme = orgUnitNameScheme;
+    }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOrgUnitCoordinatesScheme()
+    {
+        return orgUnitCoordinatesScheme;
+    }
+
+    public void setOrgUnitCoordinatesScheme( String orgUnitCoordinatesScheme )
+    {
+        this.orgUnitCoordinatesScheme = orgUnitCoordinatesScheme;
+    }
+    
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -223,7 +255,33 @@ public class DataValueSet
     {
         this.orgUnit = orgUnit;
     }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOrgUnitName()
+    {
+        return orgUnitName;
+    }
 
+    public void setOrgUnitName( String orgUnitName )
+    {
+        this.orgUnitName = orgUnitName;
+    }
+    
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
+    public String getOrgUnitCoordinates()
+    {
+        return orgUnitCoordinates;
+    }
+
+    public void setOrgUnitCoordinates( String orgUnitCoordinates )
+    {
+        this.orgUnitCoordinates = orgUnitCoordinates;
+    }
+    
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
@@ -250,7 +308,7 @@ public class DataValueSet
     {
         this.dataValues = dataValues;
     }
-
+    
     //--------------------------------------------------------------------------
     // Logic
     //--------------------------------------------------------------------------

@@ -81,7 +81,7 @@ public class MobileClientController
         return orgUnits;
     }
 
-    @RequestMapping( method = RequestMethod.GET, value = "/{version:.+}" )
+    @RequestMapping( method = RequestMethod.GET, value = "/{version}" )
     @ResponseBody
     public OrgUnits getOrgUnitsForUser( HttpServletRequest request, @PathVariable
     String version )
@@ -102,7 +102,7 @@ public class MobileClientController
             unitList.add( getOrgUnit( unit, request ) );
         }
         OrgUnits orgUnits = new OrgUnits( unitList );
-        orgUnits.setClientVersion( version );
+        orgUnits.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
         return orgUnits;
     }
 

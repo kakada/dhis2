@@ -186,12 +186,13 @@ public class DataValueController
         }
 
         // ---------------------------------------------------------------------
-        // Future period constraint check //TODO better check
+        // Future period constraint check
         // ---------------------------------------------------------------------
-        
-        if ( period.isFuture() && dataElement.getOpenFuturePeriods() <= 0 )
+
+        if ( period.isFuture() && !dataElement.isAllowFuturePeriods() )
         {
-            ContextUtils.conflictResponse( response, "One or more data sets for data element does not allow future periods: " + de );
+            ContextUtils.conflictResponse( response, "Cannot save data value for future period. " +
+                "One or more data sets for data element " + de + " does not allow future periods." );
             return;
         }
 

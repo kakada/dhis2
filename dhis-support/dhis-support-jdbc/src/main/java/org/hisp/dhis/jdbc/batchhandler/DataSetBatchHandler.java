@@ -101,7 +101,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "periodtypeid" );
         statementBuilder.setColumn( "mobile" );
-        statementBuilder.setColumn( "openfutureperiods" );
+        statementBuilder.setColumn( "allowfutureperiods" );
         statementBuilder.setColumn( "dataentryform" );
         statementBuilder.setColumn( "expirydays" );
         statementBuilder.setColumn( "timelydays" );
@@ -126,7 +126,7 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getCode() );
         statementBuilder.setValue( dataSet.getPeriodType().getId() );
         statementBuilder.setValue( dataSet.isMobile() );
-        statementBuilder.setValue( dataSet.getOpenFuturePeriods() );
+        statementBuilder.setValue( dataSet.isAllowFuturePeriods() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
         statementBuilder.setValue( dataSet.getExpiryDays() );
         statementBuilder.setValue( dataSet.getTimelyDays() );

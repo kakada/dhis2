@@ -163,9 +163,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    public ImportTypeSummary importObjects( User user, List<T> objects, ObjectBridge objectBridge, ImportOptions options )
+    public ImportTypeSummary importObjects( User user, List<T> objects, ImportOptions options )
     {
-        this.objectBridge = objectBridge;
         this.options = options;
         this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
 
@@ -194,9 +193,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     @Override
-    public ImportTypeSummary importObject( User user, T object, ObjectBridge objectBridge, ImportOptions options )
+    public ImportTypeSummary importObject( User user, T object, ImportOptions options )
     {
-        this.objectBridge = objectBridge;
         this.options = options;
         this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
 

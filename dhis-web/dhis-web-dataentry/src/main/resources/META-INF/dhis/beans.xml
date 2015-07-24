@@ -10,6 +10,7 @@
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>

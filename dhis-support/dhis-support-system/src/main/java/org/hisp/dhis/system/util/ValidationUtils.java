@@ -329,11 +329,6 @@ public class ValidationUtils
             return "value_not_valid_date";
         }
 
-        if ( VALUE_TYPE_DATETIME.equals( type ) && !DateUtils.dateTimeIsValid( value ) )
-        {
-            return "value_not_valid_datetime";
-        }
-
         return null;
     }
 

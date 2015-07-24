@@ -41,7 +41,7 @@ public class EqOp extends Op
     {
         if ( getValue() == null || object == null )
         {
-            return OpStatus.EXCLUDE;
+            return OpStatus.IGNORE;
         }
 
         if ( String.class.isInstance( object ) )
@@ -101,6 +101,6 @@ public class EqOp extends Op
             return (s1 != null && s2.equals( s1 )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
-        return OpStatus.EXCLUDE;
+        return OpStatus.IGNORE;
     }
 }

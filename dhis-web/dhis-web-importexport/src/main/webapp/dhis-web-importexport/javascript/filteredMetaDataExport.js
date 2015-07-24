@@ -48,9 +48,9 @@ function loadMetaDataCategories()
             if( $(this).is(":checked") ) {
                 // $(this).attr('checked', true);
                 $( "#heading" + metaDataCategoryName ).css( "background", "#CFFFB3 50% 50% repeat-x" );
-                 selectAllValuesByCategory(metaDataCategoryName);
+                // selectAllValuesByCategory(metaDataCategoryName);
             } else {
-                 deselectValuesByCategory(metaDataCategoryName);
+                // deselectValuesByCategory(metaDataCategoryName);
                 $( "#heading" + metaDataCategoryName ).css( "background", "" );
             }
         } );

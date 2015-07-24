@@ -24,11 +24,9 @@
 
   <bean id="org.hisp.dhis.dxf2.metadata.ExportService" class="org.hisp.dhis.dxf2.metadata.DefaultExportService" scope="prototype" />
 
-  <bean id="org.hisp.dhis.dxf2.metadata.ImportService" class="org.hisp.dhis.dxf2.metadata.DefaultImportService" scope="prototype">
-    <aop:scoped-proxy proxy-target-class="false" />
-  </bean>
+  <bean id="org.hisp.dhis.dxf2.metadata.ImportService" class="org.hisp.dhis.dxf2.metadata.DefaultImportService" scope="prototype" />
 
-  <bean id="org.hisp.dhis.dxf2.metadata.ObjectBridge" class="org.hisp.dhis.dxf2.metadata.DefaultObjectBridge" scope="prototype"/>
+  <bean id="org.hisp.dhis.dxf2.metadata.ObjectBridge" class="org.hisp.dhis.dxf2.metadata.DefaultObjectBridge" />
 
   <bean id="org.hisp.dhis.dxf2.datavalueset.DataValueSetService"
     class="org.hisp.dhis.dxf2.datavalueset.DefaultDataValueSetService" />

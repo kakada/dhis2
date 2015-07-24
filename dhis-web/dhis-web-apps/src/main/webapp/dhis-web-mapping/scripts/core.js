@@ -512,13 +512,13 @@ Ext.onReady( function() {
 							layout: 'column',
 							iconCls: 'gis-window-title-icon-information',
 							cls: 'gis-container-default',
-							//width: 550,
+							width: 460,
 							height: 400, //todo
 							period: null,
 							items: [
 								{
 									cls: 'gis-container-inner',
-									width: 180,
+									columnWidth: 0.4,
 									bodyStyle: 'padding-right:4px',
 									items: function() {
 										var a = [];
@@ -569,7 +569,7 @@ Ext.onReady( function() {
 								{
 									xtype: 'form',
 									cls: 'gis-container-inner gis-form-widget',
-									//width: 360,
+									columnWidth: 0.6,
 									bodyStyle: 'padding-left:4px',
 									items: [
 										{
@@ -587,7 +587,7 @@ Ext.onReady( function() {
 											displayField: 'name',
 											emptyText: 'Select period',
 											forceSelection: true,
-											width: 350, //todo
+											width: 258, //todo
 											labelWidth: 70,
 											store: {
 												fields: ['id', 'name'],
@@ -656,12 +656,10 @@ Ext.onReady( function() {
                                                                 }
 
                                                                 // records
-                                                                for (var i = 0, value; i < r.rows.length; i++) {
-                                                                    value = r.rows[i][valueIndex];
-
+                                                                for (var i = 0; i < r.rows.length; i++) {
                                                                     records.push({
                                                                         name: r.metaData.names[r.rows[i][dxIndex]],
-                                                                        value: Ext.isNumeric(value) ? parseFloat(value) : value
+                                                                        value: parseFloat(r.rows[i][valueIndex])
                                                                     });
                                                                 }
 
@@ -676,7 +674,7 @@ Ext.onReady( function() {
 											xtype: 'grid',
 											cls: 'gis-grid plain',
 											height: 313, //todo
-											width: 350,
+											width: 258,
 											scroll: 'vertical',
 											columns: [
 												{
@@ -684,14 +682,14 @@ Ext.onReady( function() {
 													text: 'Data element',
 													dataIndex: 'name',
 													sortable: true,
-													width: 200
+													width: 195
 												},
 												{
 													id: 'value',
 													header: 'Value',
 													dataIndex: 'value',
 													sortable: true,
-													width: 150
+													width: 63
 												}
 											],
 											disableSelection: true,
@@ -2794,7 +2792,6 @@ Ext.onReady( function() {
 					{id: 'LAST_YEAR', name: GIS.i18n.last_year}
 				],
 				relativePeriodsMap: {},
-                relativePeriodRecordsMap: {},
 				integratedRelativePeriodsMap: {
 					'THIS_WEEK': 'THIS_WEEK',
 					'LAST_WEEK': 'LAST_WEEK',
@@ -2821,15 +2818,11 @@ Ext.onReady( function() {
 				}
 			};
 
-                // relativePeriodsMap / records
+                // relativePeriodsMap
             for (var i = 0, obj; i < conf.period.relativePeriods.length; i++) {
                 obj = conf.period.relativePeriods[i];
 
                 conf.period.relativePeriodsMap[obj.id] = obj.name;
-                conf.period.relativePeriodRecordsMap[obj.id] = {
-                    id: obj.id,
-                    name: obj.name
-                };
             }
 
             conf.url = {};

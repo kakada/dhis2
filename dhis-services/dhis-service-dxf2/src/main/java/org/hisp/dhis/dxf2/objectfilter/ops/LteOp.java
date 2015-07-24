@@ -41,7 +41,7 @@ public class LteOp extends Op
     {
         if ( getValue() == null || object == null )
         {
-            return OpStatus.EXCLUDE;
+            return OpStatus.IGNORE;
         }
 
         if ( Integer.class.isInstance( object ) )
@@ -80,6 +80,6 @@ public class LteOp extends Op
             return (s1 != null && (s2.before( s1 ) || s2.equals( s1 ))) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
-        return OpStatus.EXCLUDE;
+        return OpStatus.IGNORE;
     }
 }

@@ -28,8 +28,18 @@ package org.hisp.dhis.webapi.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONObject;
+
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.common.FilterOptions;
 import org.hisp.dhis.dxf2.common.ImportOptions;
@@ -58,20 +68,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Ovidiu Rosu <rosu.ovi@gmail.com>
  */
 @Controller
 public class FilteredMetaDataController
+    extends AbstractCrudController<MetaDataFilter>
 {
     public static final String RESOURCE_PATH = "/filteredMetaData";
 

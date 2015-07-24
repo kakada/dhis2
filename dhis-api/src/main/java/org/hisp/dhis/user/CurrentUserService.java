@@ -28,10 +28,8 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -80,10 +78,4 @@ public interface CurrentUserService
      * Indicates whether the current user has been granted the given authority.
      */
     boolean currenUserIsAuthorized( String auth );
-    
-    /**
-     * Returns the data sets associated with the current user. If the current
-     * user has the ALL authority then all data sets are returned.
-     */
-    List<DataSet> getCurrentUserDataSets();
 }

@@ -48,7 +48,7 @@ public interface Importer<T>
      * @param options Import options
      * @return ImportConflict instance if a conflict occurred, if not null
      */
-    ImportTypeSummary importObjects( User user, List<T> objects, ObjectBridge objectBridge, ImportOptions options );
+    ImportTypeSummary importObject( User user, T object, ImportOptions options );
 
     /**
      * Import a collection of objects.
@@ -57,7 +57,7 @@ public interface Importer<T>
      * @param options Import options
      * @return List of all the ImportConflicts encountered
      */
-    ImportTypeSummary importObject( User user, T object, ObjectBridge objectBridge, ImportOptions options );
+    ImportTypeSummary importObjects( User user, List<T> objects, ImportOptions options );
 
     /**
      * Can this importer handle a certain Class type?

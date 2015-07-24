@@ -486,8 +486,7 @@ public class DefaultProgramIndicatorService
 
                     String value = dataValue.getValue();
 
-                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_DATE )
-                        || dataElement.getType().equals(DataElement.VALUE_TYPE_DATETIME ) )
+                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_DATE ) )
                     {
                         value = DateUtils.daysBetween( new Date(), DateUtils.getDefaultDate( value ) ) + " ";
                     }

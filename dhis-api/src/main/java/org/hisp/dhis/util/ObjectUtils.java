@@ -34,7 +34,6 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.joda.time.DateTime;
 
 public class ObjectUtils
 {
@@ -44,7 +43,6 @@ public class ObjectUtils
         put( DataElement.VALUE_TYPE_BOOL, Boolean.class );
         put( DataElement.VALUE_TYPE_TRUE_ONLY, Boolean.class );
         put( DataElement.VALUE_TYPE_DATE, Date.class );
-        put( DataElement.VALUE_TYPE_DATETIME, DateTime.class );
         put( DataElement.VALUE_TYPE_UNIT_INTERVAL, Double.class );
         put( DataElement.VALUE_TYPE_PERCENTAGE, Double.class );
         put( TrackedEntityAttribute.TYPE_NUMBER, Double.class );

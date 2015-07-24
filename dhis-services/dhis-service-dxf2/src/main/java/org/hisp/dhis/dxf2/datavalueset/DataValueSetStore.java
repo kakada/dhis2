@@ -28,22 +28,34 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dxf2.common.IdSchemes;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Date;
-
-import org.hisp.dhis.dxf2.common.IdSchemes;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
  */
 public interface DataValueSetStore
 {
-    public void writeDataValueSetXml( DataExportParams params, Date completeDate, OutputStream out );
+	
+    public void writeDataValueSetXml( Set<DataSet> dataSets, Date completeDate, Period period,
+        OrganisationUnit orgUnit, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out, IdSchemes idSchemes );
 
-    public void writeDataValueSetJson( DataExportParams params, Date completeDate, OutputStream out );
+    public void writeDataValueSetJson( Set<DataSet> dataSets, Date completeDate, Period period,
+        OrganisationUnit orgUnit, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out, IdSchemes idSchemes );
 
-    public void writeDataValueSetCsv( DataExportParams params, Date completeDate, Writer writer );
+    public void writeDataValueSetCsv( Set<DataSet> dataSets, Date completeDate, Period period, OrganisationUnit orgUnit,
+        Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer, IdSchemes idSchemes );
 
     void writeDataValueSetJson( Date lastUpdated, OutputStream outputStream, IdSchemes idSchemes );
+    
+    void writeDataValueSetJson(Set<DataSet> dataSets, Date completeDate,
+			Period period, Set<Period> periods, OutputStream out,
+			IdSchemes idSchemes);
 }

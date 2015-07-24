@@ -28,11 +28,14 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.common.ImportOptions;
 import org.hisp.dhis.dxf2.gml.GmlImportService;
-import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskId;
 
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -41,6 +44,8 @@ import java.io.InputStream;
 public class ImportMetaDataGmlTask
     implements Runnable
 {
+    private static final Log log = LogFactory.getLog( ImportMetaDataGmlTask.class );
+
     private TaskId taskId;
 
     private String userUid;
@@ -76,7 +81,17 @@ public class ImportMetaDataGmlTask
     @Override
     public void run()
     {
-        importOptions.setImportStrategy( ImportStrategy.UPDATE.name() );
-        gmlImportService.importGml( inputStream, userUid, importOptions, taskId );
+        importOptions.setImportStrategy( "update" ); // Force update only for GML import
+
+        try
+        {
+            gmlImportService.importGml( inputStream, userUid, importOptions, taskId );
+        }
+        catch ( IOException | TransformerException e )
+        {
+            log.error( "Unable to read GML data from input stream", e );
+
+            throw new RuntimeException( "Failed to parse GML input stream", e );
+        }
     }
 }

@@ -34,7 +34,7 @@
                             
                             <!-- event add/filter icon begins -->
                             <span class='pull-right'>
-                                <span ng-if="stageNeedsEvent(stage) && selectedEnrollment.status === 'ACTIVE'">
+                                <span ng-if="stageNeedsEvent(stage)">
                                     <a href title="{{'create_new_event'| translate}}" ng-click="showCreateEvent(stage)" style="vertical-align:middle"><i class="fa fa-plus"></i></a>
                                 </span>
                             </span>

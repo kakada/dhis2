@@ -77,7 +77,7 @@ public class AbstractEventRowService
                 eventRow.setTrackedEntityInstance( event.getTrackedEntityInstance() );
                 eventRow.setAttributes( tei.getAttributes() );
                 eventRow.setEvent( event.getEvent() );
-                eventRow.setProgram( event.getProgram() );
+                eventRow.setProgram( params.getProgram().getUid() );
                 eventRow.setProgramStage( event.getProgramStage() );                
                 eventRow.setRegistrationOrgUnit( tei.getOrgUnit() );
                 eventRow.setRegistrationDate( tei.getCreated() );

@@ -68,7 +68,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.MathUtils;
@@ -249,11 +248,9 @@ public class DefaultQueryPlanner
     
                         for ( DataQueryParams byAggregationType : groupedByAggregationType )
                         {
-                            List<DataQueryParams> groupedByDaysInPeriod = groupByDaysInPeriod( byAggregationType );
-                            
-                            for ( DataQueryParams byDaysInPeriod : groupedByDaysInPeriod )
+                            if ( byAggregationType.isDisaggregation() )
                             {
-                                List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byDaysInPeriod );
+                                List<DataQueryParams> groupedByDataPeriodType = groupByDataPeriodType( byAggregationType );
                                 
                                 for ( DataQueryParams byDataPeriodType : groupedByDataPeriodType )
                                 {
@@ -263,6 +260,13 @@ public class DefaultQueryPlanner
                                     
                                     queries.add( byDataPeriodType );
                                 }
+                            }
+                            else
+                            {
+                                byAggregationType.setPartitions( byPartition.getPartitions() );
+                                byAggregationType.setPeriodType( byPeriodType.getPeriodType() );
+                                
+                                queries.add( byAggregationType );
                             }
                         }
                     }
@@ -349,7 +353,7 @@ public class DefaultQueryPlanner
 
         if ( subQueries.size() > queryGroups.getAllQueries().size() )
         {
-            log.debug( "Split on dimension " + dimension + ": " + ( subQueries.size() / queryGroups.getAllQueries().size() ) );
+            log.debug( "Split on " + dimension + ": " + ( subQueries.size() / queryGroups.getAllQueries().size() ) );
         }
         
         return new DataQueryGroups( subQueries );
@@ -624,51 +628,14 @@ public class DefaultQueryPlanner
     }
 
     /**
-     * Groups the given query into sub queries based on the number of days in the
-     * aggregation period. This only applies if the aggregation type is
-     * AVERAGE_SUM_INT and the query has at least one period as dimension option.
-     * This is necessary since the number of days in the aggregation period is 
-     * part of the expression for aggregating the value.
-     */
-    private List<DataQueryParams> groupByDaysInPeriod( DataQueryParams params )
-    {
-        List<DataQueryParams> queries = new ArrayList<>();
-        
-        if ( params.getPeriods() == null || params.getPeriods().isEmpty() || !params.isAggregationType( AggregationType.AVERAGE_SUM_INT ) )
-        {
-            queries.add( params.instance() );
-            return queries;
-        }
-        
-        ListMap<Integer, NameableObject> daysPeriodMap = getDaysPeriodMap( params.getPeriods() );
-        
-        DimensionalObject periodDim = params.getDimension( PERIOD_DIM_ID );
-
-        for ( Integer days : daysPeriodMap.keySet() )
-        {
-            DataQueryParams query = params.instance();
-            query.setDimensionOptions( periodDim.getDimension(), periodDim.getDimensionType(), periodDim.getDimensionName(), daysPeriodMap.get( days ) );
-            queries.add( query );
-        }
-
-        if ( queries.size() > 1 )
-        {
-            log.debug( "Split on days in period: " + queries.size() );
-        }
-        
-        return queries;
-    }
-    
-    /**
      * Groups the given query in sub queries based on the period type of its
-     * data elements. Sets the data period type on each query. This only applies
-     * if the aggregation type of the query involves disaggregation.
+     * data elements. Sets the data period type on each query.
      */
     private List<DataQueryParams> groupByDataPeriodType( DataQueryParams params )
     {
         List<DataQueryParams> queries = new ArrayList<>();
 
-        if ( params.getDataElements() == null || params.getDataElements().isEmpty() || !params.isDisaggregation() )
+        if ( params.getDataElements() == null || params.getDataElements().isEmpty() )
         {
             queries.add( params.instance() );
             return queries;
@@ -721,7 +688,7 @@ public class DefaultQueryPlanner
     /**
      * Creates a mapping between data type and data element for the given data elements.
      */
-    private ListMap<DataType, NameableObject> getDataTypeDataElementMap( Collection<NameableObject> dataElements )
+    private ListMap<DataType, NameableObject> getDataTypeDataElementMap(  Collection<NameableObject> dataElements )
     {
         ListMap<DataType, NameableObject> map = new ListMap<>();
         
@@ -752,26 +719,6 @@ public class DefaultQueryPlanner
             AggregationType aggregationType = getAggregationType( de.getType(), de.getAggregationOperator(), aggregationPeriodType, de.getPeriodType() );
             
             map.putValue( aggregationType, de );
-        }
-        
-        return map;
-    }
-    
-    /**
-     * Creates a mapping between the number of days in the period interval and period
-     * for the given periods.
-     */
-    private ListMap<Integer, NameableObject> getDaysPeriodMap( Collection<NameableObject> periods )
-    {
-        ListMap<Integer, NameableObject> map = new ListMap<>();
-        
-        for ( NameableObject period : periods )
-        {
-            Period pe = (Period) period;
-            
-            int days = pe.getDaysInPeriod();
-            
-            map.putValue( days, pe );
         }
         
         return map;

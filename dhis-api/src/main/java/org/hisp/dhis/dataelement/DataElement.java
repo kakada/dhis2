@@ -53,7 +53,6 @@ import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.schema.PropertyType;
 import org.hisp.dhis.schema.annotation.Property;
 import org.hisp.dhis.schema.annotation.PropertyRange;
-import org.hisp.dhis.util.ObjectUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -94,7 +93,6 @@ public class DataElement
     public static final String VALUE_TYPE_BOOL = "bool";
     public static final String VALUE_TYPE_TRUE_ONLY = "trueOnly";
     public static final String VALUE_TYPE_DATE = "date";
-    public static final String VALUE_TYPE_DATETIME = "datetime";
     public static final String VALUE_TYPE_UNIT_INTERVAL = "unitInterval";
     public static final String VALUE_TYPE_PERCENTAGE = "percentage";
 
@@ -360,20 +358,22 @@ public class DataElement
     }
 
     /**
-     * Number of periods in the future to open for data capture, 0 means capture
-     * not allowed for current period. Based on the data sets of which this data
-     * element is a member.
-     */    
-    public int getOpenFuturePeriods()
+     * Indicates whether collecting data for future periods should be allowed for
+     * this data element.
+     *
+     * @return true if all the associated data sets allow future periods, false otherwise.
+     */
+    public boolean isAllowFuturePeriods()
     {
-        Set<Integer> openPeriods = new HashSet<>();
-        
         for ( DataSet dataSet : dataSets )
         {
-            openPeriods.add( dataSet.getOpenFuturePeriods() );
+            if ( dataSet != null && !dataSet.isAllowFuturePeriods() )
+            {
+                return false;
+            }
         }
-        
-        return ObjectUtils.firstNonNull( Collections.max( openPeriods ), 0 );
+
+        return true;
     }
 
     /**

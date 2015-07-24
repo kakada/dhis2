@@ -38,7 +38,7 @@ public class StartsWithOp extends Op
     {
         if ( getValue() == null || object == null )
         {
-            return OpStatus.EXCLUDE;
+            return OpStatus.IGNORE;
         }
 
         if ( String.class.isInstance( object ) )
@@ -49,6 +49,6 @@ public class StartsWithOp extends Op
             return (s1 != null && s2.toLowerCase().startsWith( s1.toLowerCase() )) ? OpStatus.INCLUDE : OpStatus.EXCLUDE;
         }
 
-        return OpStatus.EXCLUDE;
+        return OpStatus.IGNORE;
     }
 }

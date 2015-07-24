@@ -31,10 +31,8 @@ package org.hisp.dhis.analytics;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_INT_DISAGGREGATION;
 import static org.hisp.dhis.analytics.AggregationType.AVERAGE_SUM_INT_DISAGGREGATION;
 import static org.hisp.dhis.common.DimensionType.DATASET;
-import static org.hisp.dhis.common.DimensionType.PERIOD;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT;
 import static org.hisp.dhis.common.DimensionType.ORGANISATIONUNIT_GROUPSET;
-import static org.hisp.dhis.common.DimensionType.CATEGORYOPTION_GROUPSET;
 import static org.hisp.dhis.common.DimensionalObject.CATEGORYOPTIONCOMBO_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_DIM_ID;
 import static org.hisp.dhis.common.DimensionalObject.DATAELEMENT_OPERAND_ID;
@@ -93,8 +91,7 @@ public class DataQueryParams
     public static final String KEY_DE_GROUP = "DE_GROUP-";
     
     public static final String DISPLAY_NAME_DATA_X = "Data";
-    public static final String DISPLAY_NAME_CATEGORYOPTIONCOMBO = "Category option combo";
-    public static final String DISPLAY_NAME_ATTRIBUTEOPTIONCOMBO = "Attribute option combo";
+    public static final String DISPLAY_NAME_CATEGORYOPTIONCOMBO = "Category";
     public static final String DISPLAY_NAME_PERIOD = "Period";
     public static final String DISPLAY_NAME_ORGUNIT = "Organisation unit";
     public static final String DISPLAY_NAME_PROGRAM_INDICATOR = "Program indicator";
@@ -107,10 +104,7 @@ public class DataQueryParams
     public static final List<String> DATA_DIMS = Arrays.asList( INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATAELEMENT_OPERAND_ID, DATASET_DIM_ID );
     public static final List<String> FIXED_DIMS = Arrays.asList( DATA_X_DIM_ID, INDICATOR_DIM_ID, DATAELEMENT_DIM_ID, DATASET_DIM_ID, PERIOD_DIM_ID, ORGUNIT_DIM_ID );
     
-    public static final List<DimensionType> COMPLETENESS_DIMENSION_TYPES = Arrays.asList( 
-        DATASET, PERIOD, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET, CATEGORYOPTION_GROUPSET );
-    private static final List<DimensionType> COMPLETENESS_TARGET_DIMENSION_TYPES = Arrays.asList( 
-        DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
+    private static final List<DimensionType> COMPLETENESS_DIMENSION_TYPES = Arrays.asList( DATASET, ORGANISATIONUNIT, ORGANISATIONUNIT_GROUPSET );
     
     private static final DimensionItem[] DIM_OPT_ARR = new DimensionItem[0];
     private static final DimensionItem[][] DIM_OPT_2D_ARR = new DimensionItem[0][];
@@ -354,7 +348,7 @@ public class DataQueryParams
         
         for ( int i = 0; i < dimensions.size(); i++ )
         {
-            if ( COMPLETENESS_TARGET_DIMENSION_TYPES.contains( dimensions.get( i ).getDimensionType() ) )
+            if ( COMPLETENESS_DIMENSION_TYPES.contains( dimensions.get( i ).getDimensionType() ) )
             {
                 indexes.add( i );
             }
@@ -372,7 +366,7 @@ public class DataQueryParams
         
         for ( int i = 0; i < filters.size(); i++ )
         {
-            if ( COMPLETENESS_TARGET_DIMENSION_TYPES.contains( filters.get( i ).getDimensionType() ) )
+            if ( COMPLETENESS_DIMENSION_TYPES.contains( filters.get( i ).getDimensionType() ) )
             {
                 indexes.add( i );
             }
@@ -886,38 +880,6 @@ public class DataQueryParams
     }
 
     /**
-     * Retrieves the set of dimension types which are present in dimensions and
-     * filters.
-     */
-    public Set<DimensionType> getDimensionTypes()
-    {
-        Set<DimensionType> types = new HashSet<>();
-        
-        for ( DimensionalObject dim : getDimensionsAndFilters() )
-        {
-            types.add( dim.getDimensionType() );
-        }
-        
-        return types;
-    }
-    
-    /**
-     * Returns the number of days in the first dimension period in this query.
-     * If no dimension periods exist, the frequency order of the period type of
-     * the query is returned. If no period type exists, -1 is returned.
-     * @return
-     */
-    public int getDaysInFirstPeriod()
-    {
-        List<NameableObject> periods = getPeriods();
-        
-        Period period = periods != null && !periods.isEmpty() ? (Period) periods.get( 0 ) : null;
-        
-        return period != null ? period.getDaysInPeriod() : periodType != null ? 
-            PeriodType.getPeriodTypeByName( periodType ).getFrequencyOrder() : -1;
-    }
-    
-    /**
      * Indicates whether this params defines an identifier scheme different from
      * UID.
      */
@@ -1368,7 +1330,7 @@ public class DataQueryParams
     {
         return getDimensionOptions( key ) != null ? getDimensionOptions( key ) : getFilterOptions( key );
     }
-    
+        
     /**
      * Retrieves the options for the given dimension identifier. If the dx dimension
      * is specified, all concrete dimensions (in|de|dc|ds) are returned as a single

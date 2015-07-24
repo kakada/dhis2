@@ -28,19 +28,7 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
-import org.joda.time.format.DateTimeParser;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +37,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 /**
  * @author Lars Helge Overland
@@ -57,37 +53,20 @@ import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
  */
 public class DateUtils
 {
-    private static final DateTimeParser[] SUPPORTED_DATE_FORMAT_PARSERS = {
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss.SSS" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ssZ" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mmZ" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HHZ" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd HH:mm:ssZ" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM-dd" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy-MM" ).getParser(),
-        DateTimeFormat.forPattern( "yyyy" ).getParser()
+    public static final SimpleDateFormat[] SUPPORTED_DATE_FORMATS = new SimpleDateFormat[]{
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm" ),
+        new SimpleDateFormat( "yyyy-MM-dd'T'HH" ),
+        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssZ" ),
+        new SimpleDateFormat( "yyyy-MM-dd" ),
+        new SimpleDateFormat( "yyyy-MM" ),
+        new SimpleDateFormat( "yyyy" )
     };
-
-    private static final DateTimeFormatter DATE_FORMATTER = new DateTimeFormatterBuilder()
-        .append( null, SUPPORTED_DATE_FORMAT_PARSERS ).toFormatter();
-
-    private static final DateTimeParser[] SUPPORTED_DATE_TIME_FORMAT_PARSERS = {
-            DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss.SSSZ" ).getParser(),
-            DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ssZ" ).getParser(),
-            DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mmZ" ).getParser(),
-            DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss" ).getParser(),
-            DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm" ).getParser()
-    };
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = ( new DateTimeFormatterBuilder() )
-            .append(null, SUPPORTED_DATE_TIME_FORMAT_PARSERS).toFormatter();
 
     private static final String SEP = ", ";
-
+    
     public static final PeriodFormatter DAY_SECOND_FORMAT = new PeriodFormatterBuilder()
         .appendDays().appendSuffix( " d" ).appendSeparator( SEP )
         .appendHours().appendSuffix( " h" ).appendSeparator( SEP )
@@ -99,15 +78,15 @@ public class DateUtils
     /**
      * Used by web API and utility methods.
      */
-    public static final String DATE_PATTERN = "yyyy-MM-dd";
+    public static final String DATE_PATTERN = "yyyy-MM-dd";    
     public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
-
+    
     public static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( TIMESTAMP_PATTERN );
     public static final SimpleDateFormat ACCESS_DATE_FORMAT = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
     public static final SimpleDateFormat HTTP_DATE_FORMAT = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
 
     public static final double DAYS_IN_YEAR = 365.0;
-
+    
     private static final long MS_PER_DAY = 86400000;
     private static final long MS_PER_S = 1000;
 
@@ -176,10 +155,10 @@ public class DateUtils
 
         return date != null ? format.format( date ) : null;
     }
-
+    
     /**
      * Returns the latest of the two given dates.
-     *
+     * 
      * @param date1 the first date.
      * @param date2 the second date.
      * @return the latest of the two given dates.
@@ -190,25 +169,25 @@ public class DateUtils
         {
             return date2 != null ? date2 : null;
         }
-
-        return date2 != null ? (date1.after( date2 ) ? date1 : date2) : date1;
+        
+        return date2 != null ? ( date1.after( date2 ) ? date1 : date2 ) : date1;        
     }
 
     /**
      * Returns the latest of the given dates.
-     *
+     * 
      * @param date the dates.
      * @return the latest of the given dates.
      */
     public static Date max( Date... date )
     {
         Date latest = null;
-
+        
         for ( Date d : date )
         {
             latest = max( d, latest );
         }
-
+        
         return latest;
     }
 
@@ -494,26 +473,6 @@ public class DateUtils
     }
 
     /**
-     * This method checks whether the String dateTimeString is a valid datetime following
-     * the format "yyyy-MM-dd".
-     *
-     * @param dateTimeString the string to be checked.
-     * @return true/false depending on whether the string is a valid datetime according to the format "yyyy-MM-dd".
-     */
-    public static boolean dateTimeIsValid(final String dateTimeString)
-    {
-        try
-        {
-            DATE_TIME_FORMATTER.parseDateTime(dateTimeString);
-            return true;
-        }
-        catch( IllegalArgumentException ex )
-        {
-            return false;
-        }
-    }
-
-    /**
      * Returns the number of seconds until the next day at the given hour.
      *
      * @param hour the hour.
@@ -623,13 +582,13 @@ public class DateUtils
 
         return periods;
     }
-
+    
     /**
      * Returns a pretty string representing the interval between the given
      * start and end dates using a day, month, second format.
-     *
+     * 
      * @param start the start date.
-     * @param end   the end date.
+     * @param end the end date.
      * @return a string, or null if the given start or end date is null.
      */
     public static String getPrettyInterval( Date start, Date end )
@@ -638,9 +597,9 @@ public class DateUtils
         {
             return null;
         }
-
+        
         long diff = end.getTime() - start.getTime();
-
+        
         return DAY_SECOND_FORMAT.print( new org.joda.time.Period( diff ) );
     }
 
@@ -658,6 +617,17 @@ public class DateUtils
             return null;
         }
 
-        return DATE_FORMATTER.parseDateTime( dateString ).toDate();
+        for ( SimpleDateFormat format : SUPPORTED_DATE_FORMATS )
+        {
+            try
+            {
+                return format.parse( dateString );
+            }
+            catch ( ParseException ignored )
+            {
+            }
+        }
+
+        return null;
     }
 }

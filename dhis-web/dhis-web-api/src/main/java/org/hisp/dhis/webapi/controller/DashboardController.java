@@ -36,7 +36,6 @@ import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.dxf2.common.ImportOptions;
 import org.hisp.dhis.dxf2.common.JacksonUtils;
 import org.hisp.dhis.hibernate.exception.DeleteAccessDeniedException;
-import org.hisp.dhis.hibernate.exception.UpdateAccessDeniedException;
 import org.hisp.dhis.schema.descriptors.DashboardItemSchemaDescriptor;
 import org.hisp.dhis.schema.descriptors.DashboardSchemaDescriptor;
 import org.hisp.dhis.webapi.utils.ContextUtils;
@@ -103,11 +102,6 @@ public class DashboardController
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), dashboard ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this dashboard." );
-        }
-
         Dashboard newDashboard = JacksonUtils.fromJson( request.getInputStream(), Dashboard.class );
 
         dashboard.setName( newDashboard.getName() ); // TODO Name only for now
@@ -147,11 +141,6 @@ public class DashboardController
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), dashboard ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this dashboard." );
-        }
-
         DashboardItem item = JacksonUtils.fromJson( request.getInputStream(), DashboardItem.class );
 
         dashboardService.mergeDashboardItem( item );
@@ -167,18 +156,6 @@ public class DashboardController
     public void postJsonItemContent( HttpServletResponse response, HttpServletRequest request,
         @PathVariable String dashboardUid, @RequestParam String type, @RequestParam( "id" ) String contentUid ) throws Exception
     {
-        Dashboard dashboard = dashboardService.getDashboard( dashboardUid );
-
-        if ( dashboard == null )
-        {
-            ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
-        }
-
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), dashboard ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this dashboard." );
-        }
-
         DashboardItem item = dashboardService.addItemContent( dashboardUid, type, contentUid );
 
         if ( item == null )
@@ -203,11 +180,6 @@ public class DashboardController
             return;
         }
 
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), dashboard ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this dashboard." );
-        }
-
         if ( dashboard.moveItem( itemUid, position ) )
         {
             dashboardService.updateDashboard( dashboard );
@@ -226,11 +198,6 @@ public class DashboardController
         {
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
             return;
-        }
-
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), dashboard ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this dashboard." );
         }
 
         DashboardItem item = dashboardService.getDashboardItem( itemUid );
@@ -260,11 +227,6 @@ public class DashboardController
         {
             ContextUtils.notFoundResponse( response, "Dashboard does not exist: " + dashboardUid );
             return;
-        }
-
-        if ( !aclService.canUpdate( currentUserService.getCurrentUser(), dashboard ) )
-        {
-            throw new UpdateAccessDeniedException( "You don't have the proper permissions to update this dashboard." );
         }
 
         DashboardItem item = dashboard.getItemByUid( itemUid );

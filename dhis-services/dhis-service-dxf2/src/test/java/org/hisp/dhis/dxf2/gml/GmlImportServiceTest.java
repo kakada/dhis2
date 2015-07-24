@@ -28,26 +28,21 @@ package org.hisp.dhis.dxf2.gml;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.io.IOUtils;
-import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dxf2.common.ImportOptions;
-import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.scheduling.TaskCategory;
-import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
-import org.junit.After;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.junit.After;
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Halvdan Hoem Grelland
@@ -55,78 +50,17 @@ import static org.junit.Assert.assertNotNull;
 public class GmlImportServiceTest
     extends DhisSpringTest
 {
-    private InputStream inputStream;
-
-    private User user;
-
-    private OrganisationUnit boOrgUnit, bontheOrgUnit, ojdOrgUnit, bliOrgUnit, forskOrgUnit;
-
-    private ImportOptions importOptions;
-
-    private TaskId taskId;
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    @Autowired
     private GmlImportService gmlImportService;
 
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private UserService userService;
+    private InputStream inputStream;
 
     @Override
     public void setUpTest()
         throws IOException
     {
-        inputStream = new ClassPathResource( "gml/testGmlPayload.gml" ).getInputStream();
+        gmlImportService = (GmlImportService) getBean( GmlImportService.ID );
 
-        /**
-         * Create orgunits present in testGmlPayload.gml and set ID properties.
-         *      Name                    - FeatureType   - ID property
-         *      Bo                      - Poly          - Name
-         *      Bonthe                  - Multi         - Code
-         *      Ole Johan Dahls Hus     - Point         - Uid
-         *      Blindern                - Point (pos)   - Name
-         *      Forskningsparken        - Poly (list)   - Name
-         *
-         * Note: some of these are included to cover different coordinate element schemes
-         *       such as <posList>, <coordinates> and <pos>.
-         */
-
-        boOrgUnit = createOrganisationUnit( 'A' );
-        boOrgUnit.setName( "Bo" );
-        organisationUnitService.addOrganisationUnit( boOrgUnit );
-
-        bontheOrgUnit = createOrganisationUnit( 'B' );
-        bontheOrgUnit.setName( "AA Bonthe" ); // Match on Code, therefore wrong name
-        bontheOrgUnit.setCode( "CODE_BONTHE" );
-        organisationUnitService.addOrganisationUnit( bontheOrgUnit );
-
-        ojdOrgUnit = createOrganisationUnit( 'C' );
-        ojdOrgUnit.setUid( "ImspTQPwCqd" );
-        ojdOrgUnit.setName( "AA Ole Johan Dahls Hus" ); // Match on UID, therefore wrong name
-        organisationUnitService.addOrganisationUnit( ojdOrgUnit );
-
-        bliOrgUnit = createOrganisationUnit( 'D' );
-        bliOrgUnit.setName( "Blindern" );
-        organisationUnitService.addOrganisationUnit( bliOrgUnit );
-
-        forskOrgUnit = createOrganisationUnit( 'E' );
-        forskOrgUnit.setName( "Forskningsparken" );
-        organisationUnitService.addOrganisationUnit( forskOrgUnit );
-
-        user = createUser( 'X' );
-        userService.addUser( user );
-
-        taskId = new TaskId( TaskCategory.METADATA_IMPORT, user );
-
-        importOptions = new ImportOptions( ImportStrategy.UPDATE );
-        importOptions.setDryRun( false );
-        importOptions.setPreheatCache( true );
+        inputStream = new ClassPathResource( "gmlOrgUnits.gml" ).getInputStream();        
     }
     
     @After
@@ -140,37 +74,47 @@ public class GmlImportServiceTest
     // -------------------------------------------------------------------------
 
     @Test
-    public void testImportGml()
+    public void fromGmlTest()
         throws Exception
     {
-        gmlImportService.importGml( inputStream, user.getUid(), importOptions, taskId );
+        MetaData metaData = gmlImportService.fromGml( inputStream );
+        Collection<OrganisationUnit> orgUnits = metaData.getOrganisationUnits();
 
-        assertNotNull( boOrgUnit.getCoordinates() );
-        assertNotNull( boOrgUnit.getFeatureType() );
+        assertNotNull( orgUnits );
 
-        assertNotNull( bontheOrgUnit.getCoordinates() );
-        assertNotNull( bontheOrgUnit.getFeatureType() );
+        assertEquals( 16, orgUnits.size() );
 
-        assertNotNull( ojdOrgUnit.getCoordinates() );
-        assertNotNull( ojdOrgUnit.getFeatureType() );
+        HashMap<String, OrganisationUnit> units = new HashMap<>();
 
-        assertNotNull( bliOrgUnit.getCoordinates() );
-        assertNotNull( bliOrgUnit.getFeatureType() );
+        for( OrganisationUnit orgUnit : orgUnits )
+        {
+            units.put( orgUnit.getName(), orgUnit );
+        }
 
-        assertNotNull( forskOrgUnit.getCoordinates() );
-        assertNotNull( forskOrgUnit.getFeatureType() );
+        assertEquals( 1, units.get( "Bo" ).getCoordinatesAsList().size() );
+        assertEquals( 18, units.get( "Bonthe" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Moyamba" ).getCoordinatesAsList().size() );
+        assertEquals( 3, units.get( "Pujehun" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Kailahun" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Kenema" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Kono" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Bombali" ).getCoordinatesAsList().size() );
+        assertEquals( 3, units.get( "Kambia" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Koinadugu" ).getCoordinatesAsList().size() );
+        assertEquals( 9, units.get( "Port Loko" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Tonkolili" ).getCoordinatesAsList().size() );
+        assertEquals( 2, units.get( "Western Area" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Ole Johan Dahls Hus" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Blindern" ).getCoordinatesAsList().size() );
+        assertEquals( 1, units.get( "Forskningsparken").getCoordinatesAsList().size() );
 
-        // Check if data is correct
-        assertEquals( 1, boOrgUnit.getCoordinatesAsList().size() );
-        assertEquals( 18, bontheOrgUnit.getCoordinatesAsList().size() );
-        assertEquals( 1, ojdOrgUnit.getCoordinatesAsList().size() );
-        assertEquals( 1, bliOrgUnit.getCoordinatesAsList().size() );
-        assertEquals( 1, forskOrgUnit.getCoordinatesAsList().size() );
-
-        assertEquals( 76, boOrgUnit.getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
-        assertEquals( 189, bontheOrgUnit.getCoordinatesAsList().get( 1 ).getNumberOfCoordinates() );
-        assertEquals( 1, ojdOrgUnit.getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
-        assertEquals( 1, bliOrgUnit.getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
-        assertEquals( 76, forskOrgUnit.getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
+        assertEquals( 76, units.get( "Bo" ).getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
+        assertEquals( 7, units.get( "Pujehun" ).getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
+        assertEquals( 7, units.get( "Pujehun" ).getCoordinatesAsList().get( 1 ).getNumberOfCoordinates() );
+        assertEquals( 159, units.get( "Pujehun" ).getCoordinatesAsList().get( 2 ).getNumberOfCoordinates() );
+        assertEquals( 189, units.get( "Bonthe" ).getCoordinatesAsList().get( 1 ).getNumberOfCoordinates() );
+        assertEquals( 1, units.get( "Ole Johan Dahls Hus" ).getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
+        assertEquals( 1, units.get( "Blindern").getCoordinatesAsList().get( 0 ).getNumberOfCoordinates() );
+        assertEquals( 76, units.get( "Forskningsparken" ).getCoordinatesAsList().get(0).getNumberOfCoordinates() );
     }
 }

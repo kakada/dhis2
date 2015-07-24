@@ -186,11 +186,11 @@ public class DataSet
     // -------------------------------------------------------------------------
 
     /**
-     * Number of periods in the future to open for data capture, 0 means capture
-     * not allowed for current period.
+     * Property indicating whether it should allow to enter data for future
+     * periods.
      */
-    private int openFuturePeriods;
-    
+    private boolean allowFuturePeriods;
+
     /**
      * Property indicating that all fields for a data element must be filled.
      */
@@ -698,14 +698,14 @@ public class DataSet
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = DxfNamespaces.DXF_2_0 )
-    public int getOpenFuturePeriods()
+    public boolean isAllowFuturePeriods()
     {
-        return openFuturePeriods;
+        return allowFuturePeriods;
     }
 
-    public void setOpenFuturePeriods( int openFuturePeriods )
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
     {
-        this.openFuturePeriods = openFuturePeriods;
+        this.allowFuturePeriods = allowFuturePeriods;
     }
 
     @JsonProperty
@@ -828,7 +828,7 @@ public class DataSet
             renderHorizontally = dataSet.isRenderHorizontally();
             expiryDays = dataSet.getExpiryDays();
             skipAggregation = dataSet.isSkipAggregation();
-            openFuturePeriods = dataSet.getOpenFuturePeriods();
+            allowFuturePeriods = dataSet.isAllowFuturePeriods();
             fieldCombinationRequired = dataSet.isFieldCombinationRequired();
             mobile = dataSet.isMobile();
             validCompleteOnly = dataSet.isValidCompleteOnly();

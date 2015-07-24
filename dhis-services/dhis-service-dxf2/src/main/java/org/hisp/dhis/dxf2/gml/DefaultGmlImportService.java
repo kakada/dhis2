@@ -32,11 +32,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.xerces.impl.io.MalformedByteSequenceException;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.IdentifiableProperty;
 import org.hisp.dhis.common.MergeStrategy;
@@ -44,17 +39,12 @@ import org.hisp.dhis.dxf2.common.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.render.RenderService;
-import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.scheduling.TaskId;
-import org.hisp.dhis.system.notification.NotificationLevel;
-import org.hisp.dhis.system.notification.Notifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.HtmlUtils;
-import org.xml.sax.SAXParseException;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -71,33 +61,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Import geospatial data from GML documents and merge into OrganisationUnits.
- *
- * The implementation is a pre-processing stage, using the general MetaDataImporter
- * as the import backend.
- *
- * The process of importing GML, in short, entails the following:
- * <ol>
- *     <li>Parse the GML payload and transform it into DXF2 format</li>
- *     <li>Get the given identifiers (uid, code or name) from the parsed payload and fetch
- *     the corresponding entities from the DB</li>
- *     <li>Merge the geospatial data given in the input GML into DB entities</li>
- *     <li>Serialize the MetaData payload containing the changes into DXF2, avoiding any magic
- *     deletion managers, AOP, Hibernate object cache or transaction scope messing with the payload.
- *     It is now essentially a perfect copy of the DB contents.</li>
- *     <li>Deserialize the DXF2 payload into a MetaData object, which is now completely detached, and
- *     feed this object into the MetaData importer.</li>
- * </ol>
- *
- * Any failure during this process will be reported using the {@link Notifier}.
- *
  * @author Halvdan Hoem Grelland
  */
 public class DefaultGmlImportService
     implements GmlImportService
 {
-    private static final Log log = LogFactory.getLog( DefaultGmlImportService.class );
-
     private static final String GML_TO_DXF_STYLESHEET = "gml/gml2dxf2.xsl";
 
     // -------------------------------------------------------------------------
@@ -116,61 +84,17 @@ public class DefaultGmlImportService
     @Autowired
     private IdentifiableObjectManager idObjectManager;
 
-    @Autowired
-    private Notifier notifier;
-
     // -------------------------------------------------------------------------
     // GmlImportService implementation
     // -------------------------------------------------------------------------
 
-    @Transactional
     @Override
-    public void importGml( InputStream inputStream, String userUid, ImportOptions importOptions, TaskId taskId )
+    public MetaData fromGml( InputStream inputStream )
+        throws IOException, TransformerException
     {
-        if ( !importOptions.getImportStrategy().isUpdate() )
-        {
-            importOptions.setImportStrategy( ImportStrategy.UPDATE.name() );
-            log.warn( "Changed GML import strategy to update. Only updates are supported." );
-        }
-
-        PreProcessingResult preProcessed = preProcessGml( inputStream );
-
-        if ( preProcessed.isSuccess && preProcessed.dxf2MetaData != null )
-        {
-            MetaData metaData = dxf2ToMetaData( preProcessed.dxf2MetaData );
-            importService.importMetaData( userUid, metaData, importOptions, taskId );
-        }
-        else
-        {
-            Throwable throwable = preProcessed.throwable;
-
-            notifier.notify( taskId, NotificationLevel.ERROR, createNotifierErrorMessage( throwable ), false );
-            log.error( "GML import failed: ", throwable );
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private PreProcessingResult preProcessGml( InputStream inputStream )
-    {
-        InputStream dxfStream = null;
-        MetaData metaData = null;
-
-        try
-        {
-            dxfStream = transformGml( inputStream );
-            metaData = renderService.fromXml( dxfStream, MetaData.class );
-        }
-        catch ( IOException | TransformerException e )
-        {
-            return PreProcessingResult.failure( e );
-        }
-        finally
-        {
-            IOUtils.closeQuietly( dxfStream );
-        }
+        InputStream dxfStream = transformGml( inputStream );
+        MetaData metaData = renderService.fromXml( dxfStream, MetaData.class );
+        dxfStream.close();
 
         Map<String, OrganisationUnit> uidMap  = Maps.newHashMap(), codeMap = Maps.newHashMap(), nameMap = Maps.newHashMap();
 
@@ -208,41 +132,20 @@ public class DefaultGmlImportService
             mergeNonGeoData( persisted, imported );
         }
 
-        String dxf2MetaData = metaDataToDxf2( metaData );
-
-        if ( dxf2MetaData == null )
-        {
-            return  PreProcessingResult.failure( new Exception( "GML import failed during pre-processing stage." ) );
-        }
-
-        return PreProcessingResult.success( dxf2MetaData );
+        return metaData;
     }
 
-    // Basic holder for the return value of preProcessGml(InputStream)
-    private static class PreProcessingResult
+    @Transactional
+    @Override
+    public void importGml( InputStream inputStream, String userUid, ImportOptions importOptions, TaskId taskId )
+        throws IOException, TransformerException
     {
-        private boolean isSuccess;
-        private String dxf2MetaData;
-        private Throwable throwable;
-
-        static PreProcessingResult success( String dxf2MetaData )
-        {
-            PreProcessingResult result = new PreProcessingResult();
-            result.isSuccess = true;
-            result.dxf2MetaData = dxf2MetaData;
-
-            return result;
-        }
-
-        static PreProcessingResult failure( Throwable throwable )
-        {
-            PreProcessingResult result = new PreProcessingResult();
-            result.isSuccess = false;
-            result.throwable = throwable;
-
-            return result;
-        }
+        importService.importMetaData( userUid, fromGml( inputStream ), importOptions, taskId );
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     private InputStream transformGml( InputStream input )
         throws IOException, TransformerException
@@ -319,81 +222,5 @@ public class DefaultGmlImportService
             parent.setUid( source.getParent().getUid() );
             target.setParent( parent );
         }
-    }
-
-    private String metaDataToDxf2( MetaData metaData )
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        String dxf2 = null;
-
-        try
-        {
-            renderService.toXml( baos, metaData );
-            dxf2 = baos.toString();
-        }
-        catch ( IOException e )
-        {
-            // Gulp! Intentionally ignored
-        }
-        finally
-        {
-            IOUtils.closeQuietly( baos );
-        }
-
-        return dxf2;
-    }
-
-    private MetaData dxf2ToMetaData( String dxf2Content )
-    {
-        MetaData metaData;
-
-        try
-        {
-            metaData = renderService.fromXml( dxf2Content, MetaData.class );
-        }
-        catch ( IOException e )
-        {
-            metaData = new MetaData();
-        }
-
-        return metaData;
-    }
-
-    private String createNotifierErrorMessage( Throwable throwable )
-    {
-        StringBuilder sb = new StringBuilder( "GML import failed: " );
-
-        Throwable rootThrowable = ExceptionUtils.getRootCause( throwable );
-
-        if ( rootThrowable instanceof SAXParseException )
-        {
-            SAXParseException e = (SAXParseException) rootThrowable;
-            sb.append( e.getMessage() );
-
-            if ( e.getLineNumber() >= 0 )
-            {
-                sb.append( " On line " ).append( e.getLineNumber() );
-
-                if ( e.getColumnNumber() >= 0 )
-                {
-                    sb.append( " column " ).append( e.getColumnNumber() );
-                }
-            }
-        }
-        else if ( rootThrowable instanceof MalformedByteSequenceException )
-        {
-            sb.append( "Malformed GML file." );
-        }
-        else
-        {
-            sb.append( rootThrowable.getMessage() );
-        }
-
-        if ( sb.charAt( sb.length() - 1 ) != '.' )
-        {
-            sb.append( '.' );
-        }
-
-        return HtmlUtils.htmlEscape( sb.toString() );
     }
 }

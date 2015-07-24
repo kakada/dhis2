@@ -34,7 +34,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.query.Order;
-import org.hisp.dhis.query.Query;
 import org.hisp.dhis.schema.descriptors.ProgramStageSchemaDescriptor;
 import org.hisp.dhis.webapi.controller.AbstractCrudController;
 import org.hisp.dhis.webapi.webdomain.WebMetaData;
@@ -63,17 +62,22 @@ public class ProgramStageController
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
     protected List<ProgramStage> getEntityList( WebMetaData metaData, WebOptions options, List<String> filters, List<Order> orders )
     {
         List<ProgramStage> entityList = new ArrayList<>();
-        boolean haveFilters = !filters.isEmpty();
-        Query query = queryService.getQueryFromUrl( getEntityClass(), filters, orders );
-        query.setDefaultOrder();
 
         if ( options.getOptions().containsKey( "query" ) )
         {
             entityList = Lists.newArrayList( manager.filter( getEntityClass(), options.getOptions().get( "query" ) ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<>( manager.getBetweenSorted( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
         }
         else if ( options.getOptions().containsKey( "program" ) )
         {
@@ -85,20 +89,9 @@ public class ProgramStageController
                 entityList = new ArrayList<>( program.getProgramStages() );
             }
         }
-        else if ( options.hasPaging() && !haveFilters )
-        {
-            int count = queryService.count( query );
-
-            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
-            metaData.setPager( pager );
-
-            query.setFirstResult( pager.getOffset() );
-            query.setMaxResults( pager.getPageSize() );
-            entityList = (List<ProgramStage>) queryService.query( query ).getItems();
-        }
         else
         {
-            entityList = (List<ProgramStage>) queryService.query( query ).getItems();
+            entityList = new ArrayList<>( manager.getAllSorted( getEntityClass() ) );
         }
 
         return entityList;

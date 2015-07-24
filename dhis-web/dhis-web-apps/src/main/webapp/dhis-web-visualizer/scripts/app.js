@@ -5214,7 +5214,7 @@ Ext.onReady( function() {
 						path,
                         cacheData;
 
-					filter = filter || dataFilter.getValue() || null;
+					filter = filter || indicatorFilter.getValue() || null;
 
                     // check session cache
                     cacheData = store.getFromStorage(dimension.id, filter);

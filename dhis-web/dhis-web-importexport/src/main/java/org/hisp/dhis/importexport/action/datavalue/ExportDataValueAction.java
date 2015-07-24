@@ -28,31 +28,26 @@ package org.hisp.dhis.importexport.action.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_CSV;
-import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_JSON;
-import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_XML;
-import static org.hisp.dhis.util.ContextUtils.getZipOut;
-
-import java.io.OutputStreamWriter;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.IdentifiableProperty;
-import org.hisp.dhis.dxf2.common.IdSchemes;
-import org.hisp.dhis.dxf2.datavalueset.DataExportParams;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
+import org.hisp.dhis.dxf2.common.IdSchemes;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opensymphony.xwork2.Action;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
+import static org.hisp.dhis.util.ContextUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -141,7 +136,7 @@ public class ExportDataValueAction
     public String execute()
         throws Exception
     {
-        //TODO re-implement using Web API
+        //TODO reimplement to use web api
 
         IdSchemes idSchemes = new IdSchemes();
         idSchemes.setDataElementIdScheme( dataElementIdScheme );
@@ -152,26 +147,28 @@ public class ExportDataValueAction
 
         HttpServletResponse response = ServletActionContext.getResponse();
 
-        DataExportParams params = dataValueSetService.getFromUrl( selectedDataSets, null, 
-            getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, true, null, null, idSchemes );
-        
         if ( FORMAT_CSV.equals( exportFormat ) )
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_CSV, true, getFileName( EXTENSION_CSV_ZIP ), true );
 
-            dataValueSetService.writeDataValueSetCsv( params, new OutputStreamWriter( getZipOut( response, getFileName( EXTENSION_CSV ) ) ) );
+            Writer writer = new OutputStreamWriter( getZipOut( response, getFileName( EXTENSION_CSV ) ) );
+
+            dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ),
+                getMediumDate( endDate ), orgUnits, true, writer, idSchemes );
         }
         else if ( FORMAT_JSON.equals( exportFormat ) )
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_JSON, true, getFileName( EXTENSION_JSON_ZIP ), true );
 
-            dataValueSetService.writeDataValueSetJson( params, getZipOut( response, getFileName( EXTENSION_JSON ) ) );
+            dataValueSetService.writeDataValueSetJson( selectedDataSets, getMediumDate( startDate ),
+                getMediumDate( endDate ), orgUnits, true, getZipOut( response, getFileName( EXTENSION_JSON ) ), idSchemes );
         }
         else
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_XML, true, getFileName( EXTENSION_XML_ZIP ), true );
 
-            dataValueSetService.writeDataValueSetXml( params, getZipOut( response, getFileName( EXTENSION_XML ) ) );
+            dataValueSetService.writeDataValueSetXml( selectedDataSets, getMediumDate( startDate ),
+                getMediumDate( endDate ), orgUnits, true, getZipOut( response, getFileName( EXTENSION_XML ) ), idSchemes );
         }
 
         return SUCCESS;

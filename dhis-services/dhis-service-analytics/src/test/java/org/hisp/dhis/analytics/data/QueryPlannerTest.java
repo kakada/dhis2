@@ -118,8 +118,6 @@ public class QueryPlannerTest
     private DataElement deD;
     private DataElement deE;
     private DataElement deF;
-    private DataElement deG;
-    private DataElement deH;
     
     private DataSet dsA;
     private DataSet dsB;
@@ -155,17 +153,12 @@ public class QueryPlannerTest
         deD = createDataElement( 'D', VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE_SUM );
         deE = createDataElement( 'E', VALUE_TYPE_STRING, AGGREGATION_OPERATOR_NONE );
         deF = createDataElement( 'F', VALUE_TYPE_STRING, AGGREGATION_OPERATOR_NONE );
-        deG = createDataElement( 'G', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
-        deH = createDataElement( 'H', VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
         
         dataElementService.addDataElement( deA );
         dataElementService.addDataElement( deB );
         dataElementService.addDataElement( deC );
         dataElementService.addDataElement( deD );
         dataElementService.addDataElement( deE );
-        dataElementService.addDataElement( deF );
-        dataElementService.addDataElement( deG );
-        dataElementService.addDataElement( deH );
         
         dsA = createDataSet( 'A', pt );
         dsB = createDataSet( 'B', pt );
@@ -503,7 +496,7 @@ public class QueryPlannerTest
         DataQueryParams params = new DataQueryParams();
         params.setDataElements( getList( deA, deB, deC, deD ) );
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
-        params.setPeriods( getList( createPeriod( "200101" ), createPeriod( "200103" ), createPeriod( "200105" ), createPeriod( "200107" ), createPeriod(  "2002Q3" ), createPeriod( "2002Q4" ) ) );
+        params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000Q3" ), createPeriod( "2000Q4" ), createPeriod(  "2001Q1" ), createPeriod( "2001Q2" ) ) );
         
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
@@ -588,8 +581,7 @@ public class QueryPlannerTest
     }
     
     /**
-     * Query spans 1 partition. Splits on 2 aggregation types, then splits one
-     * query on 3 days in period to satisfy optimal for a total of 4 queries.
+     * Splits on 3 data elements.
      */
     @Test
     public void planQueryD()
@@ -602,9 +594,9 @@ public class QueryPlannerTest
         
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
         
-        assertEquals( 4, queryGroups.getAllQueries().size() );
+        assertEquals( 3, queryGroups.getAllQueries().size() );
         assertEquals( 2, queryGroups.getSequentialQueries().size() );
-        assertEquals( 3, queryGroups.getLargestGroupSize() );
+        assertEquals( 2, queryGroups.getLargestGroupSize() );
         
         for ( DataQueryParams query : queryGroups.getAllQueries() )
         {
@@ -615,9 +607,7 @@ public class QueryPlannerTest
     }
     
     /**
-     * Query spans 1 partition. Splits on 2 aggregation types, then splits one
-     * query on 3 days in period to satisfy optimal for a total of 4 queries. No 
-     * organisation units specified.
+     * Splits on 3 data elements. No organisation units specified.
      */
     @Test
     public void planQueryE()
@@ -629,9 +619,9 @@ public class QueryPlannerTest
 
         DataQueryGroups queryGroups = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
 
-        assertEquals( 4, queryGroups.getAllQueries().size() );
+        assertEquals( 3, queryGroups.getAllQueries().size() );
         assertEquals( 2, queryGroups.getSequentialQueries().size() );
-        assertEquals( 3, queryGroups.getLargestGroupSize() );
+        assertEquals( 2, queryGroups.getLargestGroupSize() );
 
         for ( DataQueryParams query : queryGroups.getAllQueries() )
         {
@@ -642,7 +632,7 @@ public class QueryPlannerTest
     }
 
     /**
-     * Splits on 3 queries on organisation units for an optimal of 3 queries. No 
+     * Splits on 3 queries on organisation units for an optimal of 4 queries. No 
      * data elements specified.
      */
     @Test
@@ -681,9 +671,9 @@ public class QueryPlannerTest
     }
 
     /**
-     * Query filters span 2 partitions. Splits in 2 queries on data elements,
-     * then 2 queries on organisation units to satisfy optimal for a total of 8 
-     * queries.
+     * Query filters span 2 partitions. Splits in 4 queries on data elements to 
+     * satisfy optimal for a total of 8 queries, because query has 2 different 
+     * aggregation types.
      */
     @Test
     public void planQueryH()
@@ -709,15 +699,14 @@ public class QueryPlannerTest
 
     /**
      * Query spans 3 period types. Splits in 3 queries for each period type, then
-     * splits in 2 queries on data type, then splits in 2 queries on data elements
-     * to satisfy optimal for a total of 12 queries, because query has 2 different 
-     * aggregation types.
+     * splits in 4 queries on data elements units to satisfy optimal for a total 
+     * of 12 queries, because query has 2 different aggregation types.
      */
     @Test
     public void planQueryI()
     {
         DataQueryParams params = new DataQueryParams();
-        params.setDataElements( getList( deA, deB, deE, deF ) );
+        params.setDataElements( getList( deA, deB, deC, deD ) );
         params.setOrganisationUnits( getList( ouA, ouB, ouC, ouD, ouE ) );
         params.setPeriods( getList( createPeriod( "2000Q1" ), createPeriod( "2000Q2" ), createPeriod( "2000" ), createPeriod( "200002" ), createPeriod( "200003" ), createPeriod( "200004" ) ) );
         
@@ -774,9 +763,9 @@ public class QueryPlannerTest
     }
 
     /**
-     * Splits in 2 queries for each data type, then 2 queries for each
-     * data element, then 2 queries for each organisation unit to satisfy optimal
-     * for a total of 8 queries with 4 queries across 2 sequential queries.
+     * Splits in 2 queries for each aggregation type, then 2 queries for each
+     * data type, then 2 queries for each organisation unit to satisfy optimal
+     * for a total of 4 queries across 2 sequential queries.
      */
     @Test
     public void planQueryL()
@@ -799,32 +788,6 @@ public class QueryPlannerTest
         }
     }
 
-    /**
-     * Query spans 1 partition. Splits on 2 queries for data types, then splits 
-     * on 2 queries for data elements to satisfy optimal for a total of 4 queries.
-     */
-    @Test
-    public void planQueryM()
-    {
-        DataQueryParams params = new DataQueryParams();
-        params.setDataElements( getList( deA, deB, deG, deH ) );
-        params.setOrganisationUnits( getList( ouA ) );
-        params.setPeriods( getList( createPeriod( "200101" ), createPeriod( "200103" ) ) );
-        
-        DataQueryGroups queryGroups = queryPlanner.planQuery( params, 4, ANALYTICS_TABLE_NAME );
-        
-        assertEquals( 4, queryGroups.getAllQueries().size() );
-        assertEquals( 1, queryGroups.getSequentialQueries().size() );
-        assertEquals( 4, queryGroups.getLargestGroupSize() );
-        
-        for ( DataQueryParams query : queryGroups.getAllQueries() )
-        {
-            assertTrue( samePeriodType( query.getPeriods() ) );
-            assertTrue( samePartition( query.getPeriods() ) );
-            assertDimensionNameNotNull( query );
-        }
-    }
-    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

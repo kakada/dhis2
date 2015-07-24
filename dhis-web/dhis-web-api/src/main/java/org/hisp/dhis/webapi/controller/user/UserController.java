@@ -139,7 +139,7 @@ public class UserController
 
         int count = userService.getUserCount( params );
 
-        if ( options.hasPaging() && filters.isEmpty() )
+        if ( options.hasPaging() )
         {
             Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );

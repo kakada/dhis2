@@ -549,6 +549,7 @@
   <bean id="org.hisp.dhis.interceptor.SystemSettingInterceptor" class="org.hisp.dhis.interceptor.SystemSettingInterceptor">
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
+    <!-- <property name="hubConfigurationService" ref="org.hisp.dhis.configuration.hub.HubConfigurationService" /> -->
   </bean>
 
   <bean id="org.hisp.dhis.interceptor.ContextInterceptor" class="org.hisp.dhis.interceptor.ContextInterceptor">

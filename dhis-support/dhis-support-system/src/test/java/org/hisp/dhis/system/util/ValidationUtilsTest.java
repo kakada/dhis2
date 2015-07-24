@@ -174,10 +174,5 @@ public class ValidationUtilsTest
         assertNull( dataValueIsValid( "2013-04-01", de ) );
         assertNotNull( dataValueIsValid( "2012304-01", de ) );
         assertNotNull( dataValueIsValid( "Date", de ) );        
-
-        de.setType( DataElement.VALUE_TYPE_DATETIME );
-        assertNull( dataValueIsValid( "2013-04-01T11:00:00.000Z" , de ) );
-        assertNotNull( dataValueIsValid( "2013-04-01" , de ) );
-        assertNotNull( dataValueIsValid( "abcd" , de ) );
     }
 }

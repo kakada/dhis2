@@ -261,7 +261,7 @@ public class DefaultImportService
 
             if ( importer != null )
             {
-                return importer.importObjects( user, objects, objectBridge, importOptions );
+                return importer.importObjects( user, objects, importOptions );
             }
             else
             {
@@ -278,7 +278,7 @@ public class DefaultImportService
 
         if ( importer != null )
         {
-            return importer.importObject( user, object, objectBridge, importOptions );
+            return importer.importObject( user, object, importOptions );
         }
         else
         {

@@ -29,7 +29,6 @@ package org.hisp.dhis.system.util;
  */
 
 import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
-import static org.hisp.dhis.system.util.DateUtils.dateTimeIsValid;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -62,22 +61,6 @@ public class DateUtilsTest
         assertFalse( dateIsValid( "201-01-01" ) );
         assertFalse( dateIsValid( "01-01-01" ) );
         assertFalse( dateIsValid( "abcd-01-01" ) );
-    }
-
-    @Test
-    public void testDateTimeIsValid()
-    {
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00:00.000Z" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00:00.000+05:30" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00:00Z" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00:00+05:30" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00:00" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00Z" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00+05:30" ) );
-        assertTrue( dateTimeIsValid( "2000-01-01T10:00" ) );
-        assertFalse( dateTimeIsValid( "2000-01-01" ) );
-        assertFalse( dateTimeIsValid( "01-01-2000" ) );
-        assertFalse( dateTimeIsValid( "abcd" ) );
     }
     
     @Test

@@ -74,7 +74,6 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryOptionGroupSetTableSt
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.springframework.transaction.annotation.Transactional;
-import org.hisp.dhis.system.util.UniqueArrayList;
 
 /**
  * @author Lars Helge Overland
@@ -435,7 +434,7 @@ public class DefaultResourceTableService
         Date startDate = new Cal( 1975, 1, 1, true ).time(); //TODO
         Date endDate = new Cal( 2025, 1, 1, true ).time();
 
-        List<Period> days = new UniqueArrayList<>( new DailyPeriodType().generatePeriods( startDate, endDate ) );
+        List<Period> days = new DailyPeriodType().generatePeriods( startDate, endDate );
 
         Calendar calendar = PeriodType.getCalendar();
 

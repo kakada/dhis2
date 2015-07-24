@@ -54,7 +54,6 @@ public interface DimensionalObject
     final String DATASET_DIM_ID = "ds";
     final String DATAELEMENT_OPERAND_ID = "dc";
     final String CATEGORYOPTIONCOMBO_DIM_ID = "co";
-    final String ATTRIBUTEOPTIONCOMBO_DIM_ID = "ao";
     final String PERIOD_DIM_ID = "pe";
     final String ORGUNIT_DIM_ID = "ou";
     final String ORGUNIT_GROUP_DIM_ID = "oug"; // Used for org unit target

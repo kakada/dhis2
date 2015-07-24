@@ -173,7 +173,7 @@ public interface DataValueStore
      *         values match.
      */
     Collection<DataValue> getDataValues( OrganisationUnit source, Period period, Collection<DataElement> dataElements );
-
+    
     /**
      * Returns all DataValues for a given Source, Period, collection of
      * DataElements and DataElementCategoryOptionCombo.

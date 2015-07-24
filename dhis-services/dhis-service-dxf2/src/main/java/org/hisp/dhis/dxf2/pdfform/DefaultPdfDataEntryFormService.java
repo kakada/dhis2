@@ -73,7 +73,6 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfAnnotation;
 import com.lowagie.text.pdf.PdfAppearance;
-import com.lowagie.text.pdf.PdfBorderArray;
 import com.lowagie.text.pdf.PdfBorderDictionary;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfFormField;
@@ -671,20 +670,26 @@ public class DefaultPdfDataEntryFormService
     }
 
     private void addCell_WithDropDownListField( PdfPTable table, Rectangle rect, PdfWriter writer, PdfPCell cell, String strfldName, String[] optionList,
-        String[] valueList) throws IOException, DocumentException
+        String[] valueList)
     {
-        TextField textList = new TextField( writer, rect, strfldName );
+        // If there is option, then create name-value set in 2 dimension array
+        // and set it as dropdown option name-value list.
+        String[][] optionValueList = new String[optionList.length][2];
 
-        textList.setChoices( optionList );
-        textList.setChoiceExports( valueList );
+        for ( int i = 0; i < optionList.length; i++ )
+        {
+            optionValueList[i][1] = optionList[i];
+            optionValueList[i][0] = valueList[i];
+        }
 
-        textList.setBorderWidth( 1 );
-        textList.setBorderColor( Color.BLACK );
-        textList.setBorderStyle( PdfBorderDictionary.STYLE_SOLID );
-        textList.setBackgroundColor( COLOR_BACKGROUDTEXTBOX );
-        
-        PdfFormField dropDown = textList.getComboField();
-        
+        // Code 2 create DROP-DOWN LIST
+        PdfFormField dropDown = PdfFormField.createCombo( writer, true, optionValueList, 0 );
+
+        dropDown.setWidget( new Rectangle(0, 0), PdfAnnotation.HIGHLIGHT_INVERT );
+        dropDown.setFieldName( strfldName );
+
+        dropDown.setMKBorderColor( Color.BLACK );
+
         cell.setCellEvent( new PdfFieldCell( dropDown, rect.getWidth(), rect.getHeight(), writer ) );
 
         table.addCell( cell );

@@ -43,6 +43,10 @@ public class IdSchemes
     private IdentifiableProperty categoryOptionComboIdScheme = IdentifiableProperty.UID;
 
     private IdentifiableProperty orgUnitIdScheme = IdentifiableProperty.UID;
+    
+    private IdentifiableProperty orgUnitNameScheme = IdentifiableProperty.NAME;
+    
+    private IdentifiableProperty orgUnitCoordinateScheme = IdentifiableProperty.COORDINATES;
 
     private IdentifiableProperty programIdScheme = IdentifiableProperty.UID;
 
@@ -86,17 +90,33 @@ public class IdSchemes
     {
         this.categoryOptionComboIdScheme = categoryOptionComboIdScheme;
     }
-
+    
     public IdentifiableProperty getOrgUnitIdScheme()
     {
         return getIdentifiableProperty( orgUnitIdScheme );
     }
-
+    
     public void setOrgUnitIdScheme( IdentifiableProperty orgUnitIdScheme )
     {
         this.orgUnitIdScheme = orgUnitIdScheme;
     }
-
+    
+    public IdentifiableProperty getOrgUnitNameScheme() {
+    	return getIdentifiableProperty(orgUnitNameScheme);
+    }
+    
+    public void setOrgUnitNameScheme( IdentifiableProperty orgUnitNameScheme) {
+    	this.orgUnitNameScheme = orgUnitNameScheme;
+    }
+    
+    public IdentifiableProperty getOrgUnitCoordinateScheme() {
+    	return getIdentifiableProperty(orgUnitCoordinateScheme);
+    }
+    
+    public void setOrgUnitCoordinateScheme( IdentifiableProperty orgUnitCoordinateScheme) {
+    	this.orgUnitCoordinateScheme = orgUnitCoordinateScheme;
+    }
+    
     public IdentifiableProperty getProgramIdScheme()
     {
         return getIdentifiableProperty( programIdScheme );

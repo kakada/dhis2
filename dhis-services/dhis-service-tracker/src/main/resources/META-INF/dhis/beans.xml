@@ -410,25 +410,21 @@
 		<property name="skipInTests" value="true" />
 		<property name="tables">
 			<list>
-				<value>trackedentity</value>
-				<value>trackedentityinstance</value>
 				<value>trackedentityattribute</value>
 				<value>trackedentityattributegroup</value>
 				<value>trackedentityinstancereminder</value>
-				<value>trackedentityform</value>
 				<value>program</value>
-				<value>programindicator</value>
 				<value>programstage</value>
 				<value>programstagesection</value>
 				<value>programstagedataelement</value>
 				<value>programinstance</value>
 				<value>programstageinstance</value>
+				<value>relationshiptype</value>
 				<value>programstagesection</value>
 				<value>programvalidation</value>
 				<value>programrule</value>
 				<value>programruleaction</value>
 				<value>programrulevariable</value>
-				<value>relationshiptype</value>
 			</list>
 		</property>
 	</bean>

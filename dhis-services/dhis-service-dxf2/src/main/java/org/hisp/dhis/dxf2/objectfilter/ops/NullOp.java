@@ -47,6 +47,6 @@ public class NullOp extends Op
             return OpStatus.INCLUDE;
         }
 
-        return OpStatus.EXCLUDE;
+        return OpStatus.IGNORE;
     }
 }

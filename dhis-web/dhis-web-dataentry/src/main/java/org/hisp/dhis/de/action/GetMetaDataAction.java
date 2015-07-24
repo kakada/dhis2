@@ -50,6 +50,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -91,6 +92,13 @@ public class GetMetaDataAction
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     private DataElementCategoryService categoryService;
@@ -231,8 +239,15 @@ public class GetMetaDataAction
 
         expressionService.substituteExpressions( indicators, null );
 
-        dataSets = currentUserService.getCurrentUserDataSets();
-        
+        if ( currentUserService.currentUserIsSuper() )
+        {
+            dataSets = new ArrayList<>( dataSetService.getAllDataSets() );
+        }
+        else if ( user != null )
+        {
+            dataSets = new ArrayList<>( user.getUserCredentials().getAllDataSets() );
+        }
+
         Set<DataElementCategoryCombo> categoryComboSet = new HashSet<>();
         Set<DataElementCategory> categorySet = new HashSet<>();
 
