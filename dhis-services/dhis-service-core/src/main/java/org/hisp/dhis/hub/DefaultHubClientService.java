@@ -39,8 +39,8 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.instedd.hub.client.form.FormData;
-import org.instedd.hub.client.http.AbstractHttpRequest;
-import org.instedd.hub.client.http.HttpPostRequest;
+import org.instedd.hub.client.service.HubClientServiceImpl;
+import org.instedd.hub.client.service.IHubClientService;
 
 /**
  * @author Kakada Chheang
@@ -67,9 +67,11 @@ public class DefaultHubClientService implements HubClientService {
 	@Override
 	public void send(CompleteDataSetRegistration registration) throws URISyntaxException, IOException {
 		Configuration configuration = configurationService.getConfiguration();
-    	if(configuration.isHubEnableMode()) {
+		if(configuration.isHubEnableMode()) {
 			URI uri = new URI(configuration.getHubServerUrl() + configuration.getHubInsertTaskUrl());
-			AbstractHttpRequest httpRequest = new HttpPostRequest(uri, configuration.getHubServerUsername(), configuration.getHubServerPassword());
+			IHubClientService hubClientService = new HubClientServiceImpl(configuration.getHubServerUsername(), configuration.getHubServerPassword());
+			
+			// form data
 			FormData formData = new FormData();
 			formData.addParam("dataset", registration.getDataSet().getName());
 			formData.addParam("organisationUnit", registration.getSource().getName());
@@ -80,14 +82,12 @@ public class DefaultHubClientService implements HubClientService {
 			
 			// Get data value of data set
 			Collection<DataValue> dataValues = dataValueService.getDataValues(registration.getSource(), registration.getPeriod(), registration.getDataSet().getDataElements());
-        	for( DataValue dataValue : dataValues) {
-        		formData.addParam(dataValue.getDataElement().getName() + (dataValue.getCategoryOptionCombo().isDefault() ? "" : dataValue.getCategoryOptionCombo().getName()) , dataValue.getValue());
-        	}
-			httpRequest.setFormData(formData);
-			httpRequest.send();
-    	}
+    		for( DataValue dataValue : dataValues) {
+    			formData.addParam(dataValue.getDataElement().getName() + (dataValue.getCategoryOptionCombo().isDefault() ? "" : dataValue.getCategoryOptionCombo().getName()) , dataValue.getValue());
+    		}
+        	
+    		hubClientService.doPost(uri, formData);
+		}
 	}
 	
-	
-
 }
