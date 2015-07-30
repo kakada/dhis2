@@ -28,23 +28,15 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.configuration.Configuration;
-import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.hub.HubClientService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.instedd.hub.client.form.FormData;
-import org.instedd.hub.client.http.AbstractHttpJsonRequest;
-import org.instedd.hub.client.http.HttpJsonPostRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
@@ -112,9 +104,9 @@ public class DefaultCompleteDataSetRegistrationService
         {
             messageService.sendCompletenessMessage( registration );
             
-         // Hub client
+            // Hub client notifies complete dataset registration
             try {
-    			hubClientService.send(registration);
+    			hubClientService.notifyCompleteDataSetRegistration(registration);
     		} catch (URISyntaxException e) {
     			e.printStackTrace();
     		} catch (IOException e) {
@@ -141,6 +133,14 @@ public class DefaultCompleteDataSetRegistrationService
     @Override
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
+    	// Hub client notifies delete complete dataset registration
+        try {
+			hubClientService.notifyDeleteCompleteDataSetRegistration(registration);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistration( registration );
     }
 
@@ -149,7 +149,7 @@ public class DefaultCompleteDataSetRegistrationService
     {
         for ( CompleteDataSetRegistration registration : registrations )
         {
-            completeDataSetRegistrationStore.deleteCompleteDataSetRegistration( registration );
+            deleteCompleteDataSetRegistration( registration );
         }
     }
 
