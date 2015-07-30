@@ -87,6 +87,12 @@ public class SetHubSettingsAction
 		this.hubUpdateTask = hubUpdateTask;
 	}
 	
+	private String hubDeleteTask;
+	
+	public void setHubDeleteTask( String hubDeleteTask ) {
+		this.hubDeleteTask = hubDeleteTask;
+	}
+	
 	private boolean hubEnableMode;
 	
 	public void setHubEnableMode( boolean hubEnableMode ) {
@@ -128,6 +134,7 @@ public class SetHubSettingsAction
         
         config.setHubInsertTask(hubInsertTask);
         config.setHubUpdateTask(hubUpdateTask);
+        config.setHubDeleteTask(hubDeleteTask);
         config.setHubEnableMode(hubEnableMode);
         
         configurationService.setConfiguration( config );

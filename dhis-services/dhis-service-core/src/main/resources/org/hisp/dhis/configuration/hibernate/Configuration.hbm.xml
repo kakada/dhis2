@@ -53,6 +53,8 @@
 	
 	<property name="hubUpdateTask" column="hubupdatetask" />
 	
+	<property name="hubDeleteTask" column="hubdeletetask" />
+	
 	<property name="hubEnableMode" column="hubenablemode" type="boolean" />
 	
   </class>

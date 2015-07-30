@@ -98,6 +98,8 @@ public class Configuration
     
     private String hubUpdateTask;
     
+    private String hubDeleteTask;
+    
     private Boolean hubEnableMode;
 
     // -------------------------------------------------------------------------
@@ -322,9 +324,17 @@ public class Configuration
 	public String getHubUpdateTask() {
 		return hubUpdateTask;
 	}
-
+	
 	public void setHubUpdateTask(String hubUpdateTaskUrl) {
 		this.hubUpdateTask = hubUpdateTaskUrl;
+	}
+	
+	public String getHubDeleteTask() {
+		return hubDeleteTask;
+	}
+
+	public void setHubDeleteTask( String hubDeleteTask ) {
+		this.hubDeleteTask = hubDeleteTask;
 	}
 
 	/**

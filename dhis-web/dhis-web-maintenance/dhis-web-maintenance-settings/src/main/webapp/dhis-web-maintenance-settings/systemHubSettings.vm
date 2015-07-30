@@ -7,6 +7,7 @@
 	            hubServerPassword: jQuery( '#hubServerPassword' ).val(),
 	            hubInsertTask: jQuery( '#hubInsertTask' ).val(),
 	            hubUpdateTask: jQuery( '#hubUpdateTask' ).val(),
+	            hubDeleteTask: jQuery( '#hubDeleteTask' ).val(),
 	            hubEnableMode: jQuery( '#hubEnableMode' ).is(':checked')
 	        }, function( json ) {
 	            if ( json.response == "success" ) {
@@ -47,6 +48,11 @@
 <div class="settingLabel">$i18n.getString( "hub_update_task" )</div>
 <div class="setting">
 	<input type="text" id="hubUpdateTask" name="hubUpdateTask" value='$!hubUpdateTask' placeholder="$i18n.getString( 'hub_update_task' )">
+</div>
+
+<div class="settingLabel">$i18n.getString( "hub_delete_task" )</div>
+<div class="setting">
+	<input type="text" id="hubDeleteTask" name="hubDeleteTask" value='$!hubDeleteTask' placeholder="$i18n.getString( 'hub_delete_task' )">
 </div>
 
 <div class="setting">

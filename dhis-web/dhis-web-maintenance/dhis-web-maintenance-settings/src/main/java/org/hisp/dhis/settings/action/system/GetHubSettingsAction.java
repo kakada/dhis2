@@ -79,6 +79,12 @@ public class GetHubSettingsAction
     	return hubUpdateTask;
     }
     
+    private String hubDeleteTask;
+    
+    public String getHubDeleteTask() {
+    	return hubDeleteTask;
+    }
+    
     private boolean hubEnableMode;
     
     public boolean isHubEnableMode() {
@@ -97,6 +103,7 @@ public class GetHubSettingsAction
         hubServerUsername = config.getHubServerUsername();
         hubInsertTask = config.getHubInsertTask();
         hubUpdateTask = config.getHubUpdateTask();
+        hubDeleteTask = config.getHubDeleteTask();
         if(config.isHubEnableMode() != null) {
         	hubEnableMode = config.isHubEnableMode().booleanValue();
         }
