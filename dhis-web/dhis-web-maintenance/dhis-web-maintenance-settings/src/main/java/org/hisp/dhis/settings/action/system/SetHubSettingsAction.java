@@ -75,16 +75,16 @@ public class SetHubSettingsAction
         this.hubServerPassword = hubServerPassword;
     }
     
-    private String hubInsertTaskUrl;
+    private String hubInsertTask;
 
-	public void setHubInsertTaskUrl(String hubInsertTaskUrl) {
-		this.hubInsertTaskUrl = hubInsertTaskUrl;
+	public void setHubInsertTask(String hubInsertTask) {
+		this.hubInsertTask = hubInsertTask;
 	}
 	
-	private String hubUpdateTaskUrl;
+	private String hubUpdateTask;
 	
-	public void setHubUpdateTaskUrl( String hubUpdateTaskUrl ) {
-		this.hubUpdateTaskUrl = hubUpdateTaskUrl;
+	public void setHubUpdateTask( String hubUpdateTask ) {
+		this.hubUpdateTask = hubUpdateTask;
 	}
 	
 	private boolean hubEnableMode;
@@ -126,8 +126,8 @@ public class SetHubSettingsAction
             config.setHubServerPassword( hubServerPassword );
         }
         
-        config.setHubInsertTaskUrl(hubInsertTaskUrl);
-        config.setHubUpdateTaskUrl(hubUpdateTaskUrl);
+        config.setHubInsertTask(hubInsertTask);
+        config.setHubUpdateTask(hubUpdateTask);
         config.setHubEnableMode(hubEnableMode);
         
         configurationService.setConfiguration( config );

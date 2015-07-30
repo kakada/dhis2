@@ -68,13 +68,14 @@ public class DefaultHubClientService implements HubClientService {
 	public void send(CompleteDataSetRegistration registration) throws URISyntaxException, IOException {
 		Configuration configuration = configurationService.getConfiguration();
 		if(configuration.isHubEnableMode()) {
-			URI uri = new URI(configuration.getHubServerUrl() + configuration.getHubInsertTaskUrl());
+			URI uri = new URI(configuration.getHubServerUrl());
 			IHubClientService hubClientService = new HubClientServiceImpl(configuration.getHubServerUsername(), configuration.getHubServerPassword());
 			
 			// form data
 			FormData formData = new FormData();
+			formData.addParam("taskName", configuration.getHubInsertTask());
 			formData.addParam("dataset", registration.getDataSet().getName());
-			formData.addParam("organisationUnit", registration.getSource().getName());
+			formData.addParam("organisation", registration.getSource().getName());
 			formData.addParam("period", registration.getPeriodName());
 			formData.addParam("storedBy", registration.getStoredBy());
 			formData.addParam("completedDate", registration.getDate().toString());
@@ -83,7 +84,13 @@ public class DefaultHubClientService implements HubClientService {
 			// Get data value of data set
 			Collection<DataValue> dataValues = dataValueService.getDataValues(registration.getSource(), registration.getPeriod(), registration.getDataSet().getDataElements());
     		for( DataValue dataValue : dataValues) {
-    			formData.addParam(dataValue.getDataElement().getName() + (dataValue.getCategoryOptionCombo().isDefault() ? "" : dataValue.getCategoryOptionCombo().getName()) , dataValue.getValue());
+    			String dataElementFormName = null;
+    			if (dataValue.getDataElement().getFormName() != null) {
+    				dataElementFormName = dataValue.getDataElement().getFormName();
+    			} else {
+    				dataElementFormName = dataValue.getDataElement().getName() + " " + (dataValue.getCategoryOptionCombo().isDefault() ? "" : dataValue.getCategoryOptionCombo().getName());
+    			}
+    			formData.addParam(dataElementFormName, dataValue.getValue());
     		}
         	
     		hubClientService.doPost(uri, formData);

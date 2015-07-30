@@ -49,9 +49,9 @@
 	
 	<property name="hubServerPassword" column="hubserverpassword" type="encryptedString" />
 	
-	<property name="hubInsertTaskUrl" column="hubinserttaskurl" />
+	<property name="hubInsertTask" column="hubinserttask" />
 	
-	<property name="hubUpdateTaskUrl" column="hubupdatetaskurl" />
+	<property name="hubUpdateTask" column="hubupdatetask" />
 	
 	<property name="hubEnableMode" column="hubenablemode" type="boolean" />
 	

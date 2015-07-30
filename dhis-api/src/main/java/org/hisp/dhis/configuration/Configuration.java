@@ -94,9 +94,9 @@ public class Configuration
     
     private String hubServerPassword;
     
-    private String hubInsertTaskUrl;
+    private String hubInsertTask;
     
-    private String hubUpdateTaskUrl;
+    private String hubUpdateTask;
     
     private Boolean hubEnableMode;
 
@@ -311,20 +311,20 @@ public class Configuration
 		this.hubServerPassword = hubServerPassword;
 	}
 	
-	public String getHubInsertTaskUrl() {
-		return hubInsertTaskUrl;
+	public String getHubInsertTask() {
+		return hubInsertTask;
 	}
 
-	public void setHubInsertTaskUrl(String hubInsertTaskUrl) {
-		this.hubInsertTaskUrl = hubInsertTaskUrl;
+	public void setHubInsertTask(String hubInsertTask) {
+		this.hubInsertTask = hubInsertTask;
 	}
 
-	public String getHubUpdateTaskUrl() {
-		return hubUpdateTaskUrl;
+	public String getHubUpdateTask() {
+		return hubUpdateTask;
 	}
 
-	public void setHubUpdateTaskUrl(String hubUpdateTaskUrl) {
-		this.hubUpdateTaskUrl = hubUpdateTaskUrl;
+	public void setHubUpdateTask(String hubUpdateTaskUrl) {
+		this.hubUpdateTask = hubUpdateTaskUrl;
 	}
 
 	/**

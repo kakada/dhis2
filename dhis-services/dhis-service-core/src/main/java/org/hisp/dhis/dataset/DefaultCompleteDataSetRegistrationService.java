@@ -39,8 +39,8 @@ import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.instedd.hub.client.form.FormData;
-import org.instedd.hub.client.http.AbstractHttpRequest;
-import org.instedd.hub.client.http.HttpPostRequest;
+import org.instedd.hub.client.http.AbstractHttpJsonRequest;
+import org.instedd.hub.client.http.HttpJsonPostRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -88,18 +88,6 @@ public class DefaultCompleteDataSetRegistrationService
     	this.hubClientService = hubClientService;
     }
     
-//    private ConfigurationService configurationService;
-//	
-//	public void setConfigurationService( ConfigurationService configurationService ) {
-//		this.configurationService = configurationService;
-//	}
-//	
-//	private DataValueService dataValueService;
-//	
-//	public void setDataValueService( DataValueService dataValueService ) {
-//		this.dataValueService = dataValueService;
-//	}
-
     // -------------------------------------------------------------------------
     // CompleteDataSetRegistrationService
     // -------------------------------------------------------------------------
@@ -112,15 +100,6 @@ public class DefaultCompleteDataSetRegistrationService
             registration.setAttributeOptionCombo( categoryService.getDefaultDataElementCategoryOptionCombo() );
         }
         
-        // Hub client
-        try {
-			hubClientService.send(registration);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
         completeDataSetRegistrationStore.saveCompleteDataSetRegistration( registration );
     }
 
@@ -132,6 +111,15 @@ public class DefaultCompleteDataSetRegistrationService
         if ( notify )
         {
             messageService.sendCompletenessMessage( registration );
+            
+         // Hub client
+            try {
+    			hubClientService.send(registration);
+    		} catch (URISyntaxException e) {
+    			e.printStackTrace();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
         }
     }
 

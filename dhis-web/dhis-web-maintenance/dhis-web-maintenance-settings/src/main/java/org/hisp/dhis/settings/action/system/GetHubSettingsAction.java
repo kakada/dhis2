@@ -67,16 +67,16 @@ public class GetHubSettingsAction
         return hubServerUsername;
     }
     
-    private String hubInsertTaskUrl;
+    private String hubInsertTask;
     
-    public String getHubInsertTaskUrl() {
-    	return hubInsertTaskUrl;
+    public String getHubInsertTask() {
+    	return hubInsertTask;
     }
     
-    private String hubUpdateTaskUrl;
+    private String hubUpdateTask;
     
-    public String getHubUpdateTaskUrl() {
-    	return hubUpdateTaskUrl;
+    public String getHubUpdateTask() {
+    	return hubUpdateTask;
     }
     
     private boolean hubEnableMode;
@@ -95,8 +95,8 @@ public class GetHubSettingsAction
         Configuration config = configurationService.getConfiguration();
         hubServerUrl = config.getHubServerUrl();
         hubServerUsername = config.getHubServerUsername();
-        hubInsertTaskUrl = config.getHubInsertTaskUrl();
-        hubUpdateTaskUrl = config.getHubUpdateTaskUrl();
+        hubInsertTask = config.getHubInsertTask();
+        hubUpdateTask = config.getHubUpdateTask();
         if(config.isHubEnableMode() != null) {
         	hubEnableMode = config.isHubEnableMode().booleanValue();
         }

@@ -5,8 +5,8 @@
 	            hubServerUrl: jQuery( "#hubServerUrl" ).val(),
 	            hubServerUsername: jQuery( "#hubServerUsername" ).val(),
 	            hubServerPassword: jQuery( '#hubServerPassword' ).val(),
-	            hubInsertTaskUrl: jQuery( '#hubInsertTaskUrl' ).val(),
-	            hubUpdateTaskUrl: jQuery( '#hubUpdateTaskUrl' ).val(),
+	            hubInsertTask: jQuery( '#hubInsertTask' ).val(),
+	            hubUpdateTask: jQuery( '#hubUpdateTask' ).val(),
 	            hubEnableMode: jQuery( '#hubEnableMode' ).is(':checked')
 	        }, function( json ) {
 	            if ( json.response == "success" ) {
@@ -39,14 +39,14 @@
 	<input type="password" id="hubServerPassword" name="hubServerPassword" placeholder="$i18n.getString( 'hidden' )">
 </div>
 
-<div class="settingLabel">$i18n.getString( "hub_insert_task_url" )</div>
+<div class="settingLabel">$i18n.getString( "hub_insert_task" )</div>
 <div class="setting">
-	<input type="text" id="hubInsertTaskUrl" name="hubInsertTaskUrl" value='$!hubInsertTaskUrl' placeholder="$i18n.getString( 'hub_insert_task_url' )">
+	<input type="text" id="hubInsertTask" name="hubInsertTask" value='$!hubInsertTask' placeholder="$i18n.getString( 'hub_insert_task' )">
 </div>
 
-<div class="settingLabel">$i18n.getString( "hub_update_task_url" )</div>
+<div class="settingLabel">$i18n.getString( "hub_update_task" )</div>
 <div class="setting">
-	<input type="text" id="hubUpdateTaskUrl" name="hubUpdateTaskUrl" value='$!hubUpdateTaskUrl' placeholder="$i18n.getString( 'hub_update_task_url' )">
+	<input type="text" id="hubUpdateTask" name="hubUpdateTask" value='$!hubUpdateTask' placeholder="$i18n.getString( 'hub_update_task' )">
 </div>
 
 <div class="setting">
