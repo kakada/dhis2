@@ -15,6 +15,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 public interface HubClientService {
 	
 	void notifyCompleteDataSetRegistration(CompleteDataSetRegistration registration) throws URISyntaxException, IOException;
+	void notifyUpdateCompleteDataSetRegistration(CompleteDataSetRegistration registration) throws URISyntaxException, IOException;
 	void notifyDeleteCompleteDataSetRegistration(CompleteDataSetRegistration registration) throws URISyntaxException, IOException;
 	
 }

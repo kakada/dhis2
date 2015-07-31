@@ -127,6 +127,14 @@ public class DefaultCompleteDataSetRegistrationService
     @Override
     public void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
+    	// Hub client notifies update complete dataset registration
+        try {
+			hubClientService.notifyUpdateCompleteDataSetRegistration(registration);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         completeDataSetRegistrationStore.updateCompleteDataSetRegistration( registration );
     }
 
