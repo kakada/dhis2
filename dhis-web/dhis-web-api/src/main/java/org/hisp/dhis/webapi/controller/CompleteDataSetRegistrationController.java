@@ -578,8 +578,12 @@ public class CompleteDataSetRegistrationController
             {
                 if ( unit.getDataSets().contains( dataSet ) )
                 {
+                	I18nFormat format = i18nManager.getI18nFormat();
+                	
                     CompleteDataSetRegistration registration = registrationService
                         .getCompleteDataSetRegistration( dataSet, period, unit, attributeOptionCombo );
+                    
+                    registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
                     if ( registration != null )
                     {
